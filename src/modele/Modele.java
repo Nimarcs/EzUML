@@ -75,12 +75,23 @@ public class Modele extends Sujet {
      * @param objectClasse ObjectClasse a selectionner ou deselectionner
      */
     public void selectionnerUneClasse(ObjectClasse objectClasse){
+        //on regarde si la classe est selectionner
+        if (selection.contains(objectClasse)){
+            selection.remove(objectClasse);
+            //si elle est selectionne, la deselectionne
+        } else {
+            //sinon la selectionne
+            selection.add(objectClasse);
+        }
+        notifierObservateurs();
     }
 
     /**
      * Methode qui vide la selection
      */
     public void deselectionner(){
+       selection.clear();
+       notifierObservateurs();
     }
 
     /**
