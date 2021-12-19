@@ -125,6 +125,19 @@ public class Modele extends Sujet {
      * @param f fichier a charger
      */
     private void chargerClasse(File f){
+        //si le fichier est pas null
+        if (f != null){
+
+            //si le fichier est un .class
+            if(f.isFile() && f.getName().contains(".class")) {
+
+                //on recupere l'objectClasse
+                ObjectClasse o = facade.instropectionClasse(f);
+
+                //on l'ajoute dans notre collection de classe charge
+                classes.add(o);
+            }
+        }
     }
 
     /**
