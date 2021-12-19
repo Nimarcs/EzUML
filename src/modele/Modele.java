@@ -107,6 +107,8 @@ public class Modele extends Sujet {
      * methode qui permet d'alterner entre masquer ou afficher les packages sous forme textuelle
      */
     public void changerAffichagePackage(){
+        afficherPackage = !afficherPackage;
+        notifierObservateurs();
     }
 
     /**
