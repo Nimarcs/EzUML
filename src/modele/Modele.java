@@ -115,6 +115,9 @@ public class Modele extends Sujet {
      * methode qui permet de reinitialiser le diagramme
      */
     public void reintialiserDiagramme(){
+        classes.clear(); //on vide toute les classes chargee
+        deselectionner(); // on deselectionne tout
+        chargerArborescenceProjet(dossierProjet); //on recharger le fichier charge en cours
     }
 
     /**
