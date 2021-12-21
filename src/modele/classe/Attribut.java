@@ -43,6 +43,22 @@ public class Attribut {
 
     // CONSTRUCTEURS
 
+    /**
+     * Constructeur d'un objet Attribut, représentant un attribut au sein d'une classe
+     * @param nomAttribut String: nom de l'attribut
+     * @param statutAttribut Statut: statut de l'attribut (PUBLIC, PRIVATE ou PROTECTED)
+     * @param typeAttribut String: type de l'attribut
+     * @param statique boolean: indique si l'attribut est statique ou non
+     * @param finale boolean: indique si l'attribut est final ou non
+     */
+    public Attribut(String nomAttribut, Statut statutAttribut, String typeAttribut, boolean statique, boolean finale) {
+        this.nomAttribut = nomAttribut;
+        this.statutAttribut = statutAttribut;
+        this.typeAttribut = typeAttribut;
+        this.statique = statique;
+        this.finale = finale;
+        this.visible = true;
+    }
 
     // METHODES
 
