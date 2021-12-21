@@ -65,4 +65,52 @@ public class Attribut {
 
     // GETTERS && SETTERS
 
+    /**
+     * Getter sur le nom de l'attribut
+     * @return String
+     */
+    public String getNomAttribut() {
+        return this.nomAttribut;
+    }
+
+    /**
+     * Getter sur le statut de l'attribut
+     * @return Statut
+     */
+    public Statut getStatutAttribut() {
+        return this.statutAttribut;
+    }
+
+    /**
+     * Getter sur le type de l'attribut
+     * @return String
+     */
+    public String getTypeAttribut() {
+        return this.typeAttribut;
+    }
+
+    /**
+     * Getter sur l'etat statique ou non de l'attribut
+     * @return booleen
+     */
+    public boolean isStatique() {
+        return this.statique;
+    }
+
+    /**
+     * Getter sur l'etat final ou non de l'attribut
+     * @return booleen
+     */
+    public boolean isFinale() {
+        return this.finale;
+    }
+
+    /**
+     * Getter sur la visibilite de l'attribut au sein de la zone d'affichage de diagrammes de classe
+     * @return booleen
+     */
+    public boolean isVisible() {
+        return this.visible;
+    }
+
 }
