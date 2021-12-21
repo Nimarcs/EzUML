@@ -62,5 +62,69 @@ public class Methode {
 
     // GETTERS && SETTERS
 
+    /**
+     * Getter sur le nom de la methode
+     * @return String
+     */
+    public String getNomMethode() {
+        return this.nomMethode;
+    }
+
+    /**
+     * Getter sur le statut de la methode
+     * @return Statut
+     */
+    public Statut getStatutMethode() {
+        return this.statutMethode;
+    }
+
+    /**
+     * Getter sur le type de retour de la methode
+     * si void, valeur vaut null
+     * @return String
+     */
+    public String getTypeRetour() {
+        return this.typeRetour;
+    }
+
+    /**
+     * Getter sur la liste des parametres
+     * @return List<String>
+     */
+    public List<String> getListeParametres() {
+        return this.listeParametres;
+    }
+
+    /**
+     * Getter sur l'etat abstrait de la methode ou non
+     * @return booleen
+     */
+    public boolean isAbstrait() {
+        return this.abstrait;
+    }
+
+    /**
+     * Getter sur l'etat statique de la methode ou non
+     * @return booleen
+     */
+    public boolean isStatique() {
+        return this.statique;
+    }
+
+    /**
+     * Getter sur l'etat final de la methode ou non
+     * @return booleen
+     */
+    public boolean isFinale() {
+        return this.finale;
+    }
+
+    /**
+     * Getter sur la visibilite de l'attribut au sein de la zone d'affichage de diagrammes de classe
+     * @return booleen
+     */
+    public boolean isVisible() {
+        return this.visible;
+    }
 
 }
