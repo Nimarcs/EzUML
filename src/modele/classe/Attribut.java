@@ -62,6 +62,19 @@ public class Attribut {
 
     // METHODES
 
+    /**
+     * Methode qui retourne le texte permettant l'affichage de l'attribut au sein de la zone d'affichage de diagrammes de classe
+     * L'affiche est composé du symbole representant son statut (+, -, #) puis de son nom et pour finir du type de classe de l'attribut
+     * @return String, composé textuel d'affichage de l'attribut
+     */
+    public String afficher() {
+        String res = "";
+        if (this.statutAttribut == Statut.PUBLIC) res += "+ ";
+        else if (this.statutAttribut == Statut.PRIVATE) res += "- ";
+        else res += "# ";
+        res += this.nomAttribut + " : " + this.typeAttribut;
+        return res;
+    }
 
     // GETTERS && SETTERS
 
