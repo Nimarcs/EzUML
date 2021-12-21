@@ -76,6 +76,14 @@ public class Attribut {
         return res;
     }
 
+    /**
+     * Methode setter qui permet de changer la visibilite de l'attribut
+     * @param visibilite booleen: parametre indiquant la nouvelle visibilite de l'attribut
+     */
+    public void changerVisibilite(boolean visibilite) {
+        this.visible = visibilite;
+    }
+
     // GETTERS && SETTERS
 
     /**
