@@ -59,6 +59,33 @@ public class Methode {
 
     // METHODES
 
+    /**
+     * Methode qui retourne le texte permettant l'affichage de la methode au sein de la zone d'affichage de diagrammes de classe
+     * L'affiche est composé du symbole representant son statut (+, -, #) puis de son nom, de ses parametres et pour finir de son type de retour si non null/void
+     * @return String, composé textuel d'affichage de la methode
+     */
+    public String afficher() {
+        String res = "";
+        if (this.statutMethode == Statut.PUBLIC) res += "+ ";
+        else if (this.statutMethode == Statut.PRIVATE) res += "- ";
+        else res += "# ";
+        res += this.nomMethode + "(";
+        for (int i = 0; i < this.listeParametres.size(); i++) {
+            res += this.listeParametres.get(i);
+            if (i != this.listeParametres.size() - 1) res += ", ";
+        }
+        res += ")";
+        if (this.typeRetour != null) res += " : " + this.typeRetour;
+        return res;
+    }
+
+    /**
+     * Methode setter qui permet de changer la visibilite de la methode
+     * @param visibilite booleen: parametre indiquant la nouvelle visibilite de la methode
+     */
+    public void changerVisibilite(boolean visibilite) {
+        this.visible = visibilite;
+    }
 
     // GETTERS && SETTERS
 
