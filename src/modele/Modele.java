@@ -176,4 +176,8 @@ public class Modele extends Sujet {
     public void setCtrlActive(boolean ctrlActive) {
         this.ctrlActive = ctrlActive;
     }
+
+    public boolean isAfficherPackage() {
+        return afficherPackage;
+    }
 }
