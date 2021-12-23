@@ -132,7 +132,7 @@ public class Modele extends Sujet {
             if(f.isFile() && f.getName().contains(".class")) {
 
                 //on recupere l'objectClasse
-                ObjectClasse o = facade.instropectionClasse(f);
+                ObjectClasse o = facade.introspectionClasse(f);
 
                 //on l'ajoute dans notre collection de classe charge
                 classes.add(o);
