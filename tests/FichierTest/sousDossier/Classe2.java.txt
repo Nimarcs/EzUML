@@ -1,0 +1,16 @@
+package FichierTest.sousDossier;
+
+import FichierTest.Classe1;
+
+public class Classe2 extends Classe1 {
+
+    private int num;
+
+    public Classe2(int n){
+        num = n;
+    }
+
+    public int getNum() {
+        return num;
+    }
+}

@@ -1,0 +1,15 @@
+package FichierTest.sousDossier.sousDossier2.sousDossier;
+
+import FichierTest.sousDossier.sousDossier2.Classe3;
+
+public abstract class Classe4 implements Classe3 {
+
+    private int no;
+
+    public abstract void methodeAbstraite();
+
+    public void methodePasAbstraite(){
+        no = no +1;
+    }
+
+}
