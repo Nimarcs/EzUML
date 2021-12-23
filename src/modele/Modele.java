@@ -1,5 +1,8 @@
 package modele;
 
+import introspection.FacadeIntrospection;
+import modele.classe.ObjectClasse;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
