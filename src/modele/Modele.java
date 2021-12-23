@@ -144,16 +144,44 @@ public class Modele extends Sujet {
     }
 
     /**
-     * methode qui permet de charger l'arborescence et les different fichier la composant
+     * Methode qui permet de charger l'arborescence et les differents fichier le composant
+     * Appelle la methode privee adapte et change le dossier projet
      * @param f fichier a tester
      */
     public void chargerArborescenceProjet(File f){
-        throw new IllegalStateException("PAS FAIT");
-        /*
-        notifierObservateurs();
-        dossierProjet = f;
+        //on apelle la methode privee qui charge tous les fichiers depuis le fichier donnee
+        chargerArborescenceProjetRecursif(f);
 
-         */
+        //on modifie quel est le dernier dossier charge du projet
+        dossierProjet = f;
+        notifierObservateurs();
+    }
+
+    /**
+     * Methode qui va charger
+     * @param f
+     */
+    private void chargerArborescenceProjetRecursif(File f){
+        if (f == null) return; //si c'est null on ne fait rien
+
+        //si c'est un fichier on tente de la charger
+        if (f.isFile()){
+            chargerClasse(f);
+        } else {
+            //sinon on regarde si c'est un repertoire
+            if (f.isDirectory()){
+                //on recupere les fils
+                File[] fils = f.listFiles();
+
+                if (fils == null) throw new IllegalStateException("f est censé etre un repertoire"); //Erreur suppose impossible
+
+                //on parcours les fils
+                for (File enfant:fils) {
+                    chargerArborescenceProjet(enfant);//on appelle recursivement sur tout les enfants
+                }
+            }
+
+        }
     }
 
 
