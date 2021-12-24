@@ -25,7 +25,7 @@ public class Methode {
     private Statut statutMethode;
 
     /**
-     * Attribut prive String contenant le type de retour, null si le retour est void
+     * Attribut prive String contenant le type de retour, null si c'est un cosntructeur
      */
     private String typeRetour;
 
@@ -75,7 +75,7 @@ public class Methode {
             if (i != this.listeParametres.size() - 1) res += ", ";
         }
         res += ")";
-        if (this.typeRetour != null) res += " : " + this.typeRetour;
+        if (this.typeRetour != null || !this.typeRetour.equals("void")) res += " : " + this.typeRetour;
         return res;
     }
 
@@ -107,7 +107,7 @@ public class Methode {
 
     /**
      * Getter sur le type de retour de la methode
-     * si void, valeur vaut null
+     * si null, c'est un constructeur
      * @return String
      */
     public String getTypeRetour() {
