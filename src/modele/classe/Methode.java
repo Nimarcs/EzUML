@@ -56,6 +56,26 @@ public class Methode {
 
     // CONSTRUCTEURS
 
+    /**
+     * Constructeur de l'objet Methode, qui correspond a une methode ou un constructeur d'une classe
+     * @param nomMethode String: nom de la methode
+     * @param statutMethode Statut: statut de la methode
+     * @param typeRetour String: le type de retour de la methode, si null, c'est un constructeur
+     * @param listeParametres List<String>: liste des parametres de la methode
+     * @param abstrait booleen: indique si la methode est abstraite ou non
+     * @param statique booleen: indique si la methode est statique ou non
+     * @param finale booleen: indique si la methode est finale ou non
+     */
+    public Methode(String nomMethode, Statut statutMethode, String typeRetour, List<String> listeParametres, boolean abstrait, boolean statique, boolean finale) {
+        this.nomMethode = nomMethode;
+        this.statutMethode = statutMethode;
+        this.typeRetour = typeRetour;
+        this.listeParametres = listeParametres;
+        this.abstrait = abstrait;
+        this.statique = statique;
+        this.finale = finale;
+        this.visible = true;
+    }
 
     // METHODES
 
