@@ -52,30 +52,58 @@ public abstract class ObjectClasse {
 
     // GETTERS && SETTERS
 
+    /**
+     * Getter sur le nom de la classe
+     * @return String
+     */
     public String getNomObjectClasse() {
         return nomObjectClasse;
     }
 
+    /**
+     * Getter sur le nom du package de la classe
+     * @return String
+     */
     public String getPackageObjectClasse() {
         return packageObjectClasse;
     }
 
+    /**
+     * Getter sur la position X (point en haut a gauche) de la classe dans la zone d'affichage
+     * @return int
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Getter sur la position Y (point en haut a gauche) de la classe dans la zone d'affichage
+     * @return int
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * Getter sur la liste des attributs de la classe
+     * @return List<Attribut>
+     */
     public List<Attribut> getAttributs() {
         return attributs;
     }
 
+    /**
+     * Getter sur la liste des methodes de la classe
+     * @return List<Methode>
+     */
     public List<Methode> getMethodes() {
         return methodes;
     }
 
+    /**
+     * Getter sur la liste des interfaces qui implementent la classe
+     * @return List<Interface>
+     */
     public List<Interface> getListeObjectClasseImplements() {
         return listeObjectClasseImplements;
     }
