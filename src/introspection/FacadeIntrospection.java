@@ -33,29 +33,24 @@ public class FacadeIntrospection {
 	 * @return
 	 */
 	public ObjectClasse introspectionClasse(File f)  {
-
-
-
 		Class<?> cls = new ChargementClasse().chargerClass(f, 1);
 		ObjectClasse obc=null;
-
-
-
+		
 
 		//Les methodes
 
-
+		//liste de toutes les methodes declare, quel soit public/privés/protected
 		Method[] meth = cls.getDeclaredMethods();
 		for (Method methode : meth) {
 			String nom= methode.getName();
 			String typeRetour= methode.getReturnType().getName();
-
 
 			Class[] c = methode.getParameterTypes();
 			List<String> tabList = null;
 			for (Class cla : c) {
 				tabList.add(cla.getName());
 			}
+			//modifier qui change en fonction de ce que contient la methode, public/privée/abstraite/finale/...
 			int mMet = methode.getModifiers();
 
 			Statut s =avoirStatut(mMet);
@@ -63,6 +58,7 @@ public class FacadeIntrospection {
 			boolean abstraite = Modifier.isAbstract(mMet);
 			boolean finale= Modifier.isFinal(mMet);
 
+			//creation de la methode
 			Methode m= new Methode(nom, s, typeRetour, tabList,abstraite, statique, finale);
 			obc.ajouterMethode(m);
 		}
@@ -70,7 +66,12 @@ public class FacadeIntrospection {
 		return obc;
 	}
 
-
+	/**
+	 * methode qui en fonction du int quel recoit retourne un statut
+	 *
+	 * @param mod
+	 * @return
+	 */
 	private Statut avoirStatut(int mod){
 		Statut s = null;
 		if (Modifier.isPrivate(mod)) {
@@ -82,7 +83,5 @@ public class FacadeIntrospection {
 		}
 		return s;
 	}
-
-
 
 }
