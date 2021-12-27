@@ -49,6 +49,54 @@ public abstract class ObjectClasse {
 
     // METHODES
 
+    /**
+     * Methode pour ajouter une interface qui implemente cette classe
+     * @param inter Interface: interface qu'on doit ajouter dans la liste d'implementation
+     */
+    public void ajouterImplements(Interface inter) {
+        this.listeObjectClasseImplements.add(inter);
+    }
+
+    /**
+     * Methode pour supprimer une interface de la liste d'interface qui implemente cette classe
+     * @param inter Interface: interface qu'on doit supprimer
+     */
+    public void supprimerImplements(Interface inter) {
+        this.listeObjectClasseImplements.remove(inter);
+    }
+
+    /**
+     * Mehode pour ajouter un attribut dans une classe
+     * @param att Attribut: attribut qu'on doit ajouter a la liste d'attributs
+     */
+    public void ajouterAttribut(Attribut att) {
+        this.attributs.add(att);
+    }
+
+    /**
+     * Methode pour supprimer un attribut dans une classe
+     * @param att Attribut: attribut qu'on doit enlever dans la liste d'attributs
+     */
+    public void supprimerAttribut(Attribut att) {
+        this.attributs.remove(att);
+    }
+
+    /**
+     * Methode pour ajouter une methode dans la liste des methodes de cette classe
+     * @param meth Methode: methode qu'on doit ajouter
+     */
+    public void ajouterMethode(Methode meth) {
+        this.methodes.add(meth);
+    }
+
+    /**
+     * Methode pour supprimer une methode de la liste des methodes de la classe
+     * @param meth Methode: methode qu'on doit supprimer
+     */
+    public void supprimerMethode(Methode meth) {
+        this.methodes.remove(meth);
+    }
+
 
     // GETTERS && SETTERS
 
