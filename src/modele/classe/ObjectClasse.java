@@ -97,6 +97,28 @@ public abstract class ObjectClasse {
         this.methodes.remove(meth);
     }
 
+    /**
+     * Methode pour deplacer la classe selon de nouvelles coordonnees x et y
+     * @param posX int: nouvelle position x de la classe
+     * @param posY int: nouvelle position y de la classe
+     */
+    public void deplacer(int posX, int posY) {
+        this.x = posX;
+        this.y = posY;
+    }
+
+    /**
+     * Methode equals pour comparer deux ObjectClasse entre eux
+     * @param o Object: object qu'on compare avec celle qui appelle cette methode
+     * @return booleen: true si les deux objets sont egaux, sinon false
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ObjectClasse that = (ObjectClasse) o;
+        return nomObjectClasse.equals(that.nomObjectClasse) && packageObjectClasse.equals(that.packageObjectClasse);
+    }
 
     // GETTERS && SETTERS
 
