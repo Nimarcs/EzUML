@@ -1,10 +1,12 @@
 package introspection;
 
+import modele.classe.Attribut;
 import modele.classe.Methode;
 import modele.classe.ObjectClasse;
 import modele.classe.Statut;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
@@ -35,7 +37,27 @@ public class FacadeIntrospection {
 	public ObjectClasse introspectionClasse(File f)  {
 		Class<?> cls = new ChargementClasse().chargerClass(f, 1);
 		ObjectClasse obc=null;
-		
+
+		//les classes
+		//Les constructeurs
+		//Les attributs
+
+		Field[] fdd = cls.getDeclaredFields();
+
+		for (Field attri : fdd) {
+			String nom= attri.getName();
+			String typeAttribut = attri.getType().getName();
+
+			int mAtt = attri.getModifiers();
+
+			Statut s =avoirStatut(mAtt);
+			boolean statique = Modifier.isStatic(mAtt);
+			boolean finale= Modifier.isFinal(mAtt);
+
+			Attribut atb = new Attribut(nom, s, typeAttribut, statique, finale);
+			cls.ajouterAttribut(atb);
+
+		}
 
 		//Les methodes
 
