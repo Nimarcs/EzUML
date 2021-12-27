@@ -2,6 +2,7 @@
 package modele.classe;
 
 // IMPORTS
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +47,22 @@ public abstract class ObjectClasse {
 
     // CONSTRUCTEURS
 
+    /**
+     * Constructeur d'un ObjectClasse, representant une classe java
+     * @param nomObjectClasse String: nom de la classe
+     * @param packageObjectClasse String: nom du package de la classe
+     * @param x int: position x de la classe (coin en haut a gauche du rectangle a afficher)
+     * @param y int: position y de la classe (coin en haut a gauche du rectangle a afficher)
+     */
+    public ObjectClasse(String nomObjectClasse, String packageObjectClasse, int x, int y) {
+        this.nomObjectClasse = nomObjectClasse;
+        this.packageObjectClasse = packageObjectClasse;
+        this.x = x;
+        this.y = y;
+        this.attributs = new ArrayList<>();
+        this.methodes = new ArrayList<>();
+        this.listeObjectClasseImplements = new ArrayList<>();
+    }
 
     // METHODES
 
