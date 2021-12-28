@@ -217,6 +217,10 @@ public abstract class ObjectClasse {
         return this.visible;
     }
 
+    /**
+     * Getter abstrait sur le type de classe que ce sera
+     * @return TypeClasse
+     */
     public abstract TypeClasse getType();
 
 }
