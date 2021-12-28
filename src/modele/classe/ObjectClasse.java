@@ -45,6 +45,11 @@ public abstract class ObjectClasse {
      */
     protected List<Interface> listeObjectClasseImplements;
 
+    /**
+     * Attribut prive booleen qui indique la visibilite de l'object classe dans la zone d'affichage
+     */
+    protected boolean visible;
+
     // CONSTRUCTEURS
 
     /**
@@ -62,6 +67,7 @@ public abstract class ObjectClasse {
         this.attributs = new ArrayList<>();
         this.methodes = new ArrayList<>();
         this.listeObjectClasseImplements = new ArrayList<>();
+        this.visible = false;
     }
 
     // METHODES
@@ -122,6 +128,14 @@ public abstract class ObjectClasse {
     public void deplacer(int posX, int posY) {
         this.x = posX;
         this.y = posY;
+    }
+
+    /**
+     * Methode pour changer la visibilite de l'object classe
+     * @param visibilite boolean: indique la nouvelle visibilite ou non de l'objet
+     */
+    public void changerVisibilite(boolean visibilite) {
+        this.visible = visibilite;
     }
 
     /**
@@ -194,5 +208,15 @@ public abstract class ObjectClasse {
     public List<Interface> getListeObjectClasseImplements() {
         return listeObjectClasseImplements;
     }
+
+    /**
+     * Getter sur la visibilite de la classe
+     * @return boolean
+     */
+    public boolean isVisible() {
+        return this.visible;
+    }
+
+    public abstract TypeClasse getType();
 
 }
