@@ -24,6 +24,9 @@
 hs_err_pid*
 
 # Dossier de configuration des éditeurs de code
+.classpath
+.project
 .idea
 .vscode
 out/*
+/bin/

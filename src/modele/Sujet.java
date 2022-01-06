@@ -2,6 +2,7 @@ package modele;
 
 import java.util.LinkedList;
 import java.util.List;
+import vue.*;
 
 /**
  * Classe abstraite permettant de devenir le sujet d'une observation
