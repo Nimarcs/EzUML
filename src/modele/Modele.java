@@ -46,7 +46,7 @@ public class Modele extends Sujet {
     /**
      * Fichier charge couramment, sert a l'arboresance
      */
-    private File dossierProjet;
+    private File dossierCourant;
 
     /**
      * Facade qui permet d'obtenir les ObjectClasse a partir des fichiers
@@ -66,7 +66,7 @@ public class Modele extends Sujet {
         selection = new LinkedList<>();
         afficherPackage = true;
         ctrlActive = false;
-        dossierProjet = null; // pas de dossier chargee de base
+        dossierCourant = null; // pas de dossier chargee de base
     }
 
 
@@ -120,7 +120,7 @@ public class Modele extends Sujet {
     public void reintialiserDiagramme(){
         classes.clear(); //on vide toute les classes chargee
         deselectionner(); // on deselectionne tout
-        chargerArborescenceProjet(dossierProjet); //on recharger le fichier charge en cours
+        chargerArborescenceProjet(dossierCourant); //on recharger le fichier charge en cours
     }
 
     /**
@@ -153,7 +153,7 @@ public class Modele extends Sujet {
         chargerArborescenceProjetRecursif(f);
 
         //on modifie quel est le dernier dossier charge du projet
-        dossierProjet = f;
+        dossierCourant = f;
         notifierObservateurs();
     }
 
@@ -196,8 +196,12 @@ public class Modele extends Sujet {
         return classes;
     }
 
-    public File getDossierProjet() {
-        return dossierProjet;
+    /**
+     * getter du dossier courant
+     * @return dernier repertoire/fichier charge
+     */
+    public File getDossierCourant() {
+        return dossierCourant;
     }
 
     public List<ObjectClasse> getSelection() {
