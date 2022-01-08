@@ -188,6 +188,10 @@ public class Modele extends Sujet {
     //getters setters
 
 
+    /**
+     * getter de ctrlActive
+     * @return vrai si ctrl est active, faux sinon
+     */
     public boolean isCtrlActive() {
         return ctrlActive;
     }
@@ -204,14 +208,26 @@ public class Modele extends Sujet {
         return dossierCourant;
     }
 
+    /**
+     * getter de la selection
+     * @return selection courante
+     */
     public List<ObjectClasse> getSelection() {
         return selection;
     }
 
+    /**
+     * setter de ctrlActive
+     * @param ctrlActive nouvelle valeur de ctrlActive
+     */
     public void setCtrlActive(boolean ctrlActive) {
         this.ctrlActive = ctrlActive;
     }
 
+    /**
+     * getter de afficherPackage
+     * @return booleen vrai si on affiche les packages, faux sinon
+     */
     public boolean isAfficherPackage() {
         return afficherPackage;
     }
