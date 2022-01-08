@@ -223,4 +223,14 @@ public abstract class ObjectClasse {
      */
     public abstract TypeClasse getType();
 
+    /**
+     * setter de la position
+     * Deplace l'ObjectClasse aux coordonne fournie
+     * @param x position sur x
+     * @param y position sur y
+     */
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }
