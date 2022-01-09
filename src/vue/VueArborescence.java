@@ -1,10 +1,15 @@
 package vue;
 
+import java.awt.Component;
 import java.util.Iterator;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 
 import modele.*;
 import modele.classe.ObjectClasse;
@@ -36,6 +41,54 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	}
 	
 	
+	/**
+	 * Classe CustomRenderArbo, permet d'afficher chaque element de l'arborescence de maniere correcte
+	 *
+	 */
+    public class CustomRenderArbo extends DefaultTreeCellRenderer {
+    	
+    	private final ImageIcon vert;
+    	private final ImageIcon rouge;
+    	private final JLabel label;
+    	
+    	
+    	public CustomRenderArbo() {
+    		this.vert = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointvert.png"));    		
+
+    		this.rouge = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointrouge.png"));    		
+    	
+    		this.label = new JLabel();
+    	}
+    	
+    	 public Component getTreeCellRendererComponent(JTree tree, Object value,boolean sel,boolean expanded,boolean leaf, int row,boolean hasFocus) {
+    	
+    	Object objet = ((DefaultMutableTreeNode) value).getUserObject();
+    		 
+    	/**
+    	 * ceci est un prototype de comment fonctionnerait le custom render
+    	 * il a pour but d'afficher une pastille rouge a cote des objets non affiche et une pastille
+    	 * verte a cote de ceux qui sont affiches
+    	 * 
+    	 */
+    	
+//    	if(objet instanceof ObjetClass) {
+//    		label.setIcon(rouge);
+//    	} else {
+//    		label.setIcon(vert);
+//    		label.setText(value.toString());
+//    	}
+//    	
+//    	if(!leaf) {
+//    		label.setIcon(null);
+//    	}
+    	
+    	return label;    	
+    	
+    	
+    }
+    
+    
+    }
 	
 	
 	
@@ -49,17 +102,26 @@ public class VueArborescence extends JScrollPane implements Observateur{
 		
 	    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Racine");
 
-		Iterator ite = m.getClasses().iterator();
-		
-		while(ite.hasNext()) {
-			
-			ObjectClasse obj = (ObjectClasse) ite.next();
-			
-			DefaultMutableTreeNode feuille = new DefaultMutableTreeNode(obj.getNomObjectClasse());
-			root.add(feuille);
-		}
-		
+//		Iterator ite = m.getClasses().iterator();
+//		
+//		while(ite.hasNext()) {
+//			
+//			ObjectClasse obj = (ObjectClasse) ite.next();
+//			
+//			DefaultMutableTreeNode feuille = new DefaultMutableTreeNode(obj.getNomObjectClasse());
+//			root.add(feuille);
+//		}
+	    
+	    
+
+	    
+	    
+
 		JTree base = new JTree(root);
+		
+		base.setCellRenderer(new CustomRenderArbo());
+		
+	
 
 		this.add(new JTree(root));		
 
