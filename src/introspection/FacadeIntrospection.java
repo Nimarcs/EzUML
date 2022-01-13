@@ -39,12 +39,15 @@ public class FacadeIntrospection {
 			obc = new Enumeration(cls.getName(), cls.getPackageName(), 0, 0);
 			//Les enum sont considérés comme des attributs
 			introAttribut(cls, obc);
+
 		} else if (Modifier.isInterface(m)) {
 			obc = new Interface(cls.getName(), cls.getPackageName(), 0, 0);
 			//Les Constructeurs
 			introConstructeur(cls, obc);
 			//les Methodes
 			introMethode(cls, obc);
+
+
 			}else if (Modifier.isAbstract(m)) {
 			obc = new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
 			//Les Constructeurs
@@ -53,6 +56,7 @@ public class FacadeIntrospection {
 			introMethode(cls, obc);
 			//Les attributs
 			introAttribut(cls, obc);
+
 			} else {
 			obc = new Classe(cls.getName(), cls.getPackageName(), 0, 0);
 			//Les Constructeurs
@@ -83,13 +87,17 @@ public class FacadeIntrospection {
 			String nom= attri.getName();
 			String typeAttribut = attri.getType().getName();
 
+			// la fonction getmodifiers est un int qui change en fonction des particularites du Field
 			int mAtt = attri.getModifiers();
 
+			//methode qui regarde si l'attribut est public, privée, protected
 			Statut s =avoirStatut(mAtt);
+
 			boolean statique = Modifier.isStatic(mAtt);
 			boolean finale= Modifier.isFinal(mAtt);
 
 			Attribut atb = new Attribut(nom, s, typeAttribut, statique, finale);
+			//ajout de l'attribut dans l'ObjectClass
 			obc.ajouterAttribut(atb);
 
 		}
@@ -112,6 +120,7 @@ public class FacadeIntrospection {
 			String nom= methode.getName();
 			String typeRetour= methode.getReturnType().getName();
 
+			//tableau qui contient le nom des classes en parametres
 			Class[] c = methode.getParameterTypes();
 			List<String> tabList = null;
 			for (Class cla : c) {
@@ -120,6 +129,7 @@ public class FacadeIntrospection {
 			//modifier qui change en fonction de ce que contient la methode, public/privée/abstraite/finale/...
 			int mMet = methode.getModifiers();
 
+			//regarde si la methode est public, privée, protected
 			Statut s =avoirStatut(mMet);
 			boolean statique = Modifier.isStatic(mMet);
 			boolean abstraite = Modifier.isAbstract(mMet);
@@ -127,6 +137,7 @@ public class FacadeIntrospection {
 
 			//creation de la methode
 			Methode m= new Methode(nom, s, typeRetour, tabList,abstraite, statique, finale);
+			//ajout de la methode dans l'ObjectClass
 			obc.ajouterMethode(m);
 		}
 	}
@@ -145,9 +156,13 @@ public class FacadeIntrospection {
 
 		for (Constructor co : cons) {
 			String nom=co.getName();
+
+			// la fonction getmodifiers est un int qui change en fonction des particularites du Field
 			int mCon = co.getModifiers();
+			//regarde si le constructeur est public, privée, protected
 			Statut s =avoirStatut(mCon);
 
+			//tableau qui contient le nom des classes en parametres
 			Class[] c = co.getParameterTypes();
 			List<String> tabList = null;
 			for (Class cla : c) {
@@ -155,6 +170,7 @@ public class FacadeIntrospection {
 			}
 
 			Methode m= new Methode(nom, s, null, tabList,false, false, false);
+			//ajout de constructeur dans l'ObjectClass, on considère qu'un constructeur est une méthode dans l'ObjectClass
 			obc.ajouterMethode(m);
 
 		}

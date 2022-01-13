@@ -28,16 +28,17 @@ public class ChargementClasse {
      * sinon  on catch l'execption et refait la methode pour
      * tester notre File avec un package puis ainsi de suite jusqu'a ce que le FIle n'est plus de repertoire
      *
-     * @param f
-     * @param p est le nombre
+     * @param f fichier ou l'on veut sa class
+     * @param p nombre de fois que la méthode chargerClass est appelé
      * @return
      * @throws MalformedURLException
      * @throws ClassNotFoundException
      */
     public Class chargerClass(File f, int p) {
         Class cls = null;
-        // s'arrete quand le nombre
+        // condition qui regarde que le nombre de repertoire n'est pas superieur a p
         if (p <= compterBackQuote(f.getAbsolutePath())) {
+            //tableau qui contient le chemin d'acces juste avant les packages et le nom du fichier avec ses packages
             String[] s = new String[2];
             String cheminAbsolue = f.getAbsolutePath();
 
