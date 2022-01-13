@@ -1,17 +1,12 @@
 package introspection;
 
-import modele.classe.Attribut;
-import modele.classe.Methode;
-import modele.classe.ObjectClasse;
-import modele.classe.Statut;
+import modele.classe.*;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
 
 /**
@@ -35,11 +30,51 @@ public class FacadeIntrospection {
 	 * @return
 	 */
 	public ObjectClasse introspectionClasse(File f)  {
-		Class<?> cls = new ChargementClasse().chargerClass(f, 1);
-		ObjectClasse obc=null;
+		Class cls = new ChargementClasse().chargerClass(f, 1);
 
+		ObjectClasse obc=null;
 		//les classes
-		//Les constructeurs
+		int m = cls.getModifiers();
+		if (cls.isEnum()) {
+			obc = new Enumeration(cls.getName(), cls.getPackageName(), 0, 0);
+			//Les enum sont considérés comme des attributs
+			introAttribut(cls, obc);
+		} else if (Modifier.isInterface(m)) {
+			obc = new Interface(cls.getName(), cls.getPackageName(), 0, 0);
+			//Les Constructeurs
+			introConstructeur(cls, obc);
+			//les Methodes
+			introMethode(cls, obc);
+			}else if (Modifier.isAbstract(m)) {
+			obc = new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
+			//Les Constructeurs
+			introConstructeur(cls,obc);
+			//les Methodes
+			introMethode(cls, obc);
+			//Les attributs
+			introAttribut(cls, obc);
+			} else {
+			obc = new Classe(cls.getName(), cls.getPackageName(), 0, 0);
+			//Les Constructeurs
+			introConstructeur(cls, obc);
+			//les Methodes
+			introMethode(cls, obc);
+			//Les attributs
+			introAttribut(cls, obc);
+		}
+
+
+		return obc;
+	}
+
+	/**
+	 * methode privée qui permet de faire l'introspection des attributs de l'ObjectClasse en parametre
+	 *
+	 * @param cls
+	 * @param obc
+	 * @return
+	 */
+	private void introAttribut(Class cls, ObjectClasse obc ){
 		//Les attributs
 
 		Field[] fdd = cls.getDeclaredFields();
@@ -55,9 +90,19 @@ public class FacadeIntrospection {
 			boolean finale= Modifier.isFinal(mAtt);
 
 			Attribut atb = new Attribut(nom, s, typeAttribut, statique, finale);
-			cls.ajouterAttribut(atb);
+			obc.ajouterAttribut(atb);
 
 		}
+	}
+
+	/**
+	 * methode privée qui permet de faire l'introspection des méthodes de l'ObjectClasse en parametre
+	 *
+	 * @param cls
+	 * @param obc
+	 * @return
+	 */
+	private void introMethode(Class cls, ObjectClasse obc ){
 
 		//Les methodes
 
@@ -84,12 +129,39 @@ public class FacadeIntrospection {
 			Methode m= new Methode(nom, s, typeRetour, tabList,abstraite, statique, finale);
 			obc.ajouterMethode(m);
 		}
-
-		return obc;
 	}
 
 	/**
-	 * methode qui en fonction du int quel recoit retourne un statut
+	 * methode privée qui permet de faire l'introspection des constructeurs de l'ObjectClasse en parametre
+	 * les constructeurs sont considérés comme des méthodes dans l'objectClasse
+	 * @param cls
+	 * @param obc
+	 * @return
+	 */
+	private void introConstructeur(Class cls, ObjectClasse obc ){
+		//Les constructeurs
+
+		Constructor[] cons = cls.getDeclaredConstructors();
+
+		for (Constructor co : cons) {
+			String nom=co.getName();
+			int mCon = co.getModifiers();
+			Statut s =avoirStatut(mCon);
+
+			Class[] c = co.getParameterTypes();
+			List<String> tabList = null;
+			for (Class cla : c) {
+				tabList.add(cla.getName());
+			}
+
+			Methode m= new Methode(nom, s, null, tabList,false, false, false);
+			obc.ajouterMethode(m);
+
+		}
+	}
+
+	/**
+	 * methode privée qui en fonction du int quel recoit retourne un statut
 	 *
 	 * @param mod
 	 * @return

@@ -34,7 +34,7 @@ public class ChargementClasse {
      * @throws MalformedURLException
      * @throws ClassNotFoundException
      */
-    public Class<?> chargerClass(File f, int p) {
+    public Class chargerClass(File f, int p) {
         Class cls = null;
         // s'arrete quand le nombre
         if (p <= compterBackQuote(f.getAbsolutePath())) {
