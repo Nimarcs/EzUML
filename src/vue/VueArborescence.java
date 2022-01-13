@@ -2,6 +2,7 @@ package vue;
 
 import java.awt.Component;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,6 +13,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 import modele.*;
+import modele.Package;
 import modele.classe.ObjectClasse;
 
 /**
@@ -65,27 +67,30 @@ public class VueArborescence extends JScrollPane implements Observateur{
     	Object objet = ((DefaultMutableTreeNode) value).getUserObject();
     		 
     	/**
-    	 * ceci est un prototype de comment fonctionnerait le custom render
-    	 * il a pour but d'afficher une pastille rouge a cote des objets non affiche et une pastille
-    	 * verte a cote de ceux qui sont affiches
+    	 * le custom render va regarder si l'objet est un package ou pas
+    	 * puis si l'objet est visible ou pas et afficher chaque élément de manière correcte
     	 * 
     	 */
     	
-//    	if(objet instanceof ObjetClass) {
-//    		label.setIcon(rouge);
-//    	} else {
-//    		label.setIcon(vert);
-//    		label.setText(value.toString());
-//    	}
-//    	
-//    	if(!leaf) {
-//    		label.setIcon(null);
-//    	}
+    	if(objet instanceof Package) {
+    		label.setIcon(null);
+    		label.setText(((Package) objet).getNom());
+
+    	}
     	
+    	if(objet instanceof ObjectClasse) {
+    		label.setText(((ObjectClasse) objet).getNomObjectClasse());
+    		
+    		if(((ObjectClasse) objet).isVisible()) {
+    			label.setIcon(vert);
+    		} else {
+    			label.setIcon(rouge);
+    		}
+    	} 
+    	    	
     	return label;    	
     	
-    	
-    }
+    	}
     
     
     }
@@ -93,28 +98,18 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	
 	
 	/**
-	 * La methode actualiser regarde les classes dans le modele et les affiches en vrac
+	 * La methode actualiser regarde les classes dans le modele et les affiches de maniere ordonnee avec le bon code couleur
 	 */
 	@Override
 	public void actualiser(Sujet s) {
 		remove(0);
 		Modele m=(Modele)s;
 		
-	    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Racine");
-
-//		Iterator ite = m.getClasses().iterator();
-//		
-//		while(ite.hasNext()) {
-//			
-//			ObjectClasse obj = (ObjectClasse) ite.next();
-//			
-//			DefaultMutableTreeNode feuille = new DefaultMutableTreeNode(obj.getNomObjectClasse());
-//			root.add(feuille);
-//		}
+		Package p = m.getSrc();
+		
+	    DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
 	    
-	    
-
-	    
+	    root = creerBranche(root, p.getSousPackages(),p.getClassesContenues());	    
 	    
 
 		JTree base = new JTree(root);
@@ -125,6 +120,36 @@ public class VueArborescence extends JScrollPane implements Observateur{
 
 		this.add(new JTree(root));		
 
+	}
+	
+	/**
+	 * Methode recursive, qui permet d'afficher chaque branche de maniere correcte
+	 * @param noeud racine sur laquelle on va greffer les branches
+	 * @param souspackages tout les packages de la racine
+	 * @param classes tout les objets class de la racine
+	 * @return
+	 */
+	public DefaultMutableTreeNode creerBranche(DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<ObjectClasse> classes) {
+		
+		Iterator<ObjectClasse> iteC = classes.iterator();
+		
+		while(iteC.hasNext()) {
+	    	DefaultMutableTreeNode sousclasses = new DefaultMutableTreeNode(iteC.next());
+	    	noeud.add(sousclasses);
+		}
+		
+		
+	    Iterator<Package> iteP = souspackages.iterator();
+
+	    while(iteP.hasNext()){
+	    	DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(iteP.next());
+	    	DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, iteP.next().getSousPackages(), iteP.next().getClassesContenues());
+	    	noeud.add(souspackagerempli);
+	    	
+	    }		
+		
+		return noeud;
+		
 	}
 
 }
