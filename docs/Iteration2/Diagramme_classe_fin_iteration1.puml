@@ -1,0 +1,219 @@
+@startuml
+package introspection {
+
+    class ChargementClasse {
+        + chargerClass (File f, int p) : Class
+        - compterBackQuote (String text) : int
+    }
+
+    class FacadeIntrospection {
+        + FacadeIntrospection()
+        + introspectionClasse (File f) : ObjectClasse
+        - introAttribut (Class cls, ObjectClasse obc)
+        - introMethode (Class cls, ObjectClasse obc)
+        - introConstructeur (Class cls, ObjectClasse obc)
+        - avoirStatut (int mod) : Statut
+    }
+
+}
+
+package modele {
+
+    package classe {
+
+        class Abstraite {
+            + Abstraite (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + getType () : TypeClasse
+        }
+        Abstraite --|> Extendable
+
+        class Attribut {
+            - nomAttribut : String 
+            - typeAttribut : String 
+            - statique : boolean
+            - finale : boolean 
+            - visible : boolean 
+            + Attribut (String nomAttribut, Statut statutAttribut, String typeAttribut, boolean statique, boolean finale)
+            + afficher () : String 
+            + changerVisibilite (boolean visibilite)
+            + getNomAttribut () : String 
+            + getStatutAttribut () : Statut
+            + getTypeAttribut () : String 
+            + isStatique () : boolean 
+            + isFinale () : boolean 
+            + isVisible () : boolean 
+        }
+        Attribut --> Statut : - statutAttribut
+
+        class Classe {
+            + Classe (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + getType () : TypeClasse
+        }
+        Classe --|> Extendable
+
+        class Enumeration {
+            + Enumeration (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + getType () : TypeClasse
+        }
+        Enumeration --|> ObjectClasse 
+
+        abstract Extendable {
+            + Extendable (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + changerExtends (Extendable ext)
+            + getObjectClasseExtends () : Extendable
+        }
+        Extendable --> Extendable : - objectClasseExtends
+        Extendable --|> ObjectClasse
+
+        class Interface {
+            + Interface (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + getType () : TypeClasse
+        }
+        Interface --|> ObjectClasse 
+
+        class Methode {
+            - nomMethode : String 
+            - typeRetour : String 
+            - listeParametres : List<String>
+            - abstrait : boolean 
+            - statique : boolean 
+            - finale : boolean 
+            - visible : boolean 
+            + Methode (String nomMethode, Statut statutMethode, String typeRetour, List<String> listeParametres, boolean abstrait, boolean statique, boolean finale)
+            + afficher () : String 
+            + changerVisibilite (boolean visibilite)
+            + getNomMethode () : String 
+            + getStatutMethode () : Statut 
+            + getTypeRetour() : String 
+            + getListeParametres () : List<String>
+            + isAbstrait () : boolean 
+            + isStatique () : boolean 
+            + isFinale () : boolean 
+            + isVisible () : boolean
+        }
+        Methode --> Statut : - statutMethode
+
+        abstract ObjectClasse {
+            # nomObjectClasse : String 
+            # packageObjectClasse : String 
+            # x : int 
+            # y : int 
+            # visible : boolean 
+            + ObjectClasse (String nomObjectClasse, String packageObjectClasse, int x, int y)
+            + ajouterImplements (Interface inter)
+            + supprimerImplements (Interface inter)
+            + ajouterAttribut (Attribut att) 
+            + supprimerAttribut (Attribut att) 
+            + ajouterMethode (Methode meth)
+            + supprimerMethode (Methode meth)
+            + deplacer (int vecteurX, int vecteurY)
+            + changerVisibilite (boolean visibilite)
+            + equals (Object o) : boolean 
+            + getNomObjectClasse () : String 
+            + getPackageObjectClasse () : String 
+            + getX () : int 
+            + getY () : int 
+            + getAttributs () : List<Attribut>
+            + getMethodes () : List<Methode>
+            + getListeObjectClasseImplemebts () : List<Interface>
+            + isVisible () : boolean 
+            + {abstract} getType () : TypeClasse
+            + setPosition (int x, int y)
+        }
+        ObjectClasse --> Attribut : # attributs
+        ObjectClasse --> Methode : # methodes 
+        ObjectClasse --> Interface : # listeObjectClasseImplements
+
+        enum Statut {
+            PUBLIC
+            PRIVATE 
+            PROTECTED
+        }
+
+        enum TypeClasse {
+            CLASSE 
+            INTERFACE 
+            ENUM 
+            ABSTRACT
+        }
+
+    }
+
+    class Modele {
+        - ctrlActive : boolean 
+        - afficherPackage : boolean
+        - dossierCourant : File  
+        + Modele ()
+        + selectionnerUneClasse (ObjectClasse objectClasse)
+        + deselectionner ()
+        + changerAffichagePackage () 
+        + reintialiserDiagramme ()
+        - chargerClasse (File f)
+        + chargerArborescenceProjet (File f)
+        - chargerArborescenceProjetRecursif (File f)
+        - trouvePackageDeClasse (ObjectClasse objectClasse) : Package
+        - verifierClasseCharge (ObjectClasse objectClasse) : boolean 
+        + ajouterClasse (ObjectClasse objectClasse, int x, int y)
+        + deplacerClasseSelectionne (int x, int y)
+        + retirerClasseSelectionne ()
+        + dechargerClasse (ObjectClasse objectClasse)
+        + isCtrlActive () : boolean 
+        + getSrc () : Package
+        + getDossierCourant () : File 
+        + getSelection () : List<ObjectClasse>
+        + setCtrlActive (boolean ctrlActive)
+        + isAfficherPackage () : boolean 
+    }
+    Modele --> Package : - src 
+    Modele --> ObjectClasse : - selection
+    Modele --> FacadeIntrospection : - facade
+    Modele --|> Sujet 
+
+
+    class Package {
+        - {final} nom : String 
+        + Package (String pNom)
+        + Package (Package packageACopier)
+        + ajouterSousPackage (Package p)
+        + ajouterClasse (ObjectClasse c)
+        + retirerSousPackage (Package p)
+        + retirerClasse (ObjectClasse c)
+        + equals (Object o) : boolean 
+        + hashCode () : int 
+        + getNom () : String 
+        + getSousPackages () : Set<Package>
+        + getClassesContenues () : Set<ObjectClasse>
+    }
+    Package --> ObjectClasse : - {final} classesContenues
+    Package --> Package : - {final} sousPackages
+
+    abstract Sujet {
+        + ajouterObservateur (Observateur observateur)
+        + supprimerObservateur (Observateur observateur)
+        + notifierObservateur ()
+    }
+    Sujet --> Observateur : - listeObservateurs
+
+}
+
+package vue {
+
+    interface Observateur {
+        + actualiser (Sujet sujet)
+    }
+
+    class VueArborescence {
+        + VueArborescence () 
+        + actualiser (Sujet s)
+        + creerBranche (DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<ObjectClasse> classes) : DefaultMutableTreeNode
+    }
+    VueArborescence ..|> Observateur 
+    VueArborescence --|> JScrollPane 
+    
+    class VueDiagramme {
+        + actualiser (Sujet sujet)
+    }
+    VueDiagramme ..|> Observateur
+
+}
+@enduml
