@@ -122,8 +122,8 @@ public abstract class ObjectClasse {
 
     /**
      * Methode pour deplacer la classe selon deux vecteurs
-     * @param posX int: vecteurX
-     * @param posY int: vecteurY
+     * @param vecteurX int: vecteur sur l'axe X
+     * @param vecteurY int: vecteur sur l'axe Y
      */
     public void deplacer(int vecteurX, int vecteurY) {
         this.x += vecteurX;
