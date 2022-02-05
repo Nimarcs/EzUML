@@ -89,13 +89,15 @@ public class Methode {
         if (this.statutMethode == Statut.PUBLIC) res += "+ ";
         else if (this.statutMethode == Statut.PRIVATE) res += "- ";
         else res += "# ";
-        res += this.nomMethode + "(";
-        for (int i = 0; i < this.listeParametres.size(); i++) {
-            res += this.listeParametres.get(i);
-            if (i != this.listeParametres.size() - 1) res += ", ";
+        res += this.nomMethode + " (";
+        if (this.listeParametres!=null) {
+            for (int i = 0; i < this.listeParametres.size(); i++) {
+                res += this.listeParametres.get(i);
+                if (i != this.listeParametres.size() - 1) res += ", ";
+            }
         }
         res += ")";
-        if (this.typeRetour != null || !this.typeRetour.equals("void")) res += " : " + this.typeRetour;
+        if (this.typeRetour != null && !this.typeRetour.equals("void")) res += " : " + this.typeRetour;
         return res;
     }
 
