@@ -51,7 +51,7 @@ public class Principale {
         panelPrincipal.setLeftComponent(vueArborescence);
 
         //VueDiagramme
-        VueDiagramme vueDiagramme = new VueDiagramme();
+        VueDiagramme vueDiagramme = new VueDiagramme(modele);
 
         modele.ajouterObservateur(vueDiagramme);
         panelPrincipal.setRightComponent(vueDiagramme);
