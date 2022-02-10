@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
 import java.util.List;
 
 /**
@@ -29,44 +30,51 @@ public class FacadeIntrospection {
 	 * @param f
 	 * @return
 	 */
-	public ObjectClasse introspectionClasse(File f)  {
+	public ObjectClasse introspectionClasse(File f) throws MalformedURLException {
 		Class cls = new ChargementClasse().chargerClass(f, 1);
 
+		ObjectClasse obc= this.faireIntrospection(cls);
+
+		return obc;
+	}
+
+
+
+	private ObjectClasse faireIntrospection(Class cls){
 		ObjectClasse obc=null;
-		//les classes
+		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
 		int m = cls.getModifiers();
 		if (cls.isEnum()) {
 			obc = new Enumeration(cls.getName(), cls.getPackageName(), 0, 0);
-			//Les enum sont considérés comme des attributs
-			introAttribut(cls, obc);
-
 		} else if (Modifier.isInterface(m)) {
 			obc = new Interface(cls.getName(), cls.getPackageName(), 0, 0);
-			//Les Constructeurs
-			introConstructeur(cls, obc);
-			//les Methodes
-			introMethode(cls, obc);
-
-
-			}else if (Modifier.isAbstract(m)) {
+		}else if (Modifier.isAbstract(m)) {
 			obc = new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
-			//Les Constructeurs
-			introConstructeur(cls,obc);
-			//les Methodes
-			introMethode(cls, obc);
-			//Les attributs
-			introAttribut(cls, obc);
-
-			} else {
+		} else {
 			obc = new Classe(cls.getName(), cls.getPackageName(), 0, 0);
-			//Les Constructeurs
-			introConstructeur(cls, obc);
-			//les Methodes
-			introMethode(cls, obc);
-			//Les attributs
-			introAttribut(cls, obc);
 		}
 
+		//Puis on regarde les méthode, attributs et les constructeurs
+		if (!cls.isEnum()){
+			//Les Constructeurs
+			introConstructeur(cls, obc);
+			//les Methodes
+			introMethode(cls, obc);
+			//Les attributs
+			introAttribut(cls, obc);
+
+			//méthode qui donne toutes les interfaces de la classe introspecter
+			Class[] claInter= cls.getInterfaces();
+			//ces classe on les développe en faisant une nouvelle introspection
+			for (Class inter : claInter) {
+				//peut avoir probleme que l'on retourne pas une interface, mais normalement cela marche
+				//on trouve l'interface tant quel ce trouve dans le meme packages ou bien un import
+				obc.ajouterImplements((Interface) this.faireIntrospection(inter));
+			}
+		} else {
+			//Les enum sont considérés comme des attributs
+			introAttribut(cls, obc);
+		}
 
 		return obc;
 	}

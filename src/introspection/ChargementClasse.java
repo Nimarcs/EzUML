@@ -34,7 +34,7 @@ public class ChargementClasse {
      * @throws MalformedURLException
      * @throws ClassNotFoundException
      */
-    public Class chargerClass(File f, int p) {
+    public Class chargerClass(File f, int p) throws MalformedURLException {
         Class cls = null;
         // condition qui regarde que le nombre de repertoire n'est pas superieur a p
         if (p <= compterBackQuote(f.getAbsolutePath())) {
@@ -83,9 +83,6 @@ public class ChargementClasse {
                 // cad le nouveau File n'est pas bon ou le fichier et inexistant
                 p = p + 1;
                 cls = chargerClass(f, p);
-            } catch (MalformedURLException e) {
-                //URL mal forme
-                e.printStackTrace();
             }
         } else {
             System.out.println("on ne trouve pas votre fichier");
