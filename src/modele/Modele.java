@@ -1,6 +1,7 @@
 package modele;
 
 import introspection.FacadeIntrospection;
+import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 
 import java.io.File;
@@ -336,6 +337,21 @@ public class Modele extends Sujet {
         trouvePackageDeClasse(objectClasse).getClassesContenues().remove(objectClasse);
         notifierObservateurs();
 
+    /**
+     * Methode qui permet de transformer un attribut d'une classe en une flèche d'association
+     * @param objectClasse objectClasse d'où viens l'attribut
+     * @param attribut attribut a transformer en flèche d'association
+     */
+    public void transformerEnFleche(ObjectClasse objectClasse, Attribut attribut){
+        throw new IllegalStateException("PAS FAIT");
+    }
+
+    /**
+     * Methode qui permet de transformer une flèche d'association en attribut
+     * @param association flèche d'association a transformer
+     */
+    public void transformerEnAttribut(Fleche association){
+        throw new IllegalStateException("PAS FAIT");
     }
 
 
