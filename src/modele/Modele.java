@@ -298,6 +298,39 @@ public class Modele extends Sujet {
     }
 
     /**
+     * Methode qui permet de trouver de manière recursive un objectClasse dans l'arboresance a partir de son nom et d'un package
+     * Pour chercher dans toute l'arborescence donner src comme package
+     * @param nom nom de l'objectClasse
+     * @param p package dans lequel on cherche
+     * @return ObjectClasse correspondant ou null
+     */
+    private ObjectClasse getObjectClasse(String nom, Package p){
+
+        //defintion des variables
+        boolean trouve = false;
+        ObjectClasse o =null;
+        Iterator<ObjectClasse> ite = p.getClassesContenues().iterator();
+
+        //on cherche l'object classe dans le package courant
+        while (!trouve && ite.hasNext()){
+            o = ite.next();
+            if (o.getNomObjectClasse().equals(nom)) trouve = true;
+        }
+
+        //si on l'a trouve on le renvoie
+        if (trouve) return o;
+        else {
+            //sinon on appelle récursivement la fonction sur tous les sous packages
+            for (Package pCur: p.getSousPackages()) {
+                o = getObjectClasse(nom, pCur);
+                if (o!=null) return o; //si on a trouvé on arrête la recherche et on renvoie
+            }
+            //si on a pas trouvé on renvoi null
+            return null;
+        }
+    }
+
+    /**
      * Methode pour deplacer une selection de classe sur le diagramme
      * @param x deplacement sur l'axe des abscisses
      * @param y deplacement sur l'axe des ordonnees
