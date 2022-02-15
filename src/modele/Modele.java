@@ -52,6 +52,11 @@ public class Modele extends Sujet {
      */
     private FacadeIntrospection facade;
 
+    /**
+     * Liste des flèches actuellement represente
+     */
+    private List<Fleche> associations;
+
 
     //Contructeurs
 
@@ -66,6 +71,7 @@ public class Modele extends Sujet {
         afficherPackage = true;
         ctrlActive = false;
         dossierCourant = null; // pas de dossier chargee de base
+        associations = new LinkedList<>();
     }
 
 
