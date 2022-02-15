@@ -322,6 +322,18 @@ public class Modele extends Sujet {
         for (ObjectClasse objectClasse: selection) {//on parcours les objects classes selectionne
 
             if (verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
+
+                //on retire les flèches liées
+
+                //on parcourt toutes les flèches
+                for (Fleche f: associations) {
+                    //si la flèche est liée
+                    if (f.getDest().equals(objectClasse) || f.getSrc().equals(objectClasse)){
+                        //on la transforme en attribut (on "supprime" la flèche)
+                        transformerEnAttribut(f);
+                    }
+                }
+
                 //on retire du diagramme la classe courante
                 objectClasse.changerVisibilite(false);
                 notifierObservateurs();
