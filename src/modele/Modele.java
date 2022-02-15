@@ -4,6 +4,7 @@ import introspection.FacadeIntrospection;
 import modele.classe.ObjectClasse;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.*;
 
 /**
@@ -125,7 +126,12 @@ public class Modele extends Sujet {
             if(f.isFile() && f.getName().contains(".class")) {
 
                 //on recupere l'objectClasse
-                ObjectClasse o = facade.introspectionClasse(f);
+                ObjectClasse o = null;
+                try {
+                    o = facade.introspectionClasse(f);
+                } catch (MalformedURLException e) {
+                    throw new IllegalStateException("Erreur pas encore traitée");
+                }
 
                 //on verifie le package auquel l'objectClasse appartient
                 String[] nomPackages = o.getPackageObjectClasse().split("\\.");
