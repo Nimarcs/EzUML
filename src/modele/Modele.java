@@ -329,13 +329,31 @@ public class Modele extends Sujet {
         }
     }
 
-    public void dechargerClasse(ObjectClasse objectClasse){
-        //ObjectClasse est deja decharge puisqu'il n'existe pas
-        if (objectClasse == null) return;
 
-        //on decharge la classe
-        trouvePackageDeClasse(objectClasse).getClassesContenues().remove(objectClasse);
-        notifierObservateurs();
+    /**
+     * Methode qui permet de décharger les classes sélectionnées
+     */
+    public void dechargerClasseSelectionne(){
+
+        for (ObjectClasse objectClasse:selection) {
+
+            //on decharge la classe
+            Package p = trouvePackageDeClasse(objectClasse);
+            //on vérifie qu'elle n'est pas deja déchargée
+            if (p != null) {
+
+                //on retire du diagramme la classe
+                retirerClasseSelectionne();
+
+                //on la retire des packages
+                p.getClassesContenues().remove(objectClasse);
+                notifierObservateurs();
+            }
+        }
+
+        //on vide la selection puisqu'on a déchargé tout ce qui étais sélectionné
+        deselectionner();
+    }
 
     /**
      * Methode qui permet de transformer un attribut d'une classe en une flèche d'association
