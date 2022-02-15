@@ -223,7 +223,7 @@ public class Modele extends Sujet {
      * Methode qui permet de verifier si un ObjectClasse est charge
      * Utilise les packages pour chercher une classe au bon endroit
      * @param objectClasse objectClasse dont on veut verifier le chargement
-     * @return package qui contient l'objectClasse si il existe un objectClasse charge positionne correctement, null sinon
+     * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
     private Package trouvePackageDeClasse(ObjectClasse objectClasse){
         //on verifie le package auquel l'objectClasse appartient
