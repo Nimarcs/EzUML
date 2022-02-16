@@ -4,6 +4,7 @@ package modele.classe;
 // IMPORTS
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Classe ObjectClasse
@@ -149,6 +150,11 @@ public abstract class ObjectClasse {
         if (o == null || getClass() != o.getClass()) return false;
         ObjectClasse that = (ObjectClasse) o;
         return nomObjectClasse.equals(that.nomObjectClasse) && packageObjectClasse.equals(that.packageObjectClasse);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nomObjectClasse, packageObjectClasse);
     }
 
     // GETTERS && SETTERS
