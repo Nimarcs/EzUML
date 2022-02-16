@@ -18,7 +18,7 @@ public class Package{
     /**
      * Classe contenue dans le package
      */
-    private final Set<ObjectClasse> classesContenues;
+    private final Set<String> classesContenues;
 
     /**
      * Sous package contenu dans le package
@@ -81,12 +81,10 @@ public class Package{
 
     /**
      * methode qui permet d'ajouter une classe au package
-     * @param c ObjectClasse fournit
+     * @param s nom complet de l'objectClasse a ajouter
      */
-    public void ajouterClasse(ObjectClasse c){
-        if (c != null){
-            classesContenues.add(c);
-        }
+    public void ajouterClasse(String s){
+        classesContenues.add(s);
     }
 
     /**
@@ -99,10 +97,10 @@ public class Package{
 
     /**
      * methode qui permet de retirer une classe du package
-     * @param c ObjectClasse a supprimer
+     * @param s nom complet de l'objectClasse a supprimer
      */
-    public void retirerClasse(ObjectClasse c){
-        classesContenues.remove(c);
+    public void retirerClasse(String s){
+        classesContenues.remove(s);
     }
 
     /**
@@ -151,7 +149,7 @@ public class Package{
      * getter des classes contenues dans le package
      * @return classes contenues dans le package
      */
-    public Set<ObjectClasse> getClassesContenues() {
+    public Set<String> getClassesContenues() {
         return classesContenues;
     }
 

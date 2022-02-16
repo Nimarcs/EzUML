@@ -26,11 +26,10 @@ public class Modele extends Sujet {
     private boolean ctrlActive;
 
     /**
-     * Source des packages du projet
-     * Ensemble des classes chargees dans le programme sont dans les different sous packages et sous package
-     * Les classes elles meme contiennent l'information sachant si elles sont visibles
+     * Object qui contient les différents ObjectClasse chargee
+     * Contient egalement l'arborescence
      */
-    private Package src;
+    private CollectionObjectClasse collectionObjectClasse;
 
     /**
      * Booleen a vrai si on affiche les packages dans lesquels sont les classes sous forme textuelle, faux sinon
@@ -67,7 +66,7 @@ public class Modele extends Sujet {
      * initialise les attributs de modeles
      */
     public Modele(){
-        src = new Package("src");
+        collectionObjectClasse = new CollectionObjectClasse();
         selection = new LinkedList<>();
         afficherPackage = true;
         ctrlActive = false;
@@ -116,7 +115,7 @@ public class Modele extends Sujet {
      * methode qui permet de reinitialiser le diagramme
      */
     public void reintialiserDiagramme(){
-        src = new Package("src"); //on vide toute les classes chargee en remplaçant toute celle deja charge
+        collectionObjectClasse.reintialiserDonnee(); //on vide toute les classes chargee en remplaçant toute celle deja charge
         deselectionner(); // on deselectionne tout
         chargerArborescenceProjet(dossierCourant); //on recharger le fichier charge en cours
     }
@@ -140,43 +139,8 @@ public class Modele extends Sujet {
                     throw new IllegalStateException("Erreur pas encore traitée");
                 }
 
-                //on verifie le package auquel l'objectClasse appartient
-                String[] nomPackages = o.getPackageObjectClasse().split("\\.");
+                collectionObjectClasse.ajouterObjectClasse(o);
 
-                //on part de la racine
-                Package pCourant = src;
-
-                //pour chaque package cite dans l'objectClasse
-                for (String nomPackage : nomPackages) {
-
-                    //on regarde si un des sous-packages a un nom correspondant
-                    boolean trouve = false;
-                    Iterator<Package> iterator = pCourant.getSousPackages().iterator();
-                    Package p;
-
-                    while (!trouve && iterator.hasNext()) {
-                        p = iterator.next();
-
-                        //si on en trouve un
-                        if (p.getNom().equals(nomPackage)) {
-                            //on arrete de chercher
-                            trouve = true;
-                            //on deplace notre pCourant au package trouve
-                            pCourant = p;
-                        }
-                    }
-
-                    //si on n'en trouve aucun on le creer et continue
-                    if (!trouve) {
-                        Package aPackage = new Package(nomPackage);
-                        pCourant.ajouterSousPackage(aPackage);
-                        //on deplace notre pCourant au package creer
-                        pCourant = aPackage;
-                    }
-                }
-
-                //on l'ajoute dans notre collection de classe charge dans le package correct
-                pCourant.ajouterClasse(o);
             }
         }
     }
@@ -219,67 +183,14 @@ public class Modele extends Sujet {
 
                 //on parcours les fils
                 for (File enfant:fils) {
-                    chargerArborescenceProjet(enfant);//on appelle recursivement sur tout les enfants
+                    chargerArborescenceProjetRecursif(enfant);//on appelle recursivement sur tout les enfants
                 }
             }
 
         }
     }
 
-    /**
-     * Methode qui permet de verifier si un ObjectClasse est charge
-     * Utilise les packages pour chercher une classe au bon endroit
-     * @param objectClasse objectClasse dont on veut verifier le chargement
-     * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
-     */
-    private Package trouvePackageDeClasse(ObjectClasse objectClasse){
-        //on verifie le package auquel l'objectClasse appartient
-        String[] nomPackages = objectClasse.getPackageObjectClasse().split("\\.");
 
-        //on part de la racine
-        Package pCourant = src;
-
-        //pour chaque package cite dans l'objectClasse
-        for (String nomPackage : nomPackages) {
-            //on regarde si un des sous-packages a un nom correspondant
-            boolean trouve = false;
-            Iterator<Package> iterator = pCourant.getSousPackages().iterator();
-            Package p;
-
-            while (!trouve && iterator.hasNext()) {
-                p = iterator.next();
-
-                //si on en trouve un
-                if (p.getNom().equals(nomPackage)) {
-                    //on arrete de chercher
-                    trouve = true;
-                    //on deplace notre pCourant au package trouve
-                    pCourant = p;
-                }
-            }
-
-            //si on n'en trouve aucun la classe n'est pas charge
-            if (!trouve) {
-                return null;
-            }
-        }
-        //on verifie que le package contient bien la classe charge
-        if(pCourant.getClassesContenues().contains(objectClasse)){
-            //si c'est le cas on renvoie le package qui la contient
-            return pCourant;
-        }
-        //sinon on retourne null
-        return null;
-    }
-
-    /**
-     * methode qui permet de verifier si une classe est chargee
-     * @param objectClasse object classe dont on veut verifier si elle est chargee
-     * @return booleen vrai si il existe un objectClasse charge positionne correctement, faux sinon
-     */
-    private boolean verifierClasseCharge(ObjectClasse objectClasse){
-        return trouvePackageDeClasse(objectClasse) != null;
-    }
 
     /**
      * Methode qui permet d'ajouter un objectClasse chargee au diagramme
@@ -289,7 +200,7 @@ public class Modele extends Sujet {
      */
     public void ajouterClasse(ObjectClasse objectClasse, int x, int y ){
 
-        assert verifierClasseCharge(objectClasse) : "La classe doit etre chargée";
+        assert collectionObjectClasse.verifierClasseCharge(objectClasse) : "La classe doit etre chargée";
         //on verifie que la classe est chargee
 
         //on change les options de la classe en elle meme
@@ -303,7 +214,7 @@ public class Modele extends Sujet {
         for (Attribut a:objectClasse.getAttributs()) {
 
             //on vérifie si le type correspond à une classe chargée
-            ObjectClasse o = getObjectClasse( a.getTypeAttribut(), src);
+            ObjectClasse o = collectionObjectClasse.getObjectClasse( a.getTypeAttribut());
             if (o != null){
                 //la classe est chargée
 
@@ -320,39 +231,6 @@ public class Modele extends Sujet {
     }
 
     /**
-     * Methode qui permet de trouver de manière recursive un objectClasse dans l'arboresance a partir de son nom et d'un package
-     * Pour chercher dans toute l'arborescence donner src comme package
-     * @param nom nom de l'objectClasse
-     * @param p package dans lequel on cherche
-     * @return ObjectClasse correspondant ou null
-     */
-    private ObjectClasse getObjectClasse(String nom, Package p){
-
-        //defintion des variables
-        boolean trouve = false;
-        ObjectClasse o =null;
-        Iterator<ObjectClasse> ite = p.getClassesContenues().iterator();
-
-        //on cherche l'object classe dans le package courant
-        while (!trouve && ite.hasNext()){
-            o = ite.next();
-            if (o.getNomObjectClasse().equals(nom)) trouve = true;
-        }
-
-        //si on l'a trouve on le renvoie
-        if (trouve) return o;
-        else {
-            //sinon on appelle récursivement la fonction sur tous les sous packages
-            for (Package pCur: p.getSousPackages()) {
-                o = getObjectClasse(nom, pCur);
-                if (o!=null) return o; //si on a trouvé on arrête la recherche et on renvoie
-            }
-            //si on a pas trouvé on renvoi null
-            return null;
-        }
-    }
-
-    /**
      * Methode pour deplacer une selection de classe sur le diagramme
      * @param x deplacement sur l'axe des abscisses
      * @param y deplacement sur l'axe des ordonnees
@@ -361,7 +239,7 @@ public class Modele extends Sujet {
 
         for (ObjectClasse objectClasse: selection) {//on parcours les objects classes selectionne
 
-            if (verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
+            if (collectionObjectClasse.verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
                 //On deplace la classe courante
                 objectClasse.deplacer(x, y);
                 notifierObservateurs();
@@ -376,7 +254,7 @@ public class Modele extends Sujet {
 
         for (ObjectClasse objectClasse: selection) {//on parcours les objects classes selectionne
 
-            if (verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
+            if (collectionObjectClasse.verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
 
                 //on retire les flèches liées
 
@@ -402,24 +280,15 @@ public class Modele extends Sujet {
      */
     public void dechargerClasseSelectionne(){
 
-        for (ObjectClasse objectClasse:selection) {
+        //on retire du diagramme les classe
+        retirerClasseSelectionne();
 
-            //on decharge la classe
-            Package p = trouvePackageDeClasse(objectClasse);
-            //on vérifie qu'elle n'est pas deja déchargée
-            if (p != null) {
-
-                //on retire du diagramme la classe
-                retirerClasseSelectionne();
-
-                //on la retire des packages
-                p.getClassesContenues().remove(objectClasse);
-                notifierObservateurs();
-            }
-        }
+        collectionObjectClasse.dechargerListeClasse(selection);
 
         //on vide la selection puisqu'on a déchargé tout ce qui étais sélectionné
         deselectionner();
+
+        notifierObservateurs();
     }
 
     /**
@@ -435,7 +304,7 @@ public class Modele extends Sujet {
         assert objectClasse.isVisible() : "L'object classe doit etre affiché dans le diagramme";
         assert attribut.isVisible() : "l'attribut ne doit pas etre masqué";
 
-        ObjectClasse dest = getObjectClasse(attribut.getTypeAttribut(), src);
+        ObjectClasse dest = collectionObjectClasse.getObjectClasse(attribut.getTypeAttribut());
         if (dest != null && dest.isVisible()) {
             associations.add(new FlecheAssociation(objectClasse, dest, attribut));
             attribut.changerVisibilite(false);
@@ -473,13 +342,30 @@ public class Modele extends Sujet {
     }
 
     /**
-     * getter de src
+     * getter des packages
      * Source des packages du projet
-     * Contient toute les classe chargee
+     * Contient toute les clees vers les classes chargee
      * @return copie du package src
      */
-    public Package getSrc() {
-        return new Package(src);
+    public Package getPackages() {
+        return collectionObjectClasse.getPackages();
+    }
+
+    /**
+     * getter des classes chargee
+     * @return collection d'ObjectClasse chargee
+     */
+    public Collection<ObjectClasse> getObjectClasses(){
+        return collectionObjectClasse.getClassesChargees();
+    }
+
+    /**
+     * getter d'un objectClasse a partir de son nom complet
+     * @param cheminComplet nom complet compose de son chemin en package et de son nom separer par un point
+     * @return ObjectClasse correspondant ou null
+     */
+    public ObjectClasse getObjectClasse(String cheminComplet){
+        return collectionObjectClasse.getObjectClasse(cheminComplet);
     }
 
     /**
