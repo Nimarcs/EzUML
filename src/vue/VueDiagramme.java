@@ -1,13 +1,11 @@
 package vue;
 
-import introspection.ChargementClasse;
 import modele.Modele;
 import modele.Sujet;
 import modele.classe.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class VueDiagramme extends JPanel implements Observateur { //extends JPanel temporaire
 
@@ -52,7 +50,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         metrics = g.getFontMetrics();
 
 		// On execute pour tous les objectClasse
-        for (ObjectClasse oc : modele.getSrc().getClassesContenues()) {
+        for (ObjectClasse oc : modele.getObjectClasses()) {
 
             // On définit la hauteur et la largeur de la classe oc
             int hauteur = (oc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /** Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /** L'ecart entre les lignes */
