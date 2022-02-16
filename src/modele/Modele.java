@@ -425,11 +425,22 @@ public class Modele extends Sujet {
 
     /**
      * Methode qui permet de transformer un attribut d'une classe en une flèche d'association
+     * Si la destination de la flèche n'est pas trouvé ou pas affiché, on ne fait rien
      * @param objectClasse objectClasse d'où viens l'attribut
      * @param attribut attribut a transformer en flèche d'association
      */
     public void transformerEnFleche(ObjectClasse objectClasse, Attribut attribut){
-        throw new IllegalStateException("PAS FAIT");
+
+        //on vérifie que tout est correct
+        assert objectClasse.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de l'object classe";
+        assert objectClasse.isVisible() : "L'object classe doit etre affiché dans le diagramme";
+        assert attribut.isVisible() : "l'attribut ne doit pas etre masqué";
+
+        ObjectClasse dest = getObjectClasse(attribut.getTypeAttribut(), src);
+        if (dest != null && dest.isVisible()) {
+            associations.add(new Fleche(objectClasse, dest, attribut));
+            attribut.changerVisibilite(false);
+        }
     }
 
     /**
