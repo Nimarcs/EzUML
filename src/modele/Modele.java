@@ -56,7 +56,7 @@ public class Modele extends Sujet {
     /**
      * Liste des flèches actuellement represente
      */
-    private List<Fleche> associations;
+    private List<FlecheAssociation> associations;
 
 
     //Contructeurs
@@ -381,7 +381,7 @@ public class Modele extends Sujet {
                 //on retire les flèches liées
 
                 //on parcourt toutes les flèches
-                for (Fleche f: associations) {
+                for (FlecheAssociation f: associations) {
                     //si la flèche est liée
                     if (f.getDest().equals(objectClasse) || f.getSrc().equals(objectClasse)){
                         //on la transforme en attribut (on "supprime" la flèche)
@@ -437,7 +437,7 @@ public class Modele extends Sujet {
 
         ObjectClasse dest = getObjectClasse(attribut.getTypeAttribut(), src);
         if (dest != null && dest.isVisible()) {
-            associations.add(new Fleche(objectClasse, dest, attribut));
+            associations.add(new FlecheAssociation(objectClasse, dest, attribut));
             attribut.changerVisibilite(false);
         }
     }
@@ -447,7 +447,7 @@ public class Modele extends Sujet {
      * Si l'attribut n'est pas trouve on ne fait rien
      * @param association flèche d'association a transformer
      */
-    public void transformerEnAttribut(Fleche association){
+    public void transformerEnAttribut(FlecheAssociation association){
         ObjectClasse source = association.getSrc();
         ObjectClasse dest = association.getDest();
 

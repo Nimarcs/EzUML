@@ -4,9 +4,9 @@ import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 
 /**
- * Fleche qui permet de representer une association
+ * FlecheAssociation qui permet de representer une association
  */
-public class Fleche {
+public class FlecheAssociation {
 
     /**
      * Source de la flèche
@@ -32,8 +32,8 @@ public class Fleche {
      * @param attribut attribut que represente la flèche
      * @throws NullPointerException renvoye si src ou dest est null
      */
-    public Fleche(ObjectClasse src, ObjectClasse dest, Attribut attribut){
-        assert src != null && dest != null && attribut != null:"Fleche doit avoir une source et une destination";
+    public FlecheAssociation(ObjectClasse src, ObjectClasse dest, Attribut attribut){
+        assert src != null && dest != null && attribut != null:"FlecheAssociation doit avoir une source et une destination";
         assert src.getAttributs().contains(attribut): "L'attribut doit être un attribut de la source";
         this.src = src;
         this.dest = dest;
@@ -47,7 +47,7 @@ public class Fleche {
      * @param dest objectClasse associé, ne peut pas être null
      */
     public void setDest(ObjectClasse dest) {
-        assert  (dest != null):"Fleche doit avoir une source et une destination";
+        assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
         this.dest = dest;
     }
 
@@ -56,7 +56,7 @@ public class Fleche {
      * @param src objectClasse qui associe, ne peut pas être null
      */
     public void setSrc(ObjectClasse src) {
-        assert  (dest != null):"Fleche doit avoir une source et une destination";
+        assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
         this.src = src;
     }
 
