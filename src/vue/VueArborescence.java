@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.Component;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -68,7 +69,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
     		 
     	/**
     	 * le custom render va regarder si l'objet est un package ou pas
-    	 * puis si l'objet est visible ou pas et afficher chaque élément de manière correcte
+    	 * puis si l'objet est visible ou pas et afficher chaque ï¿½lï¿½ment de maniï¿½re correcte
     	 * 
     	 */
     	
@@ -105,11 +106,17 @@ public class VueArborescence extends JScrollPane implements Observateur{
 		remove(0);
 		Modele m=(Modele)s;
 		
-		Package p = m.getSrc();
+		Package p = m.getPackages();
 		
 	    DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
-	    
-	    root = creerBranche(root, p.getSousPackages(),p.getClassesContenues());	    
+
+		Set<ObjectClasse> classes = new HashSet<>();
+		for (String nomComplet: p.getClassesContenues()) {
+			ObjectClasse o = m.getObjectClasse(nomComplet);
+			if (o != null) classes.add(o);
+		}
+
+	    root = creerBranche(root, p.getSousPackages(), classes, m);
 	    
 
 		JTree base = new JTree(root);
@@ -129,7 +136,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	 * @param classes tout les objets class de la racine
 	 * @return
 	 */
-	public DefaultMutableTreeNode creerBranche(DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<ObjectClasse> classes) {
+	public DefaultMutableTreeNode creerBranche(DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<ObjectClasse> classes, Modele m) {
 		
 		Iterator<ObjectClasse> iteC = classes.iterator();
 		
@@ -142,8 +149,17 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	    Iterator<Package> iteP = souspackages.iterator();
 
 	    while(iteP.hasNext()){
-	    	DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(iteP.next());
-	    	DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, iteP.next().getSousPackages(), iteP.next().getClassesContenues());
+			Package p =  iteP.next();
+	    	DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(p);
+
+
+			Set<ObjectClasse> classesContenue = new HashSet<>();
+			for (String nomComplet:  p.getClassesContenues()) {
+				ObjectClasse o = m.getObjectClasse(nomComplet);
+				if (o != null) classes.add(o);
+			}
+
+	    	DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, iteP.next().getSousPackages(), classesContenue, m);
 	    	noeud.add(souspackagerempli);
 	    	
 	    }		
