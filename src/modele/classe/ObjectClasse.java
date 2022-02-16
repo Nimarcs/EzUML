@@ -239,4 +239,13 @@ public abstract class ObjectClasse {
         this.x = x;
         this.y = y;
     }
+
+    /**
+     * Getter qui renvoie le nom unique de l'objectClasse
+     * @return nom avec les packages de l'objectClasse
+     */
+    public String getNomComplet(){
+        return packageObjectClasse +"."+ nomObjectClasse;
+    }
+
 }
