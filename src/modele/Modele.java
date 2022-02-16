@@ -445,10 +445,21 @@ public class Modele extends Sujet {
 
     /**
      * Methode qui permet de transformer une flèche d'association en attribut
+     * Si l'attribut n'est pas trouve on ne fait rien
      * @param association flèche d'association a transformer
      */
     public void transformerEnAttribut(Fleche association){
-        throw new IllegalStateException("PAS FAIT");
+        ObjectClasse source = association.getSrc();
+        ObjectClasse dest = association.getDest();
+
+        boolean trouve  =false;
+        for (Attribut a: source.getAttributs()) {
+            if (a.getTypeAttribut().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom())){
+                a.changerVisibilite(true);
+                trouve = true;
+            }
+        }
+        if (trouve) associations.remove(association);
     }
 
 
