@@ -289,35 +289,34 @@ public class Modele extends Sujet {
      */
     public void ajouterClasse(ObjectClasse objectClasse, int x, int y ){
 
-        if(verifierClasseCharge(objectClasse)){ //on verifie que la classe est chargee
+        assert verifierClasseCharge(objectClasse) : "La classe doit etre chargée";
+        //on verifie que la classe est chargee
 
-            //on change les options de la classe en elle meme
-            objectClasse.changerVisibilite(true);
-            objectClasse.setPosition(x,y);
+        //on change les options de la classe en elle meme
+        objectClasse.changerVisibilite(true);
+        objectClasse.setPosition(x,y);
 
-            //on change les options liées aux associations
+        //on change les options liées aux associations
 
-            //on parcours les types des attributs
-            for (Attribut a:objectClasse.getAttributs()) {
+        //flèches dont on est la source
+        //on parcours les types des attributs
+        for (Attribut a:objectClasse.getAttributs()) {
 
-                //on vérifie si le type correspond à une classe chargée
-                ObjectClasse o = getObjectClasse( a.getTypeAttribut(), src);
-                if (o != null){
-                    //la classe est chargée
+            //on vérifie si le type correspond à une classe chargée
+            ObjectClasse o = getObjectClasse( a.getTypeAttribut(), src);
+            if (o != null){
+                //la classe est chargée
 
-                    if (o.isVisible()){
-                        //elle est dans le diagramme
-                        transformerEnFleche(objectClasse, a);
-                    }
+                if (o.isVisible()){
+                    //elle est dans le diagramme
+                    transformerEnFleche(objectClasse, a);
                 }
             }
-
-            //faire les flèches dont il est la destination
-            //pas encore fait
-
-            notifierObservateurs();
         }
 
+        //a faire flèches dont on est la destination
+
+        notifierObservateurs();
     }
 
     /**
