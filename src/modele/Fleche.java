@@ -1,5 +1,6 @@
 package modele;
 
+import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 
 /**
@@ -20,15 +21,23 @@ public class Fleche {
     private ObjectClasse dest;
 
     /**
+     * Nom de l'attribut
+     */
+    private String nom;
+
+    /**
      * Constructeur de flèche
      * @param src object source de la flèche
      * @param dest object avec lequel la flèche associe la source
+     * @param attribut attribut que represente la flèche
      * @throws NullPointerException renvoye si src ou dest est null
      */
-    public Fleche(ObjectClasse src, ObjectClasse dest){
-        if (src == null || dest == null) throw new NullPointerException("Fleche doit avoir une source et une destination");
+    public Fleche(ObjectClasse src, ObjectClasse dest, Attribut attribut){
+        assert src != null && dest != null && attribut != null:"Fleche doit avoir une source et une destination";
+        assert src.getAttributs().contains(attribut): "L'attribut doit être un attribut de la source";
         this.src = src;
         this.dest = dest;
+        this.nom = attribut.getNomAttribut();
     }
 
     //getter setter
@@ -38,7 +47,7 @@ public class Fleche {
      * @param dest objectClasse associé, ne peut pas être null
      */
     public void setDest(ObjectClasse dest) {
-        if (dest == null) throw new NullPointerException("Fleche doit avoir une source et une destination");
+        assert  (dest != null):"Fleche doit avoir une source et une destination";
         this.dest = dest;
     }
 
@@ -47,7 +56,7 @@ public class Fleche {
      * @param src objectClasse qui associe, ne peut pas être null
      */
     public void setSrc(ObjectClasse src) {
-        if (src == null) throw new NullPointerException("Fleche doit avoir une source et une destination");
+        assert  (dest != null):"Fleche doit avoir une source et une destination";
         this.src = src;
     }
 
@@ -65,5 +74,13 @@ public class Fleche {
      */
     public ObjectClasse getSrc() {
         return src;
+    }
+
+    /**
+     * getter du nom
+     * @return nom de l'association
+     */
+    public String getNom() {
+        return nom;
     }
 }
