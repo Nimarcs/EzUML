@@ -220,7 +220,7 @@ public class Modele extends Sujet {
 
                 if (o.isVisible()){
                     //elle est dans le diagramme
-                    transformerEnFleche(objectClasse, a);
+                    transformerEnFleche(objectClasse, a, o);
                 }
             }
         }
@@ -294,21 +294,20 @@ public class Modele extends Sujet {
     /**
      * Methode qui permet de transformer un attribut d'une classe en une fleche d'association
      * Si la destination de la fleche n'est pas trouve ou pas affiche, on ne fait rien
-     * @param objectClasse objectClasse d'ou viens l'attribut
+     * @param objectClasseSrc objectClasse d'ou viens l'attribut
+     * @param objectClasseDest objectClasse ou qui est le type de l'attribut
      * @param attribut attribut a transformer en fleche d'association
      */
-    public void transformerEnFleche(ObjectClasse objectClasse, Attribut attribut){
+    public void transformerEnFleche(ObjectClasse objectClasseSrc, Attribut attribut, ObjectClasse objectClasseDest){
 
         //on verifie que tout est correct
-        assert objectClasse.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de l'object classe";
-        assert objectClasse.isVisible() : "L'object classe doit etre affiche dans le diagramme";
+        assert objectClasseSrc.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de l'object classe";
+        assert objectClasseSrc.isVisible() : "L'object classe doit etre affiche dans le diagramme";
+        assert objectClasseDest.isVisible() : "L'object classe doit etre affiche dans le diagramme";
         assert attribut.isVisible() : "l'attribut ne doit pas etre masque";
 
-        ObjectClasse dest = collectionObjectClasse.getObjectClasse(attribut.getTypeAttribut());
-        if (dest != null && dest.isVisible()) {
-            associations.add(new FlecheAssociation(objectClasse, dest, attribut));
-            attribut.changerVisibilite(false);
-        }
+        associations.add(new FlecheAssociation(objectClasseSrc, objectClasseDest, attribut));
+        attribut.changerVisibilite(false);
     }
 
     /**
