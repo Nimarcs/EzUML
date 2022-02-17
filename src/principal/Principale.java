@@ -39,6 +39,8 @@ public class Principale {
         //Menu
         JPanel menu = new JPanel();
         menu.setPreferredSize(new Dimension(LARGEUR_FEN,TAILLE_MENU));
+
+        //ajout d'un bouton ouvrir
         JButton boutonOuvrir = new JButton ("Ouvrir");
         menu.add(boutonOuvrir);
         boutonOuvrir.addActionListener(controleurMenu);

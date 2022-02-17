@@ -13,6 +13,7 @@ public class ControleurMenu implements ActionListener {
 
     private Modele modele;
 
+
     public ControleurMenu(Modele m){
         modele=m;
     }
@@ -22,7 +23,11 @@ public class ControleurMenu implements ActionListener {
         String bAppuyer = e.getActionCommand();
 
 
-
+        /*
+        * On rentre dans la condition lorsque l'utilisateur appuie sur le bouton ouvrir
+        * Cela a pour effet d'ouvrir une fenetre d'exploration window
+        * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
+         */
         if(bAppuyer.equals("Ouvrir")){
 
             JFrame frame = new JFrame();
@@ -33,7 +38,7 @@ public class ControleurMenu implements ActionListener {
             fd.setVisible(true);
 
             if( fd.getDirectory()==null) {
-                System.out.println("aucun séléctionner");
+                System.out.println("aucun fichier séléctionner");
             } else {
                 File f = new File(fd.getDirectory()+fd.getFile());
                modele.chargerArborescenceProjet(f);
