@@ -210,7 +210,7 @@ public class Modele extends Sujet {
         //on change les options liees aux associations
 
         //fleches dont on est la source
-        //on parcours les types des attributs
+        //on parcourt les types des attributs
         for (Attribut a:objectClasse.getAttributs()) {
 
             //on verifie si le type correspond a une classe chargee
