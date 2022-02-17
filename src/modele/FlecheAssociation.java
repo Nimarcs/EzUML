@@ -9,14 +9,14 @@ import modele.classe.ObjectClasse;
 public class FlecheAssociation {
 
     /**
-     * Source de la flèche
-     * ne peut pas être null
+     * Source de la fleche
+     * ne peut pas etre null
      */
     private ObjectClasse src;
 
     /**
-     * Ce qui est associé à la source de la flèche
-     * ne peut pas être null
+     * Ce qui est associe a la source de la fleche
+     * ne peut pas etre null
      */
     private ObjectClasse dest;
 
@@ -26,15 +26,15 @@ public class FlecheAssociation {
     private String nom;
 
     /**
-     * Constructeur de flèche
-     * @param src object source de la flèche
-     * @param dest object avec lequel la flèche associe la source
-     * @param attribut attribut que represente la flèche
+     * Constructeur de fleche
+     * @param src object source de la fleche
+     * @param dest object avec lequel la fleche associe la source
+     * @param attribut attribut que represente la fleche
      * @throws NullPointerException renvoye si src ou dest est null
      */
     public FlecheAssociation(ObjectClasse src, ObjectClasse dest, Attribut attribut){
         assert src != null && dest != null && attribut != null:"FlecheAssociation doit avoir une source et une destination";
-        assert src.getAttributs().contains(attribut): "L'attribut doit être un attribut de la source";
+        assert src.getAttributs().contains(attribut): "L'attribut doit etre un attribut de la source";
         this.src = src;
         this.dest = dest;
         this.nom = attribut.getNomAttribut();
@@ -44,7 +44,7 @@ public class FlecheAssociation {
 
     /**
      * setter de la destination
-     * @param dest objectClasse associé, ne peut pas être null
+     * @param dest objectClasse associe, ne peut pas etre null
      */
     public void setDest(ObjectClasse dest) {
         assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
@@ -53,7 +53,7 @@ public class FlecheAssociation {
 
     /**
      * setter de la source
-     * @param src objectClasse qui associe, ne peut pas être null
+     * @param src objectClasse qui associe, ne peut pas etre null
      */
     public void setSrc(ObjectClasse src) {
         assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
@@ -62,7 +62,7 @@ public class FlecheAssociation {
 
     /**
      * getter de la destination
-     * @return objectClasse associé
+     * @return objectClasse associe
      */
     public ObjectClasse getDest() {
         return dest;

@@ -26,7 +26,7 @@ public class Modele extends Sujet {
     private boolean ctrlActive;
 
     /**
-     * Object qui contient les différents ObjectClasse chargee
+     * Object qui contient les differents ObjectClasse chargee
      * Contient egalement l'arborescence
      */
     private CollectionObjectClasse collectionObjectClasse;
@@ -53,7 +53,7 @@ public class Modele extends Sujet {
     private FacadeIntrospection facade;
 
     /**
-     * Liste des flèches actuellement represente
+     * Liste des fleches actuellement represente
      */
     private List<FlecheAssociation> associations;
 
@@ -136,7 +136,7 @@ public class Modele extends Sujet {
                 try {
                     o = facade.introspectionClasse(f);
                 } catch (MalformedURLException e) {
-                    throw new IllegalStateException("Erreur pas encore traitée");
+                    throw new IllegalStateException("Erreur pas encore traitee");
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
@@ -160,7 +160,7 @@ public class Modele extends Sujet {
     }
 
     /**
-     * Methode qui va charger de manière recursive tous les fichiers .class qui sont accessible depuis le fichier fournit
+     * Methode qui va charger de maniere recursive tous les fichiers .class qui sont accessible depuis le fichier fournit
      *
      * Si le fichier est un repertoire, on appele recursivement tous les fichiers fils qu'il contient
      * Sinon on essaie de le charger en tant que classe
@@ -179,7 +179,7 @@ public class Modele extends Sujet {
                 //on recupere les fils
                 File[] fils = f.listFiles();
 
-                if (fils == null) throw new IllegalStateException("f est censé etre un repertoire"); //Erreur suppose impossible
+                if (fils == null) throw new IllegalStateException("f est cense etre un repertoire"); //Erreur suppose impossible
 
                 //on parcours les fils
                 for (File enfant:fils) {
@@ -200,23 +200,23 @@ public class Modele extends Sujet {
      */
     public void ajouterClasse(ObjectClasse objectClasse, int x, int y ){
 
-        assert collectionObjectClasse.verifierClasseCharge(objectClasse) : "La classe doit etre chargée";
+        assert collectionObjectClasse.verifierClasseCharge(objectClasse) : "La classe doit etre chargee";
         //on verifie que la classe est chargee
 
         //on change les options de la classe en elle meme
         objectClasse.changerVisibilite(true);
         objectClasse.setPosition(x,y);
 
-        //on change les options liées aux associations
+        //on change les options liees aux associations
 
-        //flèches dont on est la source
+        //fleches dont on est la source
         //on parcours les types des attributs
         for (Attribut a:objectClasse.getAttributs()) {
 
-            //on vérifie si le type correspond à une classe chargée
+            //on verifie si le type correspond a une classe chargee
             ObjectClasse o = collectionObjectClasse.getObjectClasse( a.getTypeAttribut());
             if (o != null){
-                //la classe est chargée
+                //la classe est chargee
 
                 if (o.isVisible()){
                     //elle est dans le diagramme
@@ -225,7 +225,7 @@ public class Modele extends Sujet {
             }
         }
 
-        //a faire flèches dont on est la destination
+        //a faire fleches dont on est la destination
 
         notifierObservateurs();
     }
@@ -256,13 +256,13 @@ public class Modele extends Sujet {
 
             if (collectionObjectClasse.verifierClasseCharge(objectClasse)) {//on verifie que la classe est chargee
 
-                //on retire les flèches liées
+                //on retire les fleches liees
 
-                //on parcourt toutes les flèches
+                //on parcourt toutes les fleches
                 for (FlecheAssociation f: associations) {
-                    //si la flèche est liée
+                    //si la fleche est liee
                     if (f.getDest().equals(objectClasse) || f.getSrc().equals(objectClasse)){
-                        //on la transforme en attribut (on "supprime" la flèche)
+                        //on la transforme en attribut (on "supprime" la fleche)
                         transformerEnAttribut(f);
                     }
                 }
@@ -276,7 +276,7 @@ public class Modele extends Sujet {
 
 
     /**
-     * Methode qui permet de décharger les classes sélectionnées
+     * Methode qui permet de decharger les classes selectionnees
      */
     public void dechargerClasseSelectionne(){
 
@@ -285,24 +285,24 @@ public class Modele extends Sujet {
 
         collectionObjectClasse.dechargerListeClasse(selection);
 
-        //on vide la selection puisqu'on a déchargé tout ce qui étais sélectionné
+        //on vide la selection puisqu'on a decharge tout ce qui etais selectionne
         deselectionner();
 
         notifierObservateurs();
     }
 
     /**
-     * Methode qui permet de transformer un attribut d'une classe en une flèche d'association
-     * Si la destination de la flèche n'est pas trouvé ou pas affiché, on ne fait rien
-     * @param objectClasse objectClasse d'où viens l'attribut
-     * @param attribut attribut a transformer en flèche d'association
+     * Methode qui permet de transformer un attribut d'une classe en une fleche d'association
+     * Si la destination de la fleche n'est pas trouve ou pas affiche, on ne fait rien
+     * @param objectClasse objectClasse d'ou viens l'attribut
+     * @param attribut attribut a transformer en fleche d'association
      */
     public void transformerEnFleche(ObjectClasse objectClasse, Attribut attribut){
 
-        //on vérifie que tout est correct
+        //on verifie que tout est correct
         assert objectClasse.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de l'object classe";
-        assert objectClasse.isVisible() : "L'object classe doit etre affiché dans le diagramme";
-        assert attribut.isVisible() : "l'attribut ne doit pas etre masqué";
+        assert objectClasse.isVisible() : "L'object classe doit etre affiche dans le diagramme";
+        assert attribut.isVisible() : "l'attribut ne doit pas etre masque";
 
         ObjectClasse dest = collectionObjectClasse.getObjectClasse(attribut.getTypeAttribut());
         if (dest != null && dest.isVisible()) {
@@ -312,9 +312,9 @@ public class Modele extends Sujet {
     }
 
     /**
-     * Methode qui permet de transformer une flèche d'association en attribut
+     * Methode qui permet de transformer une fleche d'association en attribut
      * Si l'attribut n'est pas trouve on ne fait rien
-     * @param association flèche d'association a transformer
+     * @param association fleche d'association a transformer
      */
     public void transformerEnAttribut(FlecheAssociation association){
         ObjectClasse source = association.getSrc();

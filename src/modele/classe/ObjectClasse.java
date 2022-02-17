@@ -37,7 +37,7 @@ public abstract class ObjectClasse {
     protected List<Attribut> attributs;
 
     /**
-     * Attribut prive liste de méthodes contenant toutes les methodes et constructeurs de la classe
+     * Attribut prive liste de methodes contenant toutes les methodes et constructeurs de la classe
      */
     protected List<Methode> methodes;
 

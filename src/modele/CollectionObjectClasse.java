@@ -143,7 +143,7 @@ public class CollectionObjectClasse {
     }
 
     /**
-     * Methode qui permet de décharger les classes fournies
+     * Methode qui permet de decharger les classes fournies
      */
     public void dechargerListeClasse(List<ObjectClasse> lo){
 
