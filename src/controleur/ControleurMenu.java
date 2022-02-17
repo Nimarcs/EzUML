@@ -18,12 +18,18 @@ public class ControleurMenu implements ActionListener {
         modele=m;
     }
 
+
+    /**
+     * methode qui est appelé à chaque fois que l'utilisateur appuie sur un bouton de la barre de menu
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String bAppuyer = e.getActionCommand();
 
 
-        /*
+        /**
         * On rentre dans la condition lorsque l'utilisateur appuie sur le bouton ouvrir
         * Cela a pour effet d'ouvrir une fenetre d'exploration window
         * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection

@@ -40,7 +40,13 @@ public class FacadeIntrospection {
 	}
 
 
-
+	/**
+	 * methode qui permet de construire l'ObjetClasse a partir d'un objet classe
+	 * de lui
+	 *
+	 * @param cls
+	 * @return
+	 */
 	private ObjectClasse faireIntrospection(Class cls){
 		ObjectClasse obc=null;
 		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
@@ -187,7 +193,6 @@ public class FacadeIntrospection {
 
 	/**
 	 * methode privée qui en fonction du int quel recoit retourne un statut
-	 *
 	 * @param mod
 	 * @return
 	 */
