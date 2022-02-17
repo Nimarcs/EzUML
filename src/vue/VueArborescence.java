@@ -79,7 +79,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
 
     	}
     	
-    	if(objet instanceof ObjectClasse) {
+    	if(objet instanceof String) {
     		label.setText(((ObjectClasse) objet).getNomObjectClasse());
     		
     		if(((ObjectClasse) objet).isVisible()) {
@@ -106,17 +106,43 @@ public class VueArborescence extends JScrollPane implements Observateur{
 		remove(0);
 		Modele m=(Modele)s;
 		
+		
 		Package p = m.getPackages();
 		
 	    DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
 
-		Set<ObjectClasse> classes = new HashSet<>();
-		for (String nomComplet: p.getClassesContenues()) {
-			ObjectClasse o = m.getObjectClasse(nomComplet);
-			if (o != null) classes.add(o);
-		}
+//	     System.out.println("ok");
 
-	    root = creerBranche(root, p.getSousPackages(), classes, m);
+		Set<ObjectClasse> classes = new HashSet<>();
+//	    System.out.println("ok1");
+//	    
+//	    
+//	    
+//	    
+//	    System.out.println(p.getSousPackages()); 
+	    
+	    for(Package pack : p.getSousPackages()) {
+	        for (String nomComplet: pack.getClassesContenues()) {
+
+	            System.out.println(nomComplet.substring(1));
+	        }
+	    }
+	    
+	    
+	    
+//	    System.out.println(p.getClassesContenues()); 
+//	    
+//		for (String nomComplet: p.getClassesContenues()) {
+//
+//			ObjectClasse o = m.getObjectClasse(nomComplet);
+//
+//
+//			if (o != null) classes.add(o);
+//		}
+
+		
+		root = creerBranche(root, p.getSousPackages(), classes, m);
+		
 	    
 
 		JTree base = new JTree(root);
@@ -149,8 +175,10 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	    Iterator<Package> iteP = souspackages.iterator();
 
 	    while(iteP.hasNext()){
-			Package p =  iteP.next();
-	    	DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(p);
+	        
+	        Package p =  iteP.next();
+	    	System.out.println(p);
+	        DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(p);
 
 
 			Set<ObjectClasse> classesContenue = new HashSet<>();
@@ -158,9 +186,19 @@ public class VueArborescence extends JScrollPane implements Observateur{
 				ObjectClasse o = m.getObjectClasse(nomComplet);
 				if (o != null) classes.add(o);
 			}
-
-	    	DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, iteP.next().getSousPackages(), classesContenue, m);
-	    	noeud.add(souspackagerempli);
+			
+//			System.out.println(classesContenue);
+//			
+//	        System.out.println("okdsds312-3");
+//
+//			
+//			System.out.println(p.getSousPackages());
+//			
+//			System.out.println("ok312-3");
+			
+			DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, p.getSousPackages(), classesContenue, m);
+			noeud.add(souspackagerempli);
+			
 	    	
 	    }		
 		
