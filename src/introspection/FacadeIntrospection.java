@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class FacadeIntrospection {
 		Class cls = new ChargementClasse().chargerClass(f, 1);
 
 		ObjectClasse obc= this.faireIntrospection(cls);
-
+		System.out.println("introspection effectué");
 		return obc;
 	}
 
@@ -130,7 +131,7 @@ public class FacadeIntrospection {
 
 			//tableau qui contient le nom des classes en parametres
 			Class[] c = methode.getParameterTypes();
-			List<String> tabList = null;
+			List<String> tabList = new ArrayList<String>();
 			for (Class cla : c) {
 				tabList.add(cla.getName());
 			}
@@ -172,7 +173,7 @@ public class FacadeIntrospection {
 
 			//tableau qui contient le nom des classes en parametres
 			Class[] c = co.getParameterTypes();
-			List<String> tabList = null;
+			List<String> tabList =  new ArrayList<String>();
 			for (Class cla : c) {
 				tabList.add(cla.getName());
 			}

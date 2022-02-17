@@ -1,5 +1,6 @@
 package principal;
 
+import controleur.ControleurMenu;
 import modele.Modele;
 import vue.VueArborescence;
 import vue.VueDiagramme;
@@ -21,6 +22,10 @@ public class Principale {
         //Modele
         Modele modele = new Modele();
 
+
+        //Controleur
+        ControleurMenu controleurMenu= new ControleurMenu(modele);
+
         //JFrame
         JFrame frame = new JFrame("EzUML");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,6 +39,9 @@ public class Principale {
         //Menu
         JPanel menu = new JPanel();
         menu.setPreferredSize(new Dimension(LARGEUR_FEN,TAILLE_MENU));
+        JButton boutonOuvrir = new JButton ("Ouvrir");
+        menu.add(boutonOuvrir);
+        boutonOuvrir.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 
