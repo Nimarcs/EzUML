@@ -132,7 +132,7 @@ public class Modele extends Sujet {
             if(f.isFile() && f.getName().contains(".class")) {
 
                 //on recupere l'objectClasse
-                ObjectClasse o = null;
+                ObjectClasse o;
                 try {
                     o = facade.introspectionClasse(f);
                 } catch (MalformedURLException e) {
