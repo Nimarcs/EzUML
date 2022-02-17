@@ -7,6 +7,7 @@ import modele.classe.ObjectClasse;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Modele permet de mettre en commun les differents elements du logiciel
@@ -225,7 +226,22 @@ public class Modele extends Sujet {
             }
         }
 
-        //a faire fleches dont on est la destination
+        //fleches dont on est la destination
+        //on parcourt les objectClasse charge qui sont visible
+        for (ObjectClasse o: collectionObjectClasse.getClassesChargees().stream().filter(ObjectClasse::isVisible).collect(Collectors.toList())) {
+
+            //on parcourt les attributs qui sont visible
+            for (Attribut a: o.getAttributs().stream().filter(Attribut::isVisible).collect(Collectors.toList())) {
+                
+                //si l'attribut corresponds a l'object classe
+                if (a.getTypeAttribut().equals(objectClasse.getNomComplet())){
+                    //on transforme en fleche
+                    transformerEnFleche(o, a, objectClasse);
+                }
+                
+            }
+            
+        }
 
         notifierObservateurs();
     }
