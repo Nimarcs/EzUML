@@ -3,6 +3,7 @@ package modele.classe;
 
 // IMPORTS
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Classe Methode
@@ -92,12 +93,16 @@ public class Methode {
         res += this.nomMethode + " (";
         if (this.listeParametres!=null) {
             for (int i = 0; i < this.listeParametres.size(); i++) {
-                res += this.listeParametres.get(i);
+                String[] tab = this.listeParametres.get(i).split(Pattern.quote("."));
+                res += tab[tab.length-1];
                 if (i != this.listeParametres.size() - 1) res += ", ";
             }
         }
         res += ")";
-        if (this.typeRetour != null && !this.typeRetour.equals("void")) res += " : " + this.typeRetour;
+        if (this.typeRetour != null && !this.typeRetour.equals("void")) {
+            String[] tab = this.typeRetour.split(Pattern.quote("."));
+            res += ": " + tab[tab.length-1];
+        }
         return res;
     }
 

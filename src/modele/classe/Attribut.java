@@ -1,6 +1,8 @@
 // PACKAGE
 package modele.classe;
 
+import java.util.regex.Pattern;
+
 /**
  * Classe Attribut
  *
@@ -72,7 +74,8 @@ public class Attribut {
         if (this.statutAttribut == Statut.PUBLIC) res += "+ ";
         else if (this.statutAttribut == Statut.PRIVATE) res += "- ";
         else res += "# ";
-        res += this.nomAttribut + " : " + this.typeAttribut;
+        String[] tab = this.typeAttribut.split(Pattern.quote("."));
+        res += this.nomAttribut + ": " + tab[tab.length-1];
         return res;
     }
 

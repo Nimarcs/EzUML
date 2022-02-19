@@ -60,7 +60,11 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
             int largeur = this.largeurRectangleClasse(oc) + ECART * 2;
 
             // On dessine le rectangle de la classe avec la couleur de fond
-            g.setColor(new Color(0xFFDB7A));
+            if (modele.getSelection().contains(oc)) {
+                g.setColor(new Color(0x7AD0FF));
+            } else {
+                g.setColor(new Color(0xFFDB7A));
+            }
             g.fillRect(oc.getX(), oc.getY(), largeur, hauteur);
 
             // On dessine la bordure du rectangle avec une couleur noire
@@ -69,7 +73,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
             // On dessine les bordures interne du rectangle pour definir le titre, les attributs et les constructeurs/methodes
             g.drawRect(oc.getX(), oc.getY(), largeur, 2 * SIZE + 3 * ECART);
-            g.drawRect(oc.getX(), oc.getY(), largeur, 2 * SIZE + 3 * ECART + oc.getMethodes().size() * (SIZE + ECART));
+            g.drawRect(oc.getX(), oc.getY(), largeur, 2 * SIZE + 3 * ECART + oc.getAttributs().size() * (SIZE + ECART));
 
             // On définit la hauteur courante (faut prevoir que pour ecrire, il faut prendre le point en bas a gauche et non en haut)
             int hauteurCourante = oc.getY() + SIZE + ECART;
