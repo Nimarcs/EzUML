@@ -39,6 +39,9 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 	 */
     public void paintComponent(Graphics g) {
 
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
         // On définit les font définies
         Font normal = new Font(Font.MONOSPACED, Font.PLAIN, SIZE);
         Font abstrait = new Font(Font.MONOSPACED, Font.ITALIC, SIZE);
@@ -118,8 +121,8 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
     @Override
     public void actualiser(Sujet sujet) {
-        // TODO Auto-generated method stub
-
+        this.modele = (Modele)sujet;
+        this.repaint();
     }
 
 }
