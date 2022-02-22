@@ -3,10 +3,7 @@ package introspection;
 import modele.classe.*;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +97,7 @@ public class FacadeIntrospection {
 
 		for (Field attri : fdd) {
 			String nom= attri.getName();
-			String typeAttribut = attri.getType().getName();
+			String typeAttribut = attri.getAnnotatedType().toString();
 
 			// la fonction getmodifiers est un int qui change en fonction des particularites du Field
 			int mAtt = attri.getModifiers();
@@ -133,13 +130,13 @@ public class FacadeIntrospection {
 		Method[] meth = cls.getDeclaredMethods();
 		for (Method methode : meth) {
 			String nom= methode.getName();
-			String typeRetour= methode.getReturnType().getName();
+			String typeRetour= methode.getAnnotatedReturnType().toString();
 
 			//tableau qui contient le nom des classes en parametres
-			Class[] c = methode.getParameterTypes();
+			AnnotatedType[] c = methode.getAnnotatedParameterTypes();
 			List<String> tabList = new ArrayList<String>();
-			for (Class cla : c) {
-				tabList.add(cla.getName());
+			for (AnnotatedType cla : c) {
+				tabList.add(cla.toString());
 			}
 			//modifier qui change en fonction de ce que contient la methode, public/privée/abstraite/finale/...
 			int mMet = methode.getModifiers();
@@ -178,10 +175,10 @@ public class FacadeIntrospection {
 			Statut s =avoirStatut(mCon);
 
 			//tableau qui contient le nom des classes en parametres
-			Class[] c = co.getParameterTypes();
-			List<String> tabList =  new ArrayList<String>();
-			for (Class cla : c) {
-				tabList.add(cla.getName());
+			AnnotatedType[] c = co.getAnnotatedParameterTypes();
+			List<String> tabList = new ArrayList<String>();
+			for (AnnotatedType cla : c) {
+				tabList.add(cla.toString());
 			}
 
 			Methode m= new Methode(nom, s, null, tabList,false, false, false);
