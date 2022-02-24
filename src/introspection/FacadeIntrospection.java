@@ -32,7 +32,6 @@ public class FacadeIntrospection {
 		Class cls = new ChargementClasse().chargerClass(f, 1);
 
 		ObjectClasse obc= this.faireIntrospection(cls);
-		System.out.println("introspection effectué");
 		return obc;
 	}
 

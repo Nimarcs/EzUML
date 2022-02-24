@@ -40,17 +40,25 @@ public class ControleurMenu implements ActionListener {
             FileDialog fd = new FileDialog(frame, "Choix d'un fichier .class", FileDialog.LOAD);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            fd.setDirectory("C:\\");
+            fd.setDirectory("C:");
+            fd.setFile("*.class");
+            fd.setMultipleMode(true);
             fd.setVisible(true);
 
-            if( fd.getDirectory()==null) {
-                System.out.println("aucun fichier séléctionner");
-            } else {
-                File f = new File(fd.getDirectory()+fd.getFile());
-               modele.chargerArborescenceProjet(f);
 
+
+            if( fd.getDirectory()!=null) {
+                File[] f = fd.getFiles();
+                for (File fichier : f) {
+                    System.out.println(fichier.getAbsolutePath());
+                    File fich = new File(fichier.getAbsolutePath());
+                    modele.chargerArborescenceProjet(fich);
+
+                }
             }
         }
-
     }
+
 }
+
+
