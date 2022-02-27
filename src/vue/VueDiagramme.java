@@ -143,7 +143,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
     }
 
     public int calculerHauteur(ObjectClasse oc){
-        returnoc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /** Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /** L'ecart entre les lignes */
+        return (oc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /* Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /* L'ecart entre les lignes */
     }
 
     public int calculerLargeur(ObjectClasse oc){
