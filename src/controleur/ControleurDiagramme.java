@@ -11,12 +11,25 @@ import java.awt.event.MouseListener;
  */
 public class ControleurDiagramme implements MouseListener {
 
-    private Modele modele;
-
-    private int positionDebutMaintientX, positionDebutMaintientY;
-
+    /**
+     * constante qui represante le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
+     */
     private static final int DEPLACEMENT_MIN = 5;
 
+    /**
+     * modele dont on veut controler les valeurs
+     */
+    private Modele modele;
+
+    /**
+     * position a laquelle on a commencer a cliquer gauche, permet d'eviter de selectionner si on ne deplace pas la souris
+     */
+    private int positionDebutMaintientX, positionDebutMaintientY;
+
+    /**
+     * Contructeur de ControleurDiagramme
+     * @param m modele a modifier, ne doit pas etre null
+     */
     public ControleurDiagramme(Modele m){
         assert m != null;
         modele=m;
