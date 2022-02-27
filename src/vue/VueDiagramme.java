@@ -30,6 +30,26 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 	 */
     private final static int ECART = 2;
 
+    /**
+     * Font Normal, police d'ecriture pour le cas normal
+     */
+    Font NORMAL = new Font(Font.MONOSPACED, Font.PLAIN, SIZE);
+
+    /**
+     * Font abstrait, police d'ecriture lorsqu'une methode ou un attribut est abstrait, ecrit en italique
+     */
+    Font ABSTRAIT = new Font(Font.MONOSPACED, Font.ITALIC, SIZE);
+
+    /**
+     * Font statique, police d'ecriture lorsqu'une methode ou un attribut est statique, ecrit en gras
+     */
+    Font STATIQUE = new Font(Font.MONOSPACED, Font.BOLD, SIZE);
+
+    private final static int FLECHE_HERITAGE = 1;
+    private final static int FLECHE_IMPLEMENTS = 2;
+    private final static int FLECHE_ASSOSCIATION = 3;
+
+
     public VueDiagramme(Modele m) {
         this.modele = m;
     }
@@ -43,22 +63,33 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        // On définit les font définies
-        Font NORMAL = new Font(Font.MONOSPACED, Font.PLAIN, SIZE);
-        Font ABSTRAIT = new Font(Font.MONOSPACED, Font.ITALIC, SIZE);
-        Font STATIQUE = new Font(Font.MONOSPACED, Font.BOLD, SIZE);
-
-
         // On définit le font du Graphics
         g.setFont(NORMAL);
 
 		// On définit le metrics qui permet de calculer la taille en pixel
         metrics = g.getFontMetrics();
 
+        // On execute tous les objectClasse pour afficher les fleches d'heritage
+        for (ObjectClasse oc : modele.getObjectClasses()) {
+            if(!oc.isVisible()) {
+                if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
+                    Extendable e = (Extendable) oc;
+                    if (e.getObjectClasseExtends()!=null) {
+                        drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE);
+                    }
+                }
+                if (!oc.getListeObjectClasseImplements().isEmpty()) {
+                    for (Interface i:oc.getListeObjectClasseImplements()) {
+                        drawArrow(g, oc, i, FLECHE_IMPLEMENTS);
+                    }
+                }
+            }
+        }
+
 		// On execute pour tous les objectClasse
         for (ObjectClasse oc : modele.getObjectClasses()) {
 
-            if (oc.isVisible()) { // on verifie si la classe es visible
+            if (!oc.isVisible()) { // on verifie si la classe es visible
 
                 // On définit la hauteur et la largeur de la classe oc
                 int hauteur = calculerHauteur(oc);
@@ -149,10 +180,10 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         ObjectClasse dest = modele.getObjectClasse(destination.getNomComplet());
 
         int srcX, srcY, destX, destY;
-        int milieuDestX = dest.getX() + calculerLargeur(dest)/2;
+        int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
 
-        if (src.getX() <= milieuDestX && milieuDestX >= src.getX() + calculerLargeur(src)) {
-            if (dest.getY() >= src.getY()) {
+        if (src.getX() <= milieuDestX && milieuDestX <= src.getX() + calculerLargeur(src)) {
+            if (dest.getY() <= src.getY()) {
                 srcX = src.getX() + calculerLargeur(src) / 2;
                 srcY = src.getY();
                 destX = dest.getX() + calculerLargeur(dest) / 2;
@@ -164,22 +195,22 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 destY = dest.getY();
             }
         } else {
-            if (dest.getX() >= src.getX()) {
+            if (dest.getX() <= src.getX()) {
                 srcX = src.getX();
-                srcY = src.getY() + calculerHauteur(src)/2;
+                srcY = src.getY() + calculerHauteur(src) / 2;
                 destX = dest.getX() + calculerLargeur(dest);
-                destY = dest.getY() + calculerHauteur(dest)/2;
+                destY = dest.getY() + calculerHauteur(dest) / 2;
             } else {
                 srcX = src.getX() + calculerLargeur(src);
-                srcY = src.getY() + calculerHauteur(src)/2;
+                srcY = src.getY() + calculerHauteur(src) / 2;
                 destX = dest.getX();
-                destY = dest.getY() + calculerHauteur(dest)/2;
+                destY = dest.getY() + calculerHauteur(dest) / 2;
             }
         }
 
         int dx = destX - srcX, dy = destY - srcY;
         double D = Math.sqrt(dx * dx + dy * dy);
-        int d= 20, h=10;
+        int d = 12, h = 6;
         double xm = D - d, xn = xm, ym = h, yn = -h, x;
         double sin = dy / D, cos = dx / D;
         x = xm * cos - ym * sin + srcX;
@@ -188,10 +219,41 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         x = xn * cos - yn * sin + srcX;
         yn = xn * sin + yn * cos + srcY;
         xn = x;
-        int[] xpoints = {destX, (int) xm, (int) xn};
-        int[] ypoints = {destY, (int) ym, (int) yn};
-        g.drawLine(srcX, srcY, destX, destY);
-        g.fillPolygon(xpoints, ypoints, 3);
+
+        int decX = modele.getDecalageX();
+        int decY = modele.getDecalageY();
+        int[] xpoints = {destX + decX, (int) xm + decX, (int) xn + decX};
+        int[] ypoints = {destY + decY, (int) ym + decY, (int) yn + decY};
+
+        switch (choixFleche) {
+            case FLECHE_HERITAGE -> {
+                System.out.println("FLECHE HERITAGE");
+                g.setColor(Color.BLACK);
+                g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                g.setColor(Color.WHITE);
+                g.fillPolygon(xpoints, ypoints, 3);
+                g.setColor(Color.BLACK);
+                g.drawPolygon(xpoints, ypoints, 3);
+                break;
+            }
+            case FLECHE_IMPLEMENTS -> {
+                Graphics2D gg = ((Graphics2D) g);
+                Stroke s = gg.getStroke();
+                gg.setColor(Color.BLACK);
+                gg.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT,
+                        BasicStroke.JOIN_MITER, 1.0f, new float[]{6f, 6f}, 2.0f));
+                gg.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                gg.setStroke(s);
+                g.setColor(Color.WHITE);
+                g.fillPolygon(xpoints, ypoints, 3);
+                g.setColor(Color.BLACK);
+                g.drawPolygon(xpoints, ypoints, 3);
+                break;
+            }
+            case FLECHE_ASSOSCIATION -> {
+
+            }
+        }
 
     }
 
