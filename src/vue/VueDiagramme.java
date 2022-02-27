@@ -61,8 +61,8 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
             if (oc.isVisible()) { // on verifie si la classe es visible
 
                 // On définit la hauteur et la largeur de la classe oc
-                int hauteur = (oc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /** Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /** L'ecart entre les lignes */
-                int largeur = this.largeurRectangleClasse(oc) + ECART * 2;
+                int hauteur = calculerHauteur(oc);
+                int largeur = calculerLargeur(oc);
 
                 // On dessine le rectangle de la classe avec la couleur de fond
                 if (modele.getSelection().contains(oc)) {
