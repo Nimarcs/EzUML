@@ -26,20 +26,26 @@ import modele.classe.ObjectClasse;
 
 public class VueArborescence extends JScrollPane implements Observateur{
 	
-	
+
+    
+    int i = 0;
+
 	
 	/**
 	 * Le constructeur instancie un arbre vide dans le JScrollPane
 	 */
 	public VueArborescence() {
 		
+	    
 	    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Racine");
 
 		JTree base = new JTree(root);
 		
-		base.setRootVisible(false);
-		add(base);		
+		base.setCellRenderer(new CustomRenderArbo());
 		
+		base.setRootVisible(true);
+		
+		this.setViewportView(base);
 		
 	}
 	
@@ -69,24 +75,30 @@ public class VueArborescence extends JScrollPane implements Observateur{
     		 
     	/**
     	 * le custom render va regarder si l'objet est un package ou pas
-    	 * puis si l'objet est visible ou pas et afficher chaque �l�ment de mani�re correcte
+    	 * puis si l'objet est visible ou pas et afficher chaque element de maniere correcte
     	 * 
     	 */
+
     	
     	if(objet instanceof Package) {
     		label.setIcon(null);
-    		label.setText(((Package) objet).getNom());
+    		if(((Package) objet).getNom()=="") {
+    		    label.setText("PackageSansNom");
+    		} else {
+    	          label.setText(((Package) objet).getNom());
+
+    		}
 
     	}
     	
     	if(objet instanceof String) {
-    		label.setText(((ObjectClasse) objet).getNomObjectClasse());
-    		
-    		if(((ObjectClasse) objet).isVisible()) {
-    			label.setIcon(vert);
-    		} else {
-    			label.setIcon(rouge);
-    		}
+     
+            System.out.println((String) objet);
+    		label.setText((String) objet);
+   			label.setIcon(vert);
+
+    
+
     	} 
     	    	
     	return label;    	
@@ -95,99 +107,141 @@ public class VueArborescence extends JScrollPane implements Observateur{
     
     
     }
-	
-	
-	
-	/**
-	 * La methode actualiser regarde les classes dans le modele et les affiches de maniere ordonnee avec le bon code couleur
-	 */
-	@Override
-	public void actualiser(Sujet s) {
-		remove(0);
-		Modele m=(Modele)s;
-		
-		
-		Package p = m.getPackages();
-		
-	    DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
 
-//	     System.out.println("ok");
 
-		Set<ObjectClasse> classes = new HashSet<>();
+    @Override
+    public void actualiser(Sujet s) {
+       
+        Modele m =(Modele)s;
+        
+        Package p = m.getPackages();
+        
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
+        ajouterNoeud(root,p);
+        System.out.println(i);
+
+        
+        JTree base = new JTree(root);
+        
+        base.setCellRenderer(new CustomRenderArbo());
+        
+        base.setRootVisible(true);
+        
+        this.setViewportView(base);        
+    }
+
+    
+    public void ajouterNoeud(DefaultMutableTreeNode racine, Package p) {
+        Iterator<String> iteclasses = p.getClassesContenues().iterator();
+        i++;
+        while(iteclasses.hasNext()) {
+            String classe = iteclasses.next();
+            System.out.println(classe);
+            racine.add(new DefaultMutableTreeNode(classe));
+        }
+        
+        Iterator<Package> itePackages = p.getSousPackages().iterator();
+        
+        while(itePackages.hasNext()) {
+            Package pack = itePackages.next();
+            DefaultMutableTreeNode racinePackage = new DefaultMutableTreeNode(pack);
+            ajouterNoeud(racinePackage,pack);
+            racine.add(racinePackage);           
+        }
+        
+    }
+
+
+
+	
+	
+//	/**
+//	 * La methode actualiser regarde les classes dans le modele et les affiches de maniere ordonnee avec le bon code couleur
+//	 */
+//	@Override
+//	public void actualiser(Sujet s) {
+//		remove(0);
+//		Modele m=(Modele)s;
+//		
+//		
+//		Package p = m.getPackages();
+//		
+//	    DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
+//
+////	     System.out.println("ok");
+//
+//		Set<ObjectClasse> classes = new HashSet<>();
 //	    System.out.println("ok1");
 //	    
 //	    
 //	    
-//	    
+//	    System.out.println(p.getNom()); 
+//
 //	    System.out.println(p.getSousPackages()); 
-	    
-	    for(Package pack : p.getSousPackages()) {
-	        for (String nomComplet: pack.getClassesContenues()) {
-
-	            System.out.println(nomComplet.substring(1));
-	        }
-	    }
-	    
-	    
-	    
+//	    
+//	    for(Package pack : p.getSousPackages()) {
+//	        System.out.println(pack);
+//
+//	        System.out.println(pack.getNom());
+//	        for (String nomComplet: pack.getClassesContenues()) {
+//
+//	            System.out.println(nomComplet.substring(1));
+//	        }
+//	    }
+//	    
+//	    
+//	    
 //	    System.out.println(p.getClassesContenues()); 
 //	    
 //		for (String nomComplet: p.getClassesContenues()) {
 //
 //			ObjectClasse o = m.getObjectClasse(nomComplet);
 //
+//			
 //
 //			if (o != null) classes.add(o);
 //		}
-
-		
-		root = creerBranche(root, p.getSousPackages(), classes, m);
-		
-	    
-
-		JTree base = new JTree(root);
-		
-		base.setCellRenderer(new CustomRenderArbo());
-		
-	
-
-		this.add(new JTree(root));		
-
-	}
-	
-	/**
-	 * Methode recursive, qui permet d'afficher chaque branche de maniere correcte
-	 * @param noeud racine sur laquelle on va greffer les branches
-	 * @param souspackages tout les packages de la racine
-	 * @param classes tout les objets class de la racine
-	 * @return
-	 */
-	public DefaultMutableTreeNode creerBranche(DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<ObjectClasse> classes, Modele m) {
-		
-		Iterator<ObjectClasse> iteC = classes.iterator();
-		
-		while(iteC.hasNext()) {
-	    	DefaultMutableTreeNode sousclasses = new DefaultMutableTreeNode(iteC.next());
-	    	noeud.add(sousclasses);
-		}
-		
-		
-	    Iterator<Package> iteP = souspackages.iterator();
-
-	    while(iteP.hasNext()){
-	        
-	        Package p =  iteP.next();
-	    	System.out.println(p);
-	        DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(p);
-
-
-			Set<ObjectClasse> classesContenue = new HashSet<>();
-			for (String nomComplet:  p.getClassesContenues()) {
-				ObjectClasse o = m.getObjectClasse(nomComplet);
-				if (o != null) classes.add(o);
-			}
-			
-//			System.out.println(classesContenue);
+//
+//		
+//		root = creerBranche(root, p.getSousPackages(), p.getClassesContenues(), m);
+//		
+//	    
+//
+//		JTree base = new JTree(root);
+//		
+//		base.setCellRenderer(new CustomRenderArbo());
+//		
+//	
+//
+//		this.setViewportView(base);
+//
+//	}
+//	
+//	/**
+//	 * Methode recursive, qui permet d'afficher chaque branche de maniere correcte
+//	 * @param noeud racine sur laquelle on va greffer les branches
+//	 * @param souspackages tout les packages de la racine
+//	 * @param classes tout les objets class de la racine
+//	 * @return
+//	 */
+//	public DefaultMutableTreeNode creerBranche(DefaultMutableTreeNode noeud, Set<Package> souspackages, Set<String> classes, Modele m) {
+//		
+//		Iterator<String> iteC = classes.iterator();
+//		
+//
+//		
+//	    Iterator<Package> iteP = souspackages.iterator();
+//
+//	    while(iteP.hasNext()){
+//	        
+//	        Package p =  iteP.next();
+//	    	System.out.println(p);
+//	        DefaultMutableTreeNode souspackage = new DefaultMutableTreeNode(p);
+//
+//
+//
+//			
+//			System.out.println(p.getClassesContenues());
 //			
 //	        System.out.println("okdsds312-3");
 //
@@ -195,15 +249,23 @@ public class VueArborescence extends JScrollPane implements Observateur{
 //			System.out.println(p.getSousPackages());
 //			
 //			System.out.println("ok312-3");
-			
-			DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, p.getSousPackages(), classesContenue, m);
-			noeud.add(souspackagerempli);
-			
-	    	
-	    }		
-		
-		return noeud;
-		
-	}
+//			
+//			DefaultMutableTreeNode souspackagerempli = creerBranche(souspackage, p.getSousPackages(), p.getClassesContenues(), m);
+//			noeud.add(souspackagerempli);
+//			
+//	    	
+//	    }		
+//	       while(iteC.hasNext()) {
+//	            System.out.println("passe classe");
+//	            String classe = iteC.next().substring(1);
+//	            System.out.println(classe);
+//	            DefaultMutableTreeNode sousclasses = new DefaultMutableTreeNode(classe);
+//	            noeud.add(sousclasses);
+//	        }
+//	        
+//		
+//		return noeud;
+//		
+//	}
 
 }
