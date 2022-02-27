@@ -3,6 +3,7 @@ package modele;
 import introspection.FacadeIntrospection;
 import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
+import vue.VueDiagramme;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -18,13 +19,6 @@ public class Modele extends Sujet {
 
 
     //Attributs
-
-
-    /**
-     * Booleen a vrai si et seulement si la touche controle du clavier est en cours d'appui
-     * Permet d'effectuer des combinaisons de touche comme ctrl+clic pour ajouter des elements a la selection
-     */
-    private boolean ctrlActive;
 
     /**
      * Object qui contient les differents ObjectClasse chargee
@@ -58,6 +52,14 @@ public class Modele extends Sujet {
      */
     private List<FlecheAssociation> associations;
 
+    /**
+     * represente le decalage de la vision sur le diagramme par rapport au 0 0
+     */
+    private int decalageX, decalageY;
+
+
+    private VueDiagramme vueDiagramme;
+
 
     //Contructeurs
 
@@ -70,7 +72,7 @@ public class Modele extends Sujet {
         collectionObjectClasse = new CollectionObjectClasse();
         selection = new LinkedList<>();
         afficherPackage = true;
-        ctrlActive = false;
+        vueDiagramme = null;
         dossierCourant = null; // pas de dossier chargee de base
         facade = new FacadeIntrospection();
         associations = new LinkedList<>();
@@ -346,16 +348,36 @@ public class Modele extends Sujet {
         if (trouve) associations.remove(association);
     }
 
+    public ObjectClasse getObjectClasseEnPosition(int x, int y) throws ClassNotFoundException {
+
+        ObjectClasse res = null;
+
+        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        boolean trouve = false;
+
+        //on parcourt les differents objectClasse
+        while (!trouve && ite.hasNext()){
+            ObjectClasse o = ite.next();
+
+            //on calcule la zone dans laquelle est l'objectClasse
+            int minX = o.getX() + decalageX, maxX = minX + vueDiagramme.calculerLargeur(o);
+            int minY = o.getY() + decalageY, maxY = minY + vueDiagramme.calculerHauteur(o);
+
+            //on regarde si l'objectClasse est dans la zone
+            if ( (minX <= x && x <= maxX) && (minY <= y && y <= maxY) ){
+
+                //on a trouve le resultat
+                res = o;
+                trouve = true;
+            }
+        }
+
+        if (!trouve) throw new ClassNotFoundException();
+        return res;
+    }
+
 
     //getters setters
-
-    /**
-     * getter de ctrlActive
-     * @return vrai si ctrl est active, faux sinon
-     */
-    public boolean isCtrlActive() {
-        return ctrlActive;
-    }
 
     /**
      * getter des packages
@@ -401,18 +423,33 @@ public class Modele extends Sujet {
     }
 
     /**
-     * setter de ctrlActive
-     * @param ctrlActive nouvelle valeur de ctrlActive
-     */
-    public void setCtrlActive(boolean ctrlActive) {
-        this.ctrlActive = ctrlActive;
-    }
-
-    /**
      * getter de afficherPackage
      * @return booleen vrai si on affiche les packages, faux sinon
      */
     public boolean isAfficherPackage() {
         return afficherPackage;
     }
+
+    public int getDecalageX() {
+        return decalageX;
+    }
+
+    public int getDecalageY() {
+        return decalageY;
+    }
+
+    public void deplacerDecalageX(int decalageX) {
+        this.decalageX += decalageX;
+        notifierObservateurs();
+    }
+
+    public void deplacerDecalageY(int decalageY) {
+        this.decalageY += decalageY;
+        notifierObservateurs();
+    }
+
+    public void setVueDiagramme(VueDiagramme vueDiagramme) {
+        this.vueDiagramme = vueDiagramme;
+    }
+
 }

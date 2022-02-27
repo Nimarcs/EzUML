@@ -70,24 +70,27 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 } else {
                     g.setColor(new Color(0xFFDB7A));
                 }
-                g.fillRect(oc.getX(), oc.getY(), largeur, hauteur);
+                int posX = oc.getX() + modele.getDecalageX();
+                int posY = oc.getY() + modele.getDecalageY();
+
+                g.fillRect(posX, posY, largeur, hauteur);
 
                 // On dessine la bordure du rectangle avec une couleur noire
                 g.setColor(Color.BLACK);
-                g.drawRect(oc.getX(), oc.getY(), largeur, hauteur);
+                g.drawRect(posX, posY, largeur, hauteur);
 
                 // On dessine les bordures interne du rectangle pour definir le titre, les attributs et les constructeurs/methodes
-                g.drawRect(oc.getX(), oc.getY(), largeur, 2 * SIZE + 3 * ECART);
-                g.drawRect(oc.getX(), oc.getY(), largeur, 2 * SIZE + 3 * ECART + oc.getAttributs().size() * (SIZE + ECART));
+                g.drawRect(posX, posY, largeur, 2 * SIZE + 3 * ECART);
+                g.drawRect(posX, posY, largeur, 2 * SIZE + 3 * ECART + oc.getAttributs().size() * (SIZE + ECART));
 
                 // On définit la hauteur courante (faut prevoir que pour ecrire, il faut prendre le point en bas a gauche et non en haut)
-                int hauteurCourante = oc.getY() + SIZE + ECART;
+                int hauteurCourante = posY + SIZE + ECART;
 
                 // On définit le titre de la classe
                 String type = "<< " + oc.getType().toString() + " >>";
-                g.drawString(type, oc.getX() + (largeur - metrics.stringWidth(type)) / 2, hauteurCourante);
+                g.drawString(type, posX + (largeur - metrics.stringWidth(type)) / 2, hauteurCourante);
                 hauteurCourante += SIZE + ECART;
-                g.drawString(oc.getNomObjectClasse(), oc.getX() + (largeur - metrics.stringWidth(oc.getNomObjectClasse())) / 2, hauteurCourante);
+                g.drawString(oc.getNomObjectClasse(), posX + (largeur - metrics.stringWidth(oc.getNomObjectClasse())) / 2, hauteurCourante);
                 hauteurCourante += SIZE + ECART;
 
                 String ligne = "";
@@ -137,6 +140,14 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
             if (metrics.stringWidth(m.afficher()) > taille) taille = metrics.stringWidth(m.afficher());
         }
         return taille;
+    }
+
+    public int calculerHauteur(ObjectClasse oc){
+        returnoc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /** Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /** L'ecart entre les lignes */
+    }
+
+    public int calculerLargeur(ObjectClasse oc){
+        return this.largeurRectangleClasse(oc) + ECART * 2;
     }
 
     @Override

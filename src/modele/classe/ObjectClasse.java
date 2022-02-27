@@ -27,7 +27,7 @@ public abstract class ObjectClasse {
     protected String packageObjectClasse;
 
     /**
-     * Attribut prive entier contenant les coordonnees x et y de la position de la classe dans la zone graphique d'affichage des classes
+     * Attribut prive entier contenant les coordonnees x et y de la position du coin haut gauche de la classe dans la zone graphique d'affichage des classes
      */
     protected int x, y;
 

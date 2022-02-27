@@ -1,5 +1,6 @@
 package principal;
 
+import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
 import vue.VueArborescence;
@@ -25,6 +26,7 @@ public class Principale {
 
         //Controleur
         ControleurMenu controleurMenu= new ControleurMenu(modele);
+        ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
 
         //JFrame
         JFrame frame = new JFrame("EzUML");
@@ -65,6 +67,8 @@ public class Principale {
 
         modele.ajouterObservateur(vueDiagramme);
         panelPrincipal.setRightComponent(vueDiagramme);
+        modele.setVueDiagramme(vueDiagramme);
+        vueDiagramme.addMouseListener(controleurDiagramme);
 
         //affichage
         frame.setVisible(true);
