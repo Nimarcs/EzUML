@@ -70,6 +70,8 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 } else {
                     g.setColor(new Color(0xFFDB7A));
                 }
+
+                //on defini des variables pour prendre en compte le decalage
                 int posX = oc.getX() + modele.getDecalageX();
                 int posY = oc.getY() + modele.getDecalageY();
 
@@ -142,10 +144,20 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         return taille;
     }
 
+    /**
+     * Calcule la hauteur de la case d'un objectClasse lors de l'affichage
+     * @param oc objectClasse fournit
+     * @return taille en pixel
+     */
     public int calculerHauteur(ObjectClasse oc){
         return (oc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /* Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /* L'ecart entre les lignes */
     }
 
+    /**
+     * Calcule la largeur de la case d'un objectClasse lors de l'affichage
+     * @param oc objectClasse fournit
+     * @return taille en pixel
+     */
     public int calculerLargeur(ObjectClasse oc){
         return this.largeurRectangleClasse(oc) + ECART * 2;
     }
