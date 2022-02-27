@@ -105,7 +105,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                     if (a.isFinale()) ligne = ligne.toUpperCase();
                     else if (a.isStatique()) g.setFont(STATIQUE);
                     else g.setFont(NORMAL);
-                    g.drawString(ligne, oc.getX() + ECART, hauteurCourante);
+                    g.drawString(ligne, posX + ECART, hauteurCourante);
                     hauteurCourante += SIZE + ECART;
                 }
 
@@ -113,7 +113,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 for (Methode m : oc.getMethodes()) {
                     if (m.isAbstrait()) g.setFont(ABSTRAIT);
                     else g.setFont(NORMAL);
-                    g.drawString(m.afficher(), oc.getX() + ECART, hauteurCourante);
+                    g.drawString(m.afficher(), posX + ECART, hauteurCourante);
                     hauteurCourante += SIZE + ECART;
                 }
             }
