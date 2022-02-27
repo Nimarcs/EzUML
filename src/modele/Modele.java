@@ -53,11 +53,13 @@ public class Modele extends Sujet {
     private List<FlecheAssociation> associations;
 
     /**
-     * represente le decalage de la vision sur le diagramme par rapport au 0 0
+     * Represente le decalage de la vision sur le diagramme par rapport au 0 0
      */
     private int decalageX, decalageY;
 
-
+    /**
+     * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
+     */
     private VueDiagramme vueDiagramme;
 
 
@@ -348,10 +350,19 @@ public class Modele extends Sujet {
         if (trouve) associations.remove(association);
     }
 
+    /**
+     * Methode qui fournit objectClasse a une position donnee
+     * @param x position donnee sur l'axe des abscisses
+     * @param y position donnee sur l'axe des ordonnees
+     * @return ObjectClasse trouve
+     * @throws ClassNotFoundException renvoyé si l'objectClasse n'est pas trouvé
+     */
     public ObjectClasse getObjectClasseEnPosition(int x, int y) throws ClassNotFoundException {
 
+        //l'obejctclasse trouve sera stocke dans cette variable
         ObjectClasse res = null;
 
+        //on prepare un parcours des objectClasses
         Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
         boolean trouve = false;
 
@@ -372,6 +383,7 @@ public class Modele extends Sujet {
             }
         }
 
+        //si on a pas trouve on renvoie l'exception correspondante
         if (!trouve) throw new ClassNotFoundException();
         return res;
     }
@@ -430,25 +442,46 @@ public class Modele extends Sujet {
         return afficherPackage;
     }
 
+    /**
+     * getter du decalage de l'affichage par rapport au centre
+     * @return decalage sur X
+     */
     public int getDecalageX() {
         return decalageX;
     }
 
+    /**
+     * getter du decalage de l'affichage par rapport au centre
+     * @return decalage sur Y
+     */
     public int getDecalageY() {
         return decalageY;
     }
 
+    /**
+     * permet de decaler l'affichage sur X
+     * @param decalageX entier correspondant au decalage sur X
+     */
     public void deplacerDecalageX(int decalageX) {
         this.decalageX += decalageX;
         notifierObservateurs();
     }
 
+    /**
+     * permet de decaler l'affichage sur Y
+     * @param decalageY entier correspondant au decalage sur Y
+     */
     public void deplacerDecalageY(int decalageY) {
         this.decalageY += decalageY;
         notifierObservateurs();
     }
 
+    /**
+     * Setter de la Vue diagramme
+     * @param vueDiagramme vueDiagramme qui affiche le modele
+     */
     public void setVueDiagramme(VueDiagramme vueDiagramme) {
+        assert vueDiagramme != null;
         this.vueDiagramme = vueDiagramme;
     }
 
