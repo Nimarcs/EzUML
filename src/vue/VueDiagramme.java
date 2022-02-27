@@ -144,6 +144,57 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         return taille;
     }
 
+    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche) {
+
+        ObjectClasse dest = modele.getObjectClasse(destination.getNomComplet());
+
+        int srcX, srcY, destX, destY;
+        int milieuDestX = dest.getX() + calculerLargeur(dest)/2;
+
+        if (src.getX() <= milieuDestX && milieuDestX >= src.getX() + calculerLargeur(src)) {
+            if (dest.getY() >= src.getY()) {
+                srcX = src.getX() + calculerLargeur(src) / 2;
+                srcY = src.getY();
+                destX = dest.getX() + calculerLargeur(dest) / 2;
+                destY = dest.getY() + calculerHauteur(dest);
+            } else {
+                srcX = src.getX() + calculerLargeur(src) / 2;
+                srcY = src.getY() + calculerHauteur(src);
+                destX = dest.getX() + calculerLargeur(dest) / 2;
+                destY = dest.getY();
+            }
+        } else {
+            if (dest.getX() >= src.getX()) {
+                srcX = src.getX();
+                srcY = src.getY() + calculerHauteur(src)/2;
+                destX = dest.getX() + calculerLargeur(dest);
+                destY = dest.getY() + calculerHauteur(dest)/2;
+            } else {
+                srcX = src.getX() + calculerLargeur(src);
+                srcY = src.getY() + calculerHauteur(src)/2;
+                destX = dest.getX();
+                destY = dest.getY() + calculerHauteur(dest)/2;
+            }
+        }
+
+        int dx = destX - srcX, dy = destY - srcY;
+        double D = Math.sqrt(dx * dx + dy * dy);
+        int d= 20, h=10;
+        double xm = D - d, xn = xm, ym = h, yn = -h, x;
+        double sin = dy / D, cos = dx / D;
+        x = xm * cos - ym * sin + srcX;
+        ym = xm * sin + ym * cos + srcY;
+        xm = x;
+        x = xn * cos - yn * sin + srcX;
+        yn = xn * sin + yn * cos + srcY;
+        xn = x;
+        int[] xpoints = {destX, (int) xm, (int) xn};
+        int[] ypoints = {destY, (int) ym, (int) yn};
+        g.drawLine(srcX, srcY, destX, destY);
+        g.fillPolygon(xpoints, ypoints, 3);
+
+    }
+
     /**
      * Calcule la hauteur de la case d'un objectClasse lors de l'affichage
      * @param oc objectClasse fournit
