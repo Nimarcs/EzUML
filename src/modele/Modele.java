@@ -486,4 +486,11 @@ public class Modele extends Sujet {
         this.vueDiagramme = vueDiagramme;
     }
 
+    /**
+     * Getter des associations
+     * @return List<FlecheAssociation>
+     */
+    public List<FlecheAssociation> getAssociations() {
+        return associations;
+    }
 }
