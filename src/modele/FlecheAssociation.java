@@ -2,6 +2,7 @@ package modele;
 
 import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
+import modele.classe.Statut;
 
 /**
  * FlecheAssociation qui permet de representer une association
@@ -37,7 +38,11 @@ public class FlecheAssociation {
         assert src.getAttributs().contains(attribut): "L'attribut doit etre un attribut de la source";
         this.src = src;
         this.dest = dest;
-        this.nom = attribut.getNomAttribut();
+        String res;
+        if (attribut.getStatutAttribut() == Statut.PUBLIC) res = "+ ";
+        else if (attribut.getStatutAttribut() == Statut.PRIVATE) res = "- ";
+        else res = "# ";
+        this.nom = res + attribut.getNomAttribut();
     }
 
     //getter setter

@@ -74,17 +74,25 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         // On execute tous les objectClasse pour afficher les fleches d'heritage
         for (ObjectClasse oc : modele.getObjectClasses()) {
             if(oc.isVisible()) {
+
+                /*
+                On affiche les flèches d'heritages
+                 */
                 if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
                     Extendable e = (Extendable) oc;
                     if (e.getObjectClasseExtends()!=null) {
                         if (modele.getObjectClasses().contains(e.getObjectClasseExtends())) {
-                            drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE);
+                            drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE, null);
                         }
                     }
                 }
+
+                /*
+                On affiche les flèches d'implémentations
+                 */
                 if (!oc.getListeObjectClasseImplements().isEmpty()) {
                     for (Interface i:oc.getListeObjectClasseImplements()) {
-                        drawArrow(g, oc, i, FLECHE_IMPLEMENTS);
+                        drawArrow(g, oc, i, FLECHE_IMPLEMENTS, null);
                     }
                 }
             }
@@ -92,7 +100,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         // Affichage de toutes les fleches d'associations
         for (FlecheAssociation f:modele.getAssociations()) {
-            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION);
+            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f.getNom());
         }
 
 		// On execute pour tous les objectClasse
@@ -187,7 +195,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         return taille;
     }
 
-    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche) {
+    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, String message) {
 
         ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
 
@@ -270,6 +278,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                 g.drawLine(destX+decX, destY +decY, xpoints[1], ypoints[1]);
                 g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
+                g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
                 break;
             }
             default -> new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
