@@ -24,14 +24,14 @@ public class Principale {
         Modele modele = new Modele();
 
 
-        //Controleur
-        ControleurMenu controleurMenu= new ControleurMenu(modele);
-        ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
-
         //JFrame
         JFrame frame = new JFrame("EzUML");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //defini la taille minimum de la fenetre
+
+        //Controleur
+        ControleurMenu controleurMenu= new ControleurMenu(modele, frame);
+        ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
 
         //ContentPane
         JPanel contentPane = (JPanel) frame.getContentPane();

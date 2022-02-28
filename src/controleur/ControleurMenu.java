@@ -7,15 +7,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FilenameFilter;
 
 public class ControleurMenu implements ActionListener {
 
     private Modele modele;
 
-
-    public ControleurMenu(Modele m){
+    private JFrame oldFrame;
+    /**
+     * Contructeur de ControleurDiagramme
+     * @param m modele a modifier, ne doit pas etre null
+     */
+    public ControleurMenu(Modele m, JFrame frame){
+        assert m != null;
+        assert frame != null;
         modele=m;
+        oldFrame = frame;
     }
 
 
@@ -56,7 +62,10 @@ public class ControleurMenu implements ActionListener {
 
                 }
             }
+            //permet a la fenetre de regagner le focus une fois la popup finie
+            oldFrame.requestFocus();
         }
+
     }
 
 }
