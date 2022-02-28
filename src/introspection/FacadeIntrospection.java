@@ -58,11 +58,11 @@ public class FacadeIntrospection {
 				int mExtend =cls.getSuperclass().getModifiers();
 				if ( Modifier.isAbstract(mExtend)) {
 					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
-					obc = (Abstraite) e;
+					obc = e;
 
 				} else{
 					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
-					obc = (Classe) e;
+					obc = e;
 				}
 			} else {
 				obc = new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
@@ -79,11 +79,11 @@ public class FacadeIntrospection {
 				//on regarde si la classe hérité est une classe abstraite ou une classe
 				if ( Modifier.isAbstract(mExtend)) {
 					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
-					obc = (Abstraite) e;
+					obc = e;
 
 				} else{
 					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
-					obc = (Classe) e;
+					obc = e;
 
 				}
 
