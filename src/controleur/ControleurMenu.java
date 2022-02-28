@@ -34,36 +34,46 @@ public class ControleurMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String bAppuyer = e.getActionCommand();
 
-
-        /**
-        * On rentre dans la condition lorsque l'utilisateur appuie sur le bouton ouvrir
-        * Cela a pour effet d'ouvrir une fenetre d'exploration window
-        * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
-         */
-        if(bAppuyer.equals("Ouvrir")){
-
-            JFrame frame = new JFrame();
-            FileDialog fd = new FileDialog(frame, "Choix d'un fichier .class", FileDialog.LOAD);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            fd.setDirectory("C:");
-            fd.setFile("*.class");
-            fd.setMultipleMode(true);
-            fd.setVisible(true);
+        switch (bAppuyer) {
 
 
+            /*
+             * On rentre dans la condition lorsque l'utilisateur appuie sur le bouton charger
+             * Cela a pour effet d'ouvrir une fenetre d'exploration window
+             * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
+             */
+            case "Charger":
 
-            if( fd.getDirectory()!=null) {
-                File[] f = fd.getFiles();
-                for (File fichier : f) {
-                    System.out.println(fichier.getAbsolutePath());
-                    File fich = new File(fichier.getAbsolutePath());
-                    modele.chargerArborescenceProjet(fich);
+                JFrame frame = new JFrame();
+                FileDialog fd = new FileDialog(frame, "Choix d'un fichier .class", FileDialog.LOAD);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+                fd.setDirectory("C:");
+                fd.setFile("*.class");
+                fd.setMultipleMode(true);
+                fd.setVisible(true);
+
+
+                if (fd.getDirectory() != null) {
+                    File[] f = fd.getFiles();
+                    for (File fichier : f) {
+                        System.out.println(fichier.getAbsolutePath());
+                        File fich = new File(fichier.getAbsolutePath());
+                        modele.chargerArborescenceProjet(fich);
+
+                    }
                 }
-            }
-            //permet a la fenetre de regagner le focus une fois la popup finie
-            oldFrame.requestFocus();
+                //permet a la fenetre de regagner le focus une fois la popup finie
+                oldFrame.requestFocus();
+                break;
+            /*
+                Permet de commencer un nouveau diagramme
+             */
+            case "Nouveau":
+                modele.reintialiserDiagramme();
+                break;
+            default:
+                throw new IllegalStateException("Bouton non traite");
         }
 
     }

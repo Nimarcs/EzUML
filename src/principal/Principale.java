@@ -44,12 +44,17 @@ public class Principale {
 
         //Menu
         JPanel menu = new JPanel();
+        menu.setLayout(new GridLayout(1, 5));
         menu.setPreferredSize(new Dimension(LARGEUR_FEN,TAILLE_MENU));
 
-        //ajout d'un bouton ouvrir
-        JButton boutonOuvrir = new JButton ("Ouvrir");
-        menu.add(boutonOuvrir);
-        boutonOuvrir.addActionListener(controleurMenu);
+        //ajout d'un bouton charger
+        JButton boutonCharger = new JButton ("Charger");
+        menu.add(boutonCharger);
+        boutonCharger.addActionListener(controleurMenu);
+        //ajout d'un bouton nouveau
+        JButton boutonNouveau = new JButton ("Nouveau");
+        menu.add(boutonNouveau);
+        boutonNouveau.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 
