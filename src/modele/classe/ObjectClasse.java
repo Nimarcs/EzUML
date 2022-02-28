@@ -241,11 +241,11 @@ public abstract class ObjectClasse {
     }
 
     /**
-     * Getter qui renvoie le nom unique de l'objectClasse
-     * @return nom avec les packages de l'objectClasse
+     * Getter qui renvoie le nom simplifier de l'objectClasse
+     * @return nom sans les packages de l'objectClasse
      */
-    public String getNomComplet(){
-        return packageObjectClasse +"."+ nomObjectClasse;
+    public String getNomSimple(){
+        return nomObjectClasse.substring(packageObjectClasse.length());
     }
 
 }

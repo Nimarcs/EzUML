@@ -45,7 +45,7 @@ public class CollectionObjectClasse {
         assert o != null;
 
         //Classe chargee
-        classesChargees.put(o.getNomComplet(), o);
+        classesChargees.put(o.getNomObjectClasse(), o);
 
         //Package
         //on verifie le package auquel l'objectClasse appartient
@@ -84,7 +84,7 @@ public class CollectionObjectClasse {
         }
 
         //on l'ajoute dans notre collection de classe charge dans le package correct
-        pCourant.ajouterClasse(o.getNomComplet());
+        pCourant.ajouterClasse(o.getNomObjectClasse());
     }
 
     /**
@@ -126,7 +126,7 @@ public class CollectionObjectClasse {
             }
         }
         //on verifie que le package contient bien la classe charge
-        if(pCourant.getClassesContenues().contains(objectClasse.getNomComplet())){
+        if(pCourant.getClassesContenues().contains(objectClasse.getNomObjectClasse())){
             //si c'est le cas on renvoie le package qui la contient
             return pCourant;
         }
@@ -167,11 +167,11 @@ public class CollectionObjectClasse {
             //on la retire des packages
             Package p = trouvePackageDeClasseLocal(objectClasse);
             if (p != null) {
-                p.getClassesContenues().remove(objectClasse.getNomComplet());
+                p.getClassesContenues().remove(objectClasse.getNomObjectClasse());
             }
 
             //on la retire de la map
-            classesChargees.remove(objectClasse.getNomComplet());
+            classesChargees.remove(objectClasse.getNomObjectClasse());
         }
         //on nettoie les packages dont on a plus besoin
         nettoyerPackage(src);

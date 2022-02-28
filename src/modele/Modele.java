@@ -239,7 +239,7 @@ public class Modele extends Sujet {
             for (Attribut a: o.getAttributs().stream().filter(Attribut::isVisible).collect(Collectors.toList())) {
                 
                 //si l'attribut corresponds a l'object classe
-                if (a.getTypeAttribut().equals(objectClasse.getNomComplet())){
+                if (a.getTypeAttribut().equals(objectClasse.getNomObjectClasse())){
                     //on transforme en fleche
                     transformerEnFleche(o, a, objectClasse);
                 }
@@ -320,7 +320,6 @@ public class Modele extends Sujet {
      * @param attribut attribut a transformer en fleche d'association
      */
     public void transformerEnFleche(ObjectClasse objectClasseSrc, Attribut attribut, ObjectClasse objectClasseDest){
-
         //on verifie que tout est correct
         assert objectClasseSrc.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de l'object classe";
         assert objectClasseSrc.isVisible() : "L'object classe doit etre affiche dans le diagramme";
@@ -328,6 +327,7 @@ public class Modele extends Sujet {
         assert attribut.isVisible() : "l'attribut ne doit pas etre masque";
 
         associations.add(new FlecheAssociation(objectClasseSrc, objectClasseDest, attribut));
+        System.out.println("ajout fleche" + Arrays.deepToString(new List[]{associations}));
         attribut.changerVisibilite(false);
     }
 
@@ -348,6 +348,7 @@ public class Modele extends Sujet {
             }
         }
         if (trouve) associations.remove(association);
+        System.out.println("retirer fleche" + Arrays.deepToString(new List[]{associations}));
     }
 
     /**
