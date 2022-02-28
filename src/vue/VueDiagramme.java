@@ -1,12 +1,12 @@
 package vue;
 
+import modele.FlecheAssociation;
 import modele.Modele;
 import modele.Sujet;
 import modele.classe.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Locale;
 
 public class VueDiagramme extends JPanel implements Observateur { //extends JPanel temporaire
 
@@ -23,7 +23,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 	/**
 	 * Variable statique privee entiere qui definit la taille de la police
 	 */
-    private final static int SIZE = 10;
+    private final static int SIZE = 13;
 
 	/**
 	 * Variable statique privée entiere qui definit l'ecart entre les lignes
@@ -48,7 +48,8 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
     private final static int FLECHE_HERITAGE = 1;
     private final static int FLECHE_IMPLEMENTS = 2;
     private final static int FLECHE_ASSOSCIATION = 3;
-    private final int ECART_VISUELLE = 100;
+    private final int ECART_VISUELLE_X = 100;
+    private final int ECART_VISUELLE_Y = 40;
 
 
     public VueDiagramme(Modele m) {
@@ -76,7 +77,9 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
                     Extendable e = (Extendable) oc;
                     if (e.getObjectClasseExtends()!=null) {
-                        drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE);
+                        if (modele.getObjectClasses().contains(e.getObjectClasseExtends())) {
+                            drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE);
+                        }
                     }
                 }
                 if (!oc.getListeObjectClasseImplements().isEmpty()) {
@@ -182,8 +185,12 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         int srcX, srcY, destX, destY;
         int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
+        int milieuDestY = dest.getY() + calculerHauteur(dest)/2;
 
-        if (src.getX() - ECART_VISUELLE <= milieuDestX && milieuDestX <= src.getX() + calculerLargeur(src) + ECART_VISUELLE) {
+        if (src.getX() - ECART_VISUELLE_X <= milieuDestX
+                && milieuDestX <= src.getX() + calculerLargeur(src) + ECART_VISUELLE_X
+                && milieuDestY <= src.getY() - ECART_VISUELLE_Y
+                || milieuDestY >= src.getY() + calculerHauteur(src) + ECART_VISUELLE_Y) {
             if (dest.getY() <= src.getY()) {
                 srcX = src.getX() + calculerLargeur(src) / 2;
                 srcY = src.getY();
