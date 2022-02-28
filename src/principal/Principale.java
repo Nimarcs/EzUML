@@ -1,5 +1,6 @@
 package principal;
 
+import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
@@ -30,8 +31,11 @@ public class Principale {
         //defini la taille minimum de la fenetre
 
         //Controleur
+        ControleurClavier controleurClavier = new ControleurClavier(modele);
         ControleurMenu controleurMenu= new ControleurMenu(modele, frame);
         ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
+        //on ajoute le controleur
+        frame.addKeyListener(controleurClavier);
 
         //ContentPane
         JPanel contentPane = (JPanel) frame.getContentPane();
