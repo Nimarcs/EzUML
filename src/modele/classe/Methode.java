@@ -90,20 +90,48 @@ public class Methode {
         if (this.statutMethode == Statut.PUBLIC) res += "+ ";
         else if (this.statutMethode == Statut.PRIVATE) res += "- ";
         else res += "# ";
-        res += this.nomMethode + " (";
+        String[] tabNom = nomMethode.split(Pattern.quote("."));
+        res += tabNom[tabNom.length-1] + " (";
         if (this.listeParametres!=null) {
             for (int i = 0; i < this.listeParametres.size(); i++) {
-                String[] tab = this.listeParametres.get(i).split(Pattern.quote("."));
-                res += tab[tab.length-1];
+                res += retournerType(this.listeParametres.get(i));
                 if (i != this.listeParametres.size() - 1) res += ", ";
             }
         }
         res += ")";
         if (this.typeRetour != null && !this.typeRetour.equals("void")) {
-            String[] tab = this.typeRetour.split(Pattern.quote("."));
-            res += ": " + tab[tab.length-1];
+            res += ": " + retournerType(this.typeRetour);
         }
         return res;
+    }
+
+    /**
+     * Methode privee qui formalise un type selon ses spécificités
+     * @param s : String qu'on doit formater
+     * @return String formate pour l'affichage
+     */
+    private String retournerType(String s) {
+        String type;
+        String[] tabChemin = s.split(Pattern.quote(".")); // tabChemin devise la string par le point
+        if (s.contains("<")&&s.contains(">")) {
+            String tabTmp[] = s.split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
+            String tabChemin2[] = tabTmp[0].split(Pattern.quote(".")); // dans la partie de gauche de tabTmp (séparé par <) on fait comme pour tabChemin, on recupere la string la plus a droite séparé par un point
+            if (s.contains(",")) { // cas pour les collections avec 2 type et plus
+                String tabTypes[] = tabTmp[1].split(Pattern.quote(",")); // on prend la partie droite de tabTmp et on coupe a partir des virgules
+                type = tabChemin2[tabChemin2.length-1] + "<"; // on ajoute le symbole coupé
+                for (int i=0; i<tabTypes.length; i++) {
+                    String tabLigne[] = tabTypes[i].split(Pattern.quote(".")); // pour chaque string coupé à la virgule on recupere seulement la partie tout a droite apres le dernier point
+                    type+=tabLigne[tabLigne.length-1];
+                    if (i!=tabTypes.length-1) type+=",";
+                }
+            } else { // cas pour le reste avec 1 seul type
+                String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
+                type = tabChemin2[tabChemin2.length-1] + "<" + tabContenuTemp[tabContenuTemp.length-1];
+            }
+        } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
+            type = tabChemin[tabChemin.length-1];
+        }
+        return type;
     }
 
     /**
