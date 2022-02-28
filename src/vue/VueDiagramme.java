@@ -90,6 +90,11 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
             }
         }
 
+        // Affichage de toutes les fleches d'associations
+        for (FlecheAssociation f:modele.getAssociations()) {
+            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION);
+        }
+
 		// On execute pour tous les objectClasse
         for (ObjectClasse oc : modele.getObjectClasses()) {
 
@@ -109,7 +114,6 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 //on defini des variables pour prendre en compte le decalage
                 int posX = oc.getX() + modele.getDecalageX();
                 int posY = oc.getY() + modele.getDecalageY();
-
                 g.fillRect(posX, posY, largeur, hauteur);
 
                 // On dessine la bordure du rectangle avec une couleur noire
@@ -127,31 +131,35 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 String type = "<< " + oc.getType().toString() + " >>";
                 g.drawString(type, posX + (largeur - metrics.stringWidth(type)) / 2, hauteurCourante);
                 hauteurCourante += SIZE + ECART;
-                g.drawString(oc.getNomObjectClasse(), posX + (largeur - metrics.stringWidth(oc.getNomObjectClasse())) / 2, hauteurCourante);
+                g.drawString(oc.getNomSimple(), posX + (largeur - metrics.stringWidth(oc.getNomSimple())) / 2, hauteurCourante);
                 hauteurCourante += SIZE + ECART;
 
                 String ligne = "";
 
                 // On passe aux attributs
                 for (Attribut a : oc.getAttributs()) {
-                    ligne = a.afficher();
-                    if (a.isFinale() && a.isStatique()) {
-                        ligne = ligne.toUpperCase();
-                        g.setFont(STATIQUE);
+                    if (a.isVisible()) {
+                        ligne = a.afficher();
+                        if (a.isFinale() && a.isStatique()) {
+                            ligne = ligne.toUpperCase();
+                            g.setFont(STATIQUE);
+                        }
+                        if (a.isFinale()) ligne = ligne.toUpperCase();
+                        else if (a.isStatique()) g.setFont(STATIQUE);
+                        else g.setFont(NORMAL);
+                        g.drawString(ligne, posX + ECART, hauteurCourante);
+                        hauteurCourante += SIZE + ECART;
                     }
-                    if (a.isFinale()) ligne = ligne.toUpperCase();
-                    else if (a.isStatique()) g.setFont(STATIQUE);
-                    else g.setFont(NORMAL);
-                    g.drawString(ligne, posX + ECART, hauteurCourante);
-                    hauteurCourante += SIZE + ECART;
                 }
 
                 // On passe aux methodes
                 for (Methode m : oc.getMethodes()) {
-                    if (m.isAbstrait()) g.setFont(ABSTRAIT);
-                    else g.setFont(NORMAL);
-                    g.drawString(m.afficher(), posX + ECART, hauteurCourante);
-                    hauteurCourante += SIZE + ECART;
+                    if (m.isVisible()) {
+                        if (m.isAbstrait()) g.setFont(ABSTRAIT);
+                        else g.setFont(NORMAL);
+                        g.drawString(m.afficher(), posX + ECART, hauteurCourante);
+                        hauteurCourante += SIZE + ECART;
+                    }
                 }
             }
 
@@ -181,7 +189,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
     void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche) {
 
-        ObjectClasse dest = modele.getObjectClasse(destination.getNomComplet());
+        ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
 
         int srcX, srcY, destX, destY;
         int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
@@ -275,7 +283,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
      * @return taille en pixel
      */
     public int calculerHauteur(ObjectClasse oc){
-        return (oc.getAttributs().size() + oc.getMethodes().size() + 2) * SIZE /* Le nombre de ligne*/ + (oc.getAttributs().size() + oc.getMethodes().size() + 5) * ECART; /* L'ecart entre les lignes */
+        return (oc.getNbAttributsVisible() + oc.getNbMethodesVisible() + 2) * SIZE /* Le nombre de ligne*/ + (oc.getNbAttributsVisible() + oc.getNbMethodesVisible() + 5) * ECART; /* L'ecart entre les lignes */
     }
 
     /**
