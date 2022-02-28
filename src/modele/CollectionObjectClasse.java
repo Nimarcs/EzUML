@@ -89,11 +89,12 @@ public class CollectionObjectClasse {
 
     /**
      * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
+     * Fournit le package reel donc permet de le modifier
      * Utilise les packages pour chercher une classe au bon endroit
      * @param objectClasse objectClasse dont on veut obtenir le package
-     * @return copie du package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
+     * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
-    public Package trouvePackageDeClasse(ObjectClasse objectClasse){
+    private Package trouvePackageDeClasseLocal(ObjectClasse objectClasse){
         //on verifie le package auquel l'objectClasse appartient
         String[] nomPackages = objectClasse.getPackageObjectClasse().split("\\.");
 
@@ -127,11 +128,24 @@ public class CollectionObjectClasse {
         //on verifie que le package contient bien la classe charge
         if(pCourant.getClassesContenues().contains(objectClasse.getNomComplet())){
             //si c'est le cas on renvoie le package qui la contient
-            return new Package(pCourant);
+            return pCourant;
         }
         //sinon on retourne null
         return null;
     }
+
+    /**
+     * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
+     * Utilise les packages pour chercher une classe au bon endroit
+     * @param objectClasse objectClasse dont on veut obtenir le package
+     * @return copie du package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
+     */
+    public Package trouvePackageDeClasse(ObjectClasse objectClasse){
+        Package p = trouvePackageDeClasseLocal(objectClasse);
+        if (p == null) return null;
+        else return new Package(p);
+    }
+
 
     /**
      * methode qui permet de verifier si une classe est chargee
@@ -148,17 +162,32 @@ public class CollectionObjectClasse {
     public void dechargerListeClasse(List<ObjectClasse> lo){
 
         for (ObjectClasse objectClasse:lo) {
-
             //on decharge la classe
 
             //on la retire des packages
-            Package p = trouvePackageDeClasse(objectClasse);
+            Package p = trouvePackageDeClasseLocal(objectClasse);
             if (p != null) {
                 p.getClassesContenues().remove(objectClasse.getNomComplet());
             }
 
             //on la retire de la map
             classesChargees.remove(objectClasse.getNomComplet());
+        }
+        //on nettoie les packages dont on a plus besoin
+        nettoyerPackage(src);
+    }
+
+    /**
+     * permet de retirer tous les packages vide
+     * @param p package a partir duquel commencer la recherche
+     */
+    private void nettoyerPackage(Package p){
+        assert p != null;
+        for (Package sousPackage:p.getSousPackages()) {
+            nettoyerPackage(sousPackage);
+            if (sousPackage.getClassesContenues().isEmpty() && sousPackage.getSousPackages().isEmpty()){
+                p.getSousPackages().remove(sousPackage);
+            }
         }
     }
 
