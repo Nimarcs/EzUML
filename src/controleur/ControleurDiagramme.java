@@ -19,7 +19,7 @@ public class ControleurDiagramme implements MouseListener {
     /**
      * modele dont on veut controler les valeurs
      */
-    private Modele modele;
+    private final Modele modele;
 
     /**
      * position a laquelle on a commencer a cliquer gauche, permet d'eviter de selectionner si on ne deplace pas la souris
