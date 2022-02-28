@@ -92,13 +92,13 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         // Affichage de toutes les fleches d'associations
         for (FlecheAssociation f:modele.getAssociations()) {
-            drawArrow(g, f.getDest(), f.getSrc(), FLECHE_ASSOSCIATION);
+            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION);
         }
 
 		// On execute pour tous les objectClasse
         for (ObjectClasse oc : modele.getObjectClasses()) {
 
-            if (!oc.isVisible()) { // on verifie si la classe es visible
+            if (oc.isVisible()) { // on verifie si la classe es visible
 
                 // On définit la hauteur et la largeur de la classe oc
                 int hauteur = calculerHauteur(oc);

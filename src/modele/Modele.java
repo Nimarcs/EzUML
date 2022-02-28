@@ -146,7 +146,7 @@ public class Modele extends Sujet {
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
-
+                ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
             }
         }
     }
@@ -327,7 +327,6 @@ public class Modele extends Sujet {
         assert attribut.isVisible() : "l'attribut ne doit pas etre masque";
 
         associations.add(new FlecheAssociation(objectClasseSrc, objectClasseDest, attribut));
-        System.out.println("ajout fleche" + Arrays.deepToString(new List[]{associations}));
         attribut.changerVisibilite(false);
     }
 
@@ -348,7 +347,6 @@ public class Modele extends Sujet {
             }
         }
         if (trouve) associations.remove(association);
-        System.out.println("retirer fleche" + Arrays.deepToString(new List[]{associations}));
     }
 
     /**
