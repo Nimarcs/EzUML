@@ -75,17 +75,32 @@ public class Attribut {
         else if (this.statutAttribut == Statut.PRIVATE) res += "- ";
         else res += "# ";
         String type;
-        String[] tab = this.typeAttribut.split(Pattern.quote("."));
-        if (this.typeAttribut.contains("<")||this.typeAttribut.contains(">")) {
-            String tmp = tab[tab.length-2] + "." + tab[tab.length-1];
-            String tabTmp[] = tmp.split(Pattern.quote("<"));
-            System.out.println(tabTmp);
-            String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
-            System.out.println(tabContenuTemp);
-            type = tabTmp[0] + "<" + tabContenuTemp[tabContenuTemp.length-1];
-        } else {
-            type = tab[tab.length-1];
+        String[] tabChemin = this.typeAttribut.split(Pattern.quote(".")); // tabChemin devise la string par le point
+
+        /*
+        Cas où c'est une collection
+         */
+        if (this.typeAttribut.contains("<")&&this.typeAttribut.contains(">")) {
+            String tabTmp[] = this.typeAttribut.split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
+            String tabChemin2[] = tabTmp[0].split(Pattern.quote(".")); // dans la partie de gauche de tabTmp (séparé par <) on fait comme pour tabChemin, on recupere la string la plus a droite séparé par un point
+            if (this.typeAttribut.contains(",")) { // cas pour les collections avec 2 type et plus
+                String tabTypes[] = tabTmp[1].split(Pattern.quote(",")); // on prend la partie droite de tabTmp et on coupe a partir des virgules
+                type = tabChemin2[tabChemin2.length-1] + "<"; // on ajoute le symbole coupé
+                for (int i=0; i<tabTypes.length; i++) {
+                    String tabLigne[] = tabTypes[i].split(Pattern.quote(".")); // pour chaque string coupé à la virgule on recupere seulement la partie tout a droite apres le dernier point
+                    type+=tabLigne[tabLigne.length-1];
+                    if (i!=tabTypes.length-1) type+=",";
+                }
+
+            } else { // cas pour le reste avec 1 seul type
+                String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
+                type = tabChemin2[tabChemin2.length-1] + "<" + tabContenuTemp[tabContenuTemp.length-1];
+            }
+
+        } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
+            type = tabChemin[tabChemin.length-1];
         }
+
         res += this.nomAttribut + ": " + type;
         return res;
     }
