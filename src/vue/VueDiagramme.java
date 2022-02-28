@@ -48,6 +48,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
     private final static int FLECHE_HERITAGE = 1;
     private final static int FLECHE_IMPLEMENTS = 2;
     private final static int FLECHE_ASSOSCIATION = 3;
+    private final int ECART_VISUELLE = 100;
 
 
     public VueDiagramme(Modele m) {
@@ -182,7 +183,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
         int srcX, srcY, destX, destY;
         int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
 
-        if (src.getX() <= milieuDestX && milieuDestX <= src.getX() + calculerLargeur(src)) {
+        if (src.getX() - ECART_VISUELLE <= milieuDestX && milieuDestX <= src.getX() + calculerLargeur(src) + ECART_VISUELLE) {
             if (dest.getY() <= src.getY()) {
                 srcX = src.getX() + calculerLargeur(src) / 2;
                 srcY = src.getY();
@@ -227,7 +228,6 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         switch (choixFleche) {
             case FLECHE_HERITAGE -> {
-                System.out.println("FLECHE HERITAGE");
                 g.setColor(Color.BLACK);
                 g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                 g.setColor(Color.WHITE);
@@ -251,8 +251,13 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                 break;
             }
             case FLECHE_ASSOSCIATION -> {
-
+                g.setColor(Color.BLACK);
+                g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                g.drawLine(destX+decX, destY +decY, xpoints[1], ypoints[1]);
+                g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
+                break;
             }
+            default -> new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
         }
 
     }
