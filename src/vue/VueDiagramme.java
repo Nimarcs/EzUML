@@ -92,7 +92,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         // Affichage de toutes les fleches d'associations
         for (FlecheAssociation f:modele.getAssociations()) {
-            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION);
+            drawArrow(g, f.getDest(), f.getSrc(), FLECHE_ASSOSCIATION);
         }
 
 		// On execute pour tous les objectClasse
