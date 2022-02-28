@@ -73,7 +73,7 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         // On execute tous les objectClasse pour afficher les fleches d'heritage
         for (ObjectClasse oc : modele.getObjectClasses()) {
-            if(!oc.isVisible()) {
+            if(oc.isVisible()) {
                 if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
                     Extendable e = (Extendable) oc;
                     if (e.getObjectClasseExtends()!=null) {
