@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.regex.Pattern;
 
 public class ChargementClasse {
 
@@ -64,7 +65,7 @@ public class ChargementClasse {
                 // le reste du string est donne pour rechercher
                 s[1] = cheminAbsolue.substring(i + 2);
                 // on enleve le .class
-                s[1] = s[1].split(".class")[0];
+                s[1] = s[1].split(Pattern.quote(".")+"class")[0];
                 // on remplace \ par un point
                 s[1] = s[1].replace("\\", ".");
 

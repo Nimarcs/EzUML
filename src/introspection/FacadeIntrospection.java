@@ -20,6 +20,8 @@ public class FacadeIntrospection {
 
 	} 
 
+
+
 	/**
 	 * methode qui permet de construire ObjetClasse a partir du parametre File on
 	 * cherche a avoir la classe objet du File puis on cree ObjetClasse en fonction
