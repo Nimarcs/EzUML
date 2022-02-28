@@ -81,13 +81,13 @@ public class ControleurDiagramme implements MouseListener {
         }
 
 
-
-        System.out.println(vecteurDeplacementX);
-        System.out.println(vecteurDeplacementY);
+        //si on se deplace assez
         if (Math.abs(vecteurDeplacementX) > DEPLACEMENT_MIN || Math.abs(vecteurDeplacementY) > DEPLACEMENT_MIN) {
 
+            //si on a trouve la classe
             if (trouve) {
 
+                //si la classe est selectionne
                 if (!modele.getSelection().contains(objectClasse)) {
 
                     //si c'est pas un ctrl click
@@ -99,21 +99,21 @@ public class ControleurDiagramme implements MouseListener {
 
                     modele.selectionnerUneClasse(objectClasse);
                 }
+                //si on a pas trouve la classe
             } else {
                 modele.deselectionner();
             }
 
+            //si on a rien selectionne
             if (modele.getSelection().isEmpty()) {
 
                 //On change le decalage
                 modele.deplacerDecalageX(vecteurDeplacementX);
                 modele.deplacerDecalageY(vecteurDeplacementY);
 
+                //sinon on deplace la selection de classe
             } else {
-
-                //on deplace la selection de classe
                 modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
-
             }
 
         } else {
@@ -127,7 +127,7 @@ public class ControleurDiagramme implements MouseListener {
 
             //on a clicker sur une classe
             if (trouve) {
-                System.out.println(objectClasse.getX() + ", " + objectClasse.getY());
+                //System.out.println(objectClasse.getX() + ", " + objectClasse.getY() +"   "+ objectClasse.isVisible());
 
                 //si c'est un click gauche
                 if (e.getButton() == MouseEvent.BUTTON1) {
