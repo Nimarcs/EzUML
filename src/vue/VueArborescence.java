@@ -73,7 +73,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
     	
     	Object objet = ((DefaultMutableTreeNode) value).getUserObject();
     		 
-    	/**
+    	/*
     	 * le custom render va regarder si l'objet est un package ou pas
     	 * puis si l'objet est visible ou pas et afficher chaque element de maniere correcte
     	 * 
