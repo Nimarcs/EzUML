@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -28,7 +29,6 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	
 
     
-    int i = 0;
 
 	
 	/**
@@ -43,7 +43,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
 		
 		base.setCellRenderer(new CustomRenderArbo());
 		
-		base.setRootVisible(true);
+		base.setRootVisible(false);
 		
 		this.setViewportView(base);
 		
@@ -79,7 +79,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
     	 * 
     	 */
 
-    	
+    	//affichage du package dans l'arbre, il s'agit d'un simple label avec le nom du package ou un placeholder si le .class n'a pas de package
     	if(objet instanceof Package) {
     		label.setIcon(null);
     		if(((Package) objet).getNom()=="") {
@@ -91,15 +91,19 @@ public class VueArborescence extends JScrollPane implements Observateur{
 
     	}
     	
+    	//affichage de la classe, avec une pastille verte si il est affiche ou rouge sinon
     	if(objet instanceof String) {
      
-            System.out.println((String) objet);
-    		label.setText((String) objet);
-   			label.setIcon(vert);
+    	    String[] tabstring = (((String) objet).split(Pattern.quote(".")));
+    	    
+    	    if(tabstring.length==0) {
+    	        label.setText((String) objet);
+    	    }else {
+    	        label.setText(tabstring[tabstring.length-1]);
 
-    
-
-    	} 
+    	    }
+   			label.setIcon(rouge);
+   		} 
     	    	
     	return label;    	
     	
@@ -116,13 +120,16 @@ public class VueArborescence extends JScrollPane implements Observateur{
         
         Package p = m.getPackages();
         
+        //initialistaion de la racine principale
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
-        ajouterNoeud(root,p);
-        System.out.println(i);
-
         
+        //appelle la methode ajouterNoeud, qui permet de generer l'arborescence en entier
+        ajouterNoeud(root,p);
+
+        //creer l'arbre a partir du noeud root contenant l'arborescence en entier
         JTree base = new JTree(root);
         
+        //cela permet a l'arbre d'avoir l'apparence que l'on veut
         base.setCellRenderer(new CustomRenderArbo());
         
         base.setRootVisible(true);
@@ -130,22 +137,33 @@ public class VueArborescence extends JScrollPane implements Observateur{
         this.setViewportView(base);        
     }
 
-    
+    /**
+     * méthode qui permet de generer chaque noeud de l'arbre de maniere recursive
+     * @param racine 
+     * @param p
+     */
     public void ajouterNoeud(DefaultMutableTreeNode racine, Package p) {
+        
+        //iterateur des classes contenues dans le package p
         Iterator<String> iteclasses = p.getClassesContenues().iterator();
-        i++;
+        
+        //ajout de chaque fichier .class dans le noeud racine
         while(iteclasses.hasNext()) {
             String classe = iteclasses.next();
-            System.out.println(classe);
             racine.add(new DefaultMutableTreeNode(classe));
         }
         
+        //iterateur des sous-packages contenus dans le package p
         Iterator<Package> itePackages = p.getSousPackages().iterator();
         
+        //ajout de chaque sous-package dans le noeud racine
         while(itePackages.hasNext()) {
             Package pack = itePackages.next();
             DefaultMutableTreeNode racinePackage = new DefaultMutableTreeNode(pack);
+            
+            //appel recurisf de la methode ajouterNoeud, qui ajoutera tout les noeuds necessaires de ce sous-package
             ajouterNoeud(racinePackage,pack);
+            //ajoute le noeud complet de ce sous-package sur cette racine
             racine.add(racinePackage);           
         }
         
