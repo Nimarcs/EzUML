@@ -74,8 +74,19 @@ public class Attribut {
         if (this.statutAttribut == Statut.PUBLIC) res += "+ ";
         else if (this.statutAttribut == Statut.PRIVATE) res += "- ";
         else res += "# ";
+        String type;
         String[] tab = this.typeAttribut.split(Pattern.quote("."));
-        res += this.nomAttribut + ": " + tab[tab.length-1];
+        if (this.typeAttribut.contains("<")||this.typeAttribut.contains(">")) {
+            String tmp = tab[tab.length-2] + "." + tab[tab.length-1];
+            String tabTmp[] = tmp.split(Pattern.quote("<"));
+            System.out.println(tabTmp);
+            String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
+            System.out.println(tabContenuTemp);
+            type = tabTmp[0] + "<" + tabContenuTemp[tabContenuTemp.length-1];
+        } else {
+            type = tab[tab.length-1];
+        }
+        res += this.nomAttribut + ": " + type;
         return res;
     }
 
