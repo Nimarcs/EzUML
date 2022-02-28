@@ -248,4 +248,28 @@ public abstract class ObjectClasse {
         return nomObjectClasse.substring(packageObjectClasse.length());
     }
 
+    /**
+     * Getter qui renvoie le nombre d'attributs visible
+     * @return int
+     */
+    public int getNbAttributsVisible() {
+        int nb = 0;
+        for (Attribut a : this.attributs) {
+            if (a.isVisible()) nb++;
+        }
+        return nb;
+    }
+
+    /**
+     * Getter qui renvoie le nombre de methodes visibles
+     * @return int
+     */
+    public int getNbMethodesVisible() {
+        int nb = 0;
+        for (Methode m : this.methodes) {
+            if (m.isVisible()) nb++;
+        }
+        return nb;
+    }
+
 }
