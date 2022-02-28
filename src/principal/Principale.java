@@ -55,6 +55,10 @@ public class Principale {
         JButton boutonNouveau = new JButton ("Nouveau");
         menu.add(boutonNouveau);
         boutonNouveau.addActionListener(controleurMenu);
+        //ajout d'un bouton Retirer Selection du diagramme
+        JButton boutonRetirerDuDiag = new JButton ("Retirer Selection du diagramme");
+        menu.add(boutonRetirerDuDiag);
+        boutonRetirerDuDiag.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 

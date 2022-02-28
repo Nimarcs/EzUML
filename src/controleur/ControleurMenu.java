@@ -72,6 +72,12 @@ public class ControleurMenu implements ActionListener {
             case "Nouveau":
                 modele.reintialiserDiagramme();
                 break;
+            /*
+                Permet de retirer les classe selectionne du diagramme
+             */
+            case "Retirer Selection du diagramme" :
+                modele.retirerClasseSelectionne();
+                break;
             default:
                 throw new IllegalStateException("Bouton non traite");
         }
