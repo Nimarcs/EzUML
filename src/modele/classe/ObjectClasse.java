@@ -5,6 +5,7 @@ package modele.classe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Classe ObjectClasse
@@ -245,7 +246,8 @@ public abstract class ObjectClasse {
      * @return nom sans les packages de l'objectClasse
      */
     public String getNomSimple(){
-        return nomObjectClasse.substring(packageObjectClasse.length());
+        String tab[] = nomObjectClasse.split(Pattern.quote("."));
+        return tab[tab.length-1];
     }
 
     /**
