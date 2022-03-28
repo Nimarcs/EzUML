@@ -282,7 +282,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
                 break;
             }
-            default -> new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
+            default -> throw new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
         }
 
     }
