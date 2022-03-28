@@ -84,6 +84,10 @@ public class ControleurMenu implements ActionListener {
             case "Sauvegarder":
                 modele.enregistrement();
                 break;
+
+            case "Charger diagramme":
+                modele.deserilization();
+                break;
             default:
                 throw new IllegalStateException("Bouton non traite");
         }

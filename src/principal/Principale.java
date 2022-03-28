@@ -63,7 +63,10 @@ public class Principale {
         JButton boutonSauver = new JButton("Sauvegarder");
         menu.add(boutonSauver);
         boutonSauver.addActionListener(controleurMenu);
-        
+        //ajout d'un bouton pour charger unn diagramme sauvegarder
+        JButton boutonChargerDiag = new JButton("Charger diagramme");
+        menu.add(boutonChargerDiag);
+        boutonChargerDiag.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 

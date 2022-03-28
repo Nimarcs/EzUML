@@ -440,7 +440,46 @@ public class Modele extends Sujet implements Serializable {
             }
         }
 
-        
+        public void deserilization(){
+            ObjectInputStream ois = null;
+
+            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            fc.addChoosableFileFilter(new EzumlSaveFilter());
+            //fc.setFileFilter(new EzumlSaveFilter());
+            fc.setDialogTitle("Ouvrir votre fichier");
+
+            int returnValue = fc.showOpenDialog(null);
+
+            if(returnValue==JFileChooser.APPROVE_OPTION) {
+
+                try {
+                    final FileInputStream fichier = new FileInputStream(fc.getSelectedFile().getAbsolutePath());
+                    ois = new ObjectInputStream(fichier);
+                    final Modele p = (Modele) ois.readObject();
+
+                    System.out.println(p.getObjectClasses());
+                    this.collectionObjectClasse = p.getCollectionObjectClasse();
+                    this.afficherPackage = p.isAfficherPackage();
+                    this.dossierCourant= p.getDossierCourant();
+                    this.associations = p.getAssociations();
+                    this.setVueDiagramme(p.getVueDiagramme());
+                    notifierObservateurs();
+
+                } catch (final java.io.IOException e) {
+                    e.printStackTrace();
+                } catch (final ClassNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (ois != null) {
+                            ois.close();
+                        }
+                    } catch (final IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+    }
 
 
     //getters setters
@@ -453,6 +492,10 @@ public class Modele extends Sujet implements Serializable {
      */
     public Package getPackages() {
         return collectionObjectClasse.getPackages();
+    }
+
+    public CollectionObjectClasse getCollectionObjectClasse(){
+        return collectionObjectClasse;
     }
 
     /**
@@ -537,6 +580,10 @@ public class Modele extends Sujet implements Serializable {
     public void setVueDiagramme(VueDiagramme vueDiagramme) {
         assert vueDiagramme != null;
         this.vueDiagramme = vueDiagramme;
+    }
+
+    public VueDiagramme getVueDiagramme(){
+        return vueDiagramme;
     }
 
     /**
