@@ -5,9 +5,14 @@ import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 import vue.VueDiagramme;
 
-import java.io.File;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +20,7 @@ import java.util.stream.Collectors;
  * Contient ce qui est necessaire pour armoniser le diagramme, l'arborescence et les differents controleurs et vues
  * @author Marcus RICHIER
  */
-public class Modele extends Sujet {
+public class Modele extends Sujet implements Serializable {
 
 
     //Attributs
@@ -35,7 +40,7 @@ public class Modele extends Sujet {
      * Liste des classes selectionne au moment courant
      * On ne peut selectionner que des classes
      */
-    private List<ObjectClasse> selection;
+    private  transient List<ObjectClasse> selection;
 
     /**
      * Fichier charge couramment, sert a l'arboresance
@@ -45,7 +50,7 @@ public class Modele extends Sujet {
     /**
      * Facade qui permet d'obtenir les ObjectClasse a partir des fichiers
      */
-    private FacadeIntrospection facade;
+    private transient FacadeIntrospection facade;
 
     /**
      * Liste des fleches actuellement represente
@@ -55,7 +60,7 @@ public class Modele extends Sujet {
     /**
      * Represente le decalage de la vision sur le diagramme par rapport au 0 0
      */
-    private int decalageX, decalageY;
+    private transient int decalageX, decalageY;
 
     /**
      * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
@@ -386,6 +391,56 @@ public class Modele extends Sujet {
         if (!trouve) throw new ClassNotFoundException();
         return res;
     }
+
+
+
+    public void enregistrement(){
+
+        ObjectOutputStream oos = null;
+/*
+            JFrame frame = new JFrame();
+            FileDialog fd = new FileDialog(frame, "Sauvegarder votre fichier", FileDialog.SAVE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            fd.setDirectory("C:");
+            fd.setVisible(true);
+            fd.setFilenameFilter();
+            fd.setMode();*/
+            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            fc.addChoosableFileFilter(new EzumlSaveFilter());
+            //fc.setFileFilter(new EzumlSaveFilter());
+            fc.setDialogTitle("Sauvegarder le nom de votre fichier");
+
+            int returnValue = fc.showOpenDialog(null);
+
+            if(returnValue==JFileChooser.APPROVE_OPTION){
+
+                String cheminFichier=fc.getSelectedFile().getAbsolutePath();
+                if(!cheminFichier.endsWith(".ezuml")){
+                    cheminFichier=cheminFichier+".ezuml";
+                }
+
+                try {
+                    final FileOutputStream fichier = new FileOutputStream(cheminFichier);
+                    oos = new ObjectOutputStream(fichier);
+                    oos.writeObject(this);
+                    oos.flush();
+                } catch( final java.io.IOException e){
+                    e.printStackTrace();
+                } finally{
+                    try {
+                        if (oos != null) {
+                            oos.flush();
+                            oos.close();
+                        }
+                    } catch (final IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        
 
 
     //getters setters

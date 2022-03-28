@@ -2,9 +2,10 @@ package modele;
 
 import modele.classe.ObjectClasse;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class CollectionObjectClasse {
+public class CollectionObjectClasse implements Serializable {
 
     /**
      * Source des packages du projet

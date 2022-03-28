@@ -1,13 +1,15 @@
 // PACKAGE
 package modele.classe;
 
+import java.io.Serializable;
+
 /**
  * Classe Interface
  *      herite de ObjectClasse
  *
  * Represente un ObjectClasse de type interface
  */
-public class Interface extends ObjectClasse {
+public class Interface extends ObjectClasse implements Serializable {
 
     // ATTRIBUTS
 

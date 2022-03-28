@@ -2,6 +2,7 @@ package modele;
 
 import modele.classe.ObjectClasse;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,7 +10,7 @@ import java.util.*;
  * genere par le modele avec les objects classe que l'on lui fourni
  * @author Marcus RICHIER
  */
-public class Package{
+public class Package implements Serializable {
 
 
     //attributs

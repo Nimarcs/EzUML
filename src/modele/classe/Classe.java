@@ -1,13 +1,15 @@
 // PACKAGE
 package modele.classe;
 
+import java.io.Serializable;
+
 /**
  * Classe Classe
  *      herite d'Extendable
  *
  * Represente un ObjectClasse de type class
  */
-public class Classe extends Extendable {
+public class Classe extends Extendable implements Serializable {
 
     // ATTRIBUTS
 

@@ -42,7 +42,7 @@ public class ControleurMenu implements ActionListener {
              * Cela a pour effet d'ouvrir une fenetre d'exploration window
              * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
              */
-            case "Charger":
+            case "Charger un .class":
 
                 JFrame frame = new JFrame();
                 FileDialog fd = new FileDialog(frame, "Choix d'un fichier .class", FileDialog.LOAD);
@@ -77,6 +77,12 @@ public class ControleurMenu implements ActionListener {
              */
             case "Retirer Selection du diagramme" :
                 modele.retirerClasseSelectionne();
+                break;
+                /*
+                Permet d'enrigistrer la classe modele
+             */
+            case "Sauvegarder":
+                modele.enregistrement();
                 break;
             default:
                 throw new IllegalStateException("Bouton non traite");

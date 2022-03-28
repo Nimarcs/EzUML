@@ -4,10 +4,12 @@ import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 import modele.classe.Statut;
 
+import java.io.Serializable;
+
 /**
  * FlecheAssociation qui permet de representer une association
  */
-public class FlecheAssociation {
+public class FlecheAssociation implements Serializable {
 
     /**
      * Source de la fleche

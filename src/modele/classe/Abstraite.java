@@ -1,13 +1,15 @@
 // PACKAGE
 package modele.classe;
 
+import java.io.Serializable;
+
 /**
  * Classe Abstraite
  *      herite de ObjectClasse
  *
  * Represente un ObjectClasse de type abstract class
  */
-public class Abstraite extends Extendable {
+public class Abstraite extends Extendable implements Serializable {
 
     // ATTRIBUTS
 

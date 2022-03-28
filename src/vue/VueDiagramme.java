@@ -7,8 +7,9 @@ import modele.classe.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class VueDiagramme extends JPanel implements Observateur { //extends JPanel temporaire
+public class VueDiagramme extends JPanel implements Observateur,Serializable { //extends JPanel temporaire
 
 	/**
 	 * Attribut prive modele
