@@ -6,10 +6,12 @@ import modele.classe.ObjectClasse;
 import vue.VueDiagramme;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
 import java.util.List;
@@ -390,6 +392,71 @@ public class Modele extends Sujet implements Serializable {
         //si on a pas trouve on renvoie l'exception correspondante
         if (!trouve) throw new ClassNotFoundException();
         return res;
+    }
+
+    /**
+     * recupere les dimentions du diagramme
+     * @return Rectangle qui correspond a la zone de capture
+     */
+    private Rectangle getBoundsDiagramme(){
+        int xmin = 0, xmax  =0, ymin = 0, ymax = 0;
+        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        if (ite.hasNext()){
+            ObjectClasse o = ite.next();
+            xmax = o.getX() + vueDiagramme.calculerLargeur(o);
+            xmin = o.getX();
+            ymax = o.getY() + vueDiagramme.calculerHauteur(o);
+            ymin = o.getY();
+        } else {
+            //erreur
+        }
+        while (ite.hasNext()) {
+            ObjectClasse o = ite.next();
+            if (o.getX() + vueDiagramme.calculerLargeur(o) > xmax) xmax = o.getX() + vueDiagramme.calculerLargeur(o);
+            if (o.getX() < xmin) xmin = o.getX();
+            if (o.getY() + vueDiagramme.calculerHauteur(o) > ymax) ymax = o.getY() + vueDiagramme.calculerHauteur(o);
+            if (o.getY() < ymin) ymin = o.getY();
+        }
+        return new Rectangle( xmin-10, ymin-10, Math.abs(xmax-xmin)+20, Math.abs(ymax-ymin)+20);
+    }
+
+    /**
+     * Methode qui permet d'exporter le diagramme dans un fichier
+     * @param typeImage type d'image dans lequel on veut enregistrer l'image
+     * @param fichier fichier dans lequel on veut enregistrer l'image
+     */
+    public void exporterEnImage(String typeImage, File fichier){
+        //valeurs initiale
+        Rectangle bounds = getBoundsDiagramme();
+        BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+
+        //on recupere les valeurs avant le changement
+        int dX = decalageX;
+        int dY = decalageY;
+        decalageX = bounds.x * -1;
+        decalageY = bounds.y * -1;
+        deselectionner();
+        vueDiagramme.reorganiserPourCapture(bounds);
+
+        //on fait la capture
+        vueDiagramme.paintComponent(g);
+
+        //on remet les valeurs apres le changement
+        vueDiagramme.reinitialiserApresCapture();
+        decalageX =dX;
+        decalageY = dY;
+
+        //on supprime le graphics
+        g.dispose();
+
+
+        try{
+            //On cree l'image
+            ImageIO.write(bi,typeImage,fichier);
+        }catch (Exception ignored) {
+            //erreur
+        }
     }
 
 

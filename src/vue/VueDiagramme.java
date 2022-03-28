@@ -16,6 +16,11 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
 	 */
     private Modele modele;
 
+    /**
+     * Attribut qui permet de restaurer la taille correcte après l'avoir changee pour la capture
+     */
+    private Rectangle bounds;
+
 	/**
 	 * Attribut prive FontMetrics qui permet de connaitre la taille en pixel
 	 */
@@ -309,6 +314,15 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
     public void actualiser(Sujet sujet) {
         this.modele = (Modele)sujet;
         this.repaint();
+    }
+
+    public void reorganiserPourCapture(Rectangle boundsCapture){
+        bounds = getBounds();
+        setBounds(boundsCapture.x, boundsCapture.y ,boundsCapture.width, boundsCapture.height);
+    }
+
+    public void reinitialiserApresCapture(){
+        setBounds(bounds);
     }
 
 }

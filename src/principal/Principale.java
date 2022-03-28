@@ -63,7 +63,10 @@ public class Principale {
         JButton boutonSauver = new JButton("Sauvegarder");
         menu.add(boutonSauver);
         boutonSauver.addActionListener(controleurMenu);
-        
+        //ajout d'un bouton Exporter en image
+        JButton boutonExporterImage = new JButton ("Exporter en image");
+        menu.add(boutonExporterImage);
+        boutonExporterImage.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 
