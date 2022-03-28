@@ -78,15 +78,23 @@ public class ControleurMenu implements ActionListener {
             case "Retirer Selection du diagramme" :
                 modele.retirerClasseSelectionne();
                 break;
-                /*
-                Permet d'enrigistrer la classe modele
+            /*
+                Permet d'enregistrer la classe modele
              */
             case "Sauvegarder":
                 modele.enregistrement();
                 break;
-
+                /*
+                    Permet de charger une classe modele Sauvegarder
+                 */
             case "Charger diagramme":
                 modele.deserilization();
+            break;
+            /*
+                Permet d'exporter en image le diagramme
+             */
+            case "Exporter en image" :
+                modele.exporterEnImage("png", new File("test.png"));
                 break;
             default:
                 throw new IllegalStateException("Bouton non traite");
@@ -95,5 +103,3 @@ public class ControleurMenu implements ActionListener {
     }
 
 }
-
-

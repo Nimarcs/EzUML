@@ -67,6 +67,10 @@ public class Principale {
         JButton boutonChargerDiag = new JButton("Charger diagramme");
         menu.add(boutonChargerDiag);
         boutonChargerDiag.addActionListener(controleurMenu);
+        //ajout d'un bouton Exporter en image
+        JButton boutonExporterImage = new JButton ("Exporter en image");
+        menu.add(boutonExporterImage);
+        boutonExporterImage.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 
