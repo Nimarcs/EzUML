@@ -48,7 +48,7 @@ public class Principale {
         menu.setPreferredSize(new Dimension(LARGEUR_FEN,TAILLE_MENU));
 
         //ajout d'un bouton charger
-        JButton boutonCharger = new JButton ("Charger");
+        JButton boutonCharger = new JButton ("Charger un .class");
         menu.add(boutonCharger);
         boutonCharger.addActionListener(controleurMenu);
         //ajout d'un bouton nouveau
@@ -59,6 +59,18 @@ public class Principale {
         JButton boutonRetirerDuDiag = new JButton ("Retirer Selection du diagramme");
         menu.add(boutonRetirerDuDiag);
         boutonRetirerDuDiag.addActionListener(controleurMenu);
+        //ajout d'un bouton pour sauvegarder un diagramme
+        JButton boutonSauver = new JButton("Sauvegarder");
+        menu.add(boutonSauver);
+        boutonSauver.addActionListener(controleurMenu);
+        //ajout d'un bouton pour charger unn diagramme sauvegarder
+        JButton boutonChargerDiag = new JButton("Charger diagramme");
+        menu.add(boutonChargerDiag);
+        boutonChargerDiag.addActionListener(controleurMenu);
+        //ajout d'un bouton Exporter en image
+        JButton boutonExporterImage = new JButton ("Exporter en image");
+        menu.add(boutonExporterImage);
+        boutonExporterImage.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
 

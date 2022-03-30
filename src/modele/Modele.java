@@ -5,9 +5,16 @@ import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
 import vue.VueDiagramme;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
+import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +22,7 @@ import java.util.stream.Collectors;
  * Contient ce qui est necessaire pour armoniser le diagramme, l'arborescence et les differents controleurs et vues
  * @author Marcus RICHIER
  */
-public class Modele extends Sujet {
+public class Modele extends Sujet implements Serializable {
 
 
     //Attributs
@@ -35,7 +42,7 @@ public class Modele extends Sujet {
      * Liste des classes selectionne au moment courant
      * On ne peut selectionner que des classes
      */
-    private List<ObjectClasse> selection;
+    private  transient List<ObjectClasse> selection;
 
     /**
      * Fichier charge couramment, sert a l'arboresance
@@ -45,7 +52,7 @@ public class Modele extends Sujet {
     /**
      * Facade qui permet d'obtenir les ObjectClasse a partir des fichiers
      */
-    private FacadeIntrospection facade;
+    private transient FacadeIntrospection facade;
 
     /**
      * Liste des fleches actuellement represente
@@ -55,7 +62,7 @@ public class Modele extends Sujet {
     /**
      * Represente le decalage de la vision sur le diagramme par rapport au 0 0
      */
-    private int decalageX, decalageY;
+    private transient int decalageX, decalageY;
 
     /**
      * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
@@ -387,6 +394,160 @@ public class Modele extends Sujet {
         return res;
     }
 
+    /**
+     * recupere les dimentions du diagramme
+     * @return Rectangle qui correspond a la zone de capture
+     */
+    private Rectangle getBoundsDiagramme(){
+        int xmin = 0, xmax  =0, ymin = 0, ymax = 0;
+        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        if (ite.hasNext()){
+            ObjectClasse o = ite.next();
+            xmax = o.getX() + vueDiagramme.calculerLargeur(o);
+            xmin = o.getX();
+            ymax = o.getY() + vueDiagramme.calculerHauteur(o);
+            ymin = o.getY();
+        } else {
+            //erreur
+        }
+        while (ite.hasNext()) {
+            ObjectClasse o = ite.next();
+            if (o.getX() + vueDiagramme.calculerLargeur(o) > xmax) xmax = o.getX() + vueDiagramme.calculerLargeur(o);
+            if (o.getX() < xmin) xmin = o.getX();
+            if (o.getY() + vueDiagramme.calculerHauteur(o) > ymax) ymax = o.getY() + vueDiagramme.calculerHauteur(o);
+            if (o.getY() < ymin) ymin = o.getY();
+        }
+        return new Rectangle( xmin-10, ymin-10, Math.abs(xmax-xmin)+20, Math.abs(ymax-ymin)+20);
+    }
+
+    /**
+     * Methode qui permet d'exporter le diagramme dans un fichier
+     * @param typeImage type d'image dans lequel on veut enregistrer l'image
+     * @param fichier fichier dans lequel on veut enregistrer l'image
+     */
+    public void exporterEnImage(String typeImage, File fichier){
+        //valeurs initiale
+        Rectangle bounds = getBoundsDiagramme();
+        BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+
+        //on recupere les valeurs avant le changement
+        int dX = decalageX;
+        int dY = decalageY;
+        decalageX = bounds.x * -1;
+        decalageY = bounds.y * -1;
+        deselectionner();
+        vueDiagramme.reorganiserPourCapture(bounds);
+
+        //on fait la capture
+        vueDiagramme.paintComponent(g);
+
+        //on remet les valeurs apres le changement
+        vueDiagramme.reinitialiserApresCapture();
+        decalageX =dX;
+        decalageY = dY;
+
+        //on supprime le graphics
+        g.dispose();
+
+
+        try{
+            //On cree l'image
+            ImageIO.write(bi,typeImage,fichier);
+        }catch (Exception ignored) {
+            //erreur
+        }
+    }
+
+
+
+    public void enregistrement(){
+
+        ObjectOutputStream oos = null;
+/*
+            JFrame frame = new JFrame();
+            FileDialog fd = new FileDialog(frame, "Sauvegarder votre fichier", FileDialog.SAVE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            fd.setDirectory("C:");
+            fd.setVisible(true);
+            fd.setFilenameFilter();
+            fd.setMode();*/
+            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            fc.addChoosableFileFilter(new EzumlSaveFilter());
+            //fc.setFileFilter(new EzumlSaveFilter());
+            fc.setDialogTitle("Sauvegarder le nom de votre fichier");
+
+            int returnValue = fc.showOpenDialog(null);
+
+            if(returnValue==JFileChooser.APPROVE_OPTION){
+
+                String cheminFichier=fc.getSelectedFile().getAbsolutePath();
+                if(!cheminFichier.endsWith(".ezuml")){
+                    cheminFichier=cheminFichier+".ezuml";
+                }
+
+                try {
+                    final FileOutputStream fichier = new FileOutputStream(cheminFichier);
+                    oos = new ObjectOutputStream(fichier);
+                    oos.writeObject(this);
+                    oos.flush();
+                } catch( final java.io.IOException e){
+                    e.printStackTrace();
+                } finally{
+                    try {
+                        if (oos != null) {
+                            oos.flush();
+                            oos.close();
+                        }
+                    } catch (final IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        public void deserilization(){
+            ObjectInputStream ois = null;
+
+            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            fc.addChoosableFileFilter(new EzumlSaveFilter());
+            //fc.setFileFilter(new EzumlSaveFilter());
+            fc.setDialogTitle("Ouvrir votre fichier");
+
+            int returnValue = fc.showOpenDialog(null);
+
+            if(returnValue==JFileChooser.APPROVE_OPTION) {
+
+                try {
+                    final FileInputStream fichier = new FileInputStream(fc.getSelectedFile().getAbsolutePath());
+                    ois = new ObjectInputStream(fichier);
+                    final Modele p = (Modele) ois.readObject();
+
+                    System.out.println(p.getObjectClasses());
+                    this.collectionObjectClasse = p.getCollectionObjectClasse();
+                    this.afficherPackage = p.isAfficherPackage();
+                    this.dossierCourant= p.getDossierCourant();
+                    this.associations = p.getAssociations();
+                    this.setVueDiagramme(p.getVueDiagramme());
+                    notifierObservateurs();
+
+                } catch (final java.io.IOException e) {
+                    e.printStackTrace();
+                } catch (final ClassNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (ois != null) {
+                            ois.close();
+                        }
+                    } catch (final IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+    }
+
 
     //getters setters
 
@@ -398,6 +559,10 @@ public class Modele extends Sujet {
      */
     public Package getPackages() {
         return collectionObjectClasse.getPackages();
+    }
+
+    public CollectionObjectClasse getCollectionObjectClasse(){
+        return collectionObjectClasse;
     }
 
     /**
@@ -482,6 +647,10 @@ public class Modele extends Sujet {
     public void setVueDiagramme(VueDiagramme vueDiagramme) {
         assert vueDiagramme != null;
         this.vueDiagramme = vueDiagramme;
+    }
+
+    public VueDiagramme getVueDiagramme(){
+        return vueDiagramme;
     }
 
     /**

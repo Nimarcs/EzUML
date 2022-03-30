@@ -1,13 +1,15 @@
 // PACKAGE
 package modele.classe;
 
+import java.io.Serializable;
+
 /**
  * Classe Enumeration
  *      herite de ObjectClasse
  *
  * Represente un ObjectClasse de type enum
  */
-public class Enumeration extends ObjectClasse {
+public class Enumeration extends ObjectClasse implements Serializable {
 
 
     // ATTRIBUTS

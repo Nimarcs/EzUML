@@ -2,6 +2,7 @@
 package modele.classe;
 
 // IMPORTS
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
  * Represente une classe java
  * Contient une liste d'attributs et de methode mais aussi sa position dans la zone d'affichage des diagrammes des classes
  */
-public abstract class ObjectClasse {
+public abstract class ObjectClasse implements Serializable {
 
     // ATTRIBUTS
 

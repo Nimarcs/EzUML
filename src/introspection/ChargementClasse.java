@@ -37,15 +37,33 @@ public class ChargementClasse {
      */
     public Class chargerClass(File f, int p) throws MalformedURLException {
         Class cls = null;
+
+        //On regarde quel est le système d'exploitation, pour agir sur les chemins d'acces
+        String SE = System.getProperty("os.name").toLowerCase();
+
+        String a;
+        if (SE.indexOf("win") >= 0) {
+            //systeme window
+            a = "\\";
+        } else if (SE.indexOf("mac") >= 0 ||SE.indexOf("nux") >= 0) {
+            //systeme mac ou linux
+            a = "/";
+        } else{
+            //systeme par pris en compte
+            a = "/";
+        }
+
+
         // condition qui regarde que le nombre de repertoire n'est pas superieur a p
-        if (p <= compterBackQuote(f.getAbsolutePath())) {
+
+        if (p <= compterBackQuote(f.getAbsolutePath(), a )) {
             //tableau qui contient le chemin d'acces juste avant les packages et le nom du fichier avec ses packages
             String[] s = new String[2];
             String cheminAbsolue = f.getAbsolutePath();
 
             int i = cheminAbsolue.length() - 1;
             int repertoirePackage = 0;
-            String a = "\\";
+
 
             // boucle qui regarde si on trouve \ et qui s'arrete quand on a trouve le bon
             // nombre qui est celui de p
@@ -67,7 +85,7 @@ public class ChargementClasse {
                 // on enleve le .class
                 s[1] = s[1].split(Pattern.quote(".")+"class")[0];
                 // on remplace \ par un point
-                s[1] = s[1].replace("\\", ".");
+                s[1] = s[1].replace(a, ".");
 
             }
             try {
@@ -99,10 +117,10 @@ public class ChargementClasse {
      * @param text
      * @return
      */
-    private int compterBackQuote(String text) {
+    private int compterBackQuote(String text, String a) {
         int count = 0;
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == "\\".charAt(0)) {
+            if (text.charAt(i) == a.charAt(0)) {
                 count++;
             }
         }

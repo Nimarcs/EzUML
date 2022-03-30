@@ -1,6 +1,7 @@
 // PACKAGE
 package modele.classe;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
  * Représente un attribut au sein d'une classe
  * Contient l'information concernant son statut, son type et son nom
  */
-public class Attribut {
+public class Attribut implements Serializable {
 
     // ATTRIBUTS
 

@@ -2,6 +2,7 @@
 package modele.classe;
 
 // IMPORTS
+import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
  * Represente une methode au sein d'une classe
  * Contient l'information concernant son nom, son statut, son type de retour et ses parametres
  */
-public class Methode {
+public class Methode implements Serializable {
 
     // ATTRIBUTS
 
