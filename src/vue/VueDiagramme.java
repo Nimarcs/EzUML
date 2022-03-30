@@ -5,8 +5,12 @@ import modele.Modele;
 import modele.Sujet;
 import modele.classe.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class VueDiagramme extends JPanel implements Observateur { //extends JPanel temporaire
 
@@ -199,89 +203,91 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
 
         ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
 
-        int srcX, srcY, destX, destY;
-        int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
-        int milieuDestY = dest.getY() + calculerHauteur(dest)/2;
+        if (dest!=null && dest.isVisible()) {
+            int srcX, srcY, destX, destY;
+            int milieuDestX = dest.getX() + calculerLargeur(dest) / 2;
+            int milieuDestY = dest.getY() + calculerHauteur(dest)/2;
 
-        if (src.getX() - ECART_VISUELLE_X <= milieuDestX
-                && milieuDestX <= src.getX() + calculerLargeur(src) + ECART_VISUELLE_X
-                && milieuDestY <= src.getY() - ECART_VISUELLE_Y
-                || milieuDestY >= src.getY() + calculerHauteur(src) + ECART_VISUELLE_Y) {
-            if (dest.getY() <= src.getY()) {
-                srcX = src.getX() + calculerLargeur(src) / 2;
-                srcY = src.getY();
-                destX = dest.getX() + calculerLargeur(dest) / 2;
-                destY = dest.getY() + calculerHauteur(dest);
+            if (src.getX() - ECART_VISUELLE_X <= milieuDestX
+                    && milieuDestX <= src.getX() + calculerLargeur(src) + ECART_VISUELLE_X
+                    && milieuDestY <= src.getY() - ECART_VISUELLE_Y
+                    || milieuDestY >= src.getY() + calculerHauteur(src) + ECART_VISUELLE_Y) {
+                if (dest.getY() <= src.getY()) {
+                    srcX = src.getX() + calculerLargeur(src) / 2;
+                    srcY = src.getY();
+                    destX = dest.getX() + calculerLargeur(dest) / 2;
+                    destY = dest.getY() + calculerHauteur(dest);
+                } else {
+                    srcX = src.getX() + calculerLargeur(src) / 2;
+                    srcY = src.getY() + calculerHauteur(src);
+                    destX = dest.getX() + calculerLargeur(dest) / 2;
+                    destY = dest.getY();
+                }
             } else {
-                srcX = src.getX() + calculerLargeur(src) / 2;
-                srcY = src.getY() + calculerHauteur(src);
-                destX = dest.getX() + calculerLargeur(dest) / 2;
-                destY = dest.getY();
+                if (dest.getX() <= src.getX()) {
+                    srcX = src.getX();
+                    srcY = src.getY() + calculerHauteur(src) / 2;
+                    destX = dest.getX() + calculerLargeur(dest);
+                    destY = dest.getY() + calculerHauteur(dest) / 2;
+                } else {
+                    srcX = src.getX() + calculerLargeur(src);
+                    srcY = src.getY() + calculerHauteur(src) / 2;
+                    destX = dest.getX();
+                    destY = dest.getY() + calculerHauteur(dest) / 2;
+                }
             }
-        } else {
-            if (dest.getX() <= src.getX()) {
-                srcX = src.getX();
-                srcY = src.getY() + calculerHauteur(src) / 2;
-                destX = dest.getX() + calculerLargeur(dest);
-                destY = dest.getY() + calculerHauteur(dest) / 2;
-            } else {
-                srcX = src.getX() + calculerLargeur(src);
-                srcY = src.getY() + calculerHauteur(src) / 2;
-                destX = dest.getX();
-                destY = dest.getY() + calculerHauteur(dest) / 2;
-            }
-        }
 
-        int dx = destX - srcX, dy = destY - srcY;
-        double D = Math.sqrt(dx * dx + dy * dy);
-        int d = 12, h = 6;
-        double xm = D - d, xn = xm, ym = h, yn = -h, x;
-        double sin = dy / D, cos = dx / D;
-        x = xm * cos - ym * sin + srcX;
-        ym = xm * sin + ym * cos + srcY;
-        xm = x;
-        x = xn * cos - yn * sin + srcX;
-        yn = xn * sin + yn * cos + srcY;
-        xn = x;
+            int dx = destX - srcX, dy = destY - srcY;
+            double D = Math.sqrt(dx * dx + dy * dy);
+            int d = 12, h = 6;
+            double xm = D - d, xn = xm, ym = h, yn = -h, x;
+            double sin = dy / D, cos = dx / D;
+            x = xm * cos - ym * sin + srcX;
+            ym = xm * sin + ym * cos + srcY;
+            xm = x;
+            x = xn * cos - yn * sin + srcX;
+            yn = xn * sin + yn * cos + srcY;
+            xn = x;
 
-        int decX = modele.getDecalageX();
-        int decY = modele.getDecalageY();
-        int[] xpoints = {destX + decX, (int) xm + decX, (int) xn + decX};
-        int[] ypoints = {destY + decY, (int) ym + decY, (int) yn + decY};
+            int decX = modele.getDecalageX();
+            int decY = modele.getDecalageY();
+            int[] xpoints = {destX + decX, (int) xm + decX, (int) xn + decX};
+            int[] ypoints = {destY + decY, (int) ym + decY, (int) yn + decY};
 
-        switch (choixFleche) {
-            case FLECHE_HERITAGE -> {
-                g.setColor(Color.BLACK);
-                g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
-                g.setColor(Color.WHITE);
-                g.fillPolygon(xpoints, ypoints, 3);
-                g.setColor(Color.BLACK);
-                g.drawPolygon(xpoints, ypoints, 3);
-                break;
+            switch (choixFleche) {
+                case FLECHE_HERITAGE -> {
+                    g.setColor(Color.BLACK);
+                    g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                    g.setColor(Color.WHITE);
+                    g.fillPolygon(xpoints, ypoints, 3);
+                    g.setColor(Color.BLACK);
+                    g.drawPolygon(xpoints, ypoints, 3);
+                    break;
+                }
+                case FLECHE_IMPLEMENTS -> {
+                    Graphics2D gg = ((Graphics2D) g);
+                    Stroke s = gg.getStroke();
+                    gg.setColor(Color.BLACK);
+                    gg.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT,
+                            BasicStroke.JOIN_MITER, 1.0f, new float[]{6f, 6f}, 2.0f));
+                    gg.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                    gg.setStroke(s);
+                    g.setColor(Color.WHITE);
+                    g.fillPolygon(xpoints, ypoints, 3);
+                    g.setColor(Color.BLACK);
+                    g.drawPolygon(xpoints, ypoints, 3);
+                    break;
+                }
+                case FLECHE_ASSOSCIATION -> {
+                    g.setColor(Color.BLACK);
+                    g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                    g.drawLine(destX+decX, destY +decY, xpoints[1], ypoints[1]);
+                    g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
+                    g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
+                    break;
+                }
+                default -> new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
             }
-            case FLECHE_IMPLEMENTS -> {
-                Graphics2D gg = ((Graphics2D) g);
-                Stroke s = gg.getStroke();
-                gg.setColor(Color.BLACK);
-                gg.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER, 1.0f, new float[]{6f, 6f}, 2.0f));
-                gg.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
-                gg.setStroke(s);
-                g.setColor(Color.WHITE);
-                g.fillPolygon(xpoints, ypoints, 3);
-                g.setColor(Color.BLACK);
-                g.drawPolygon(xpoints, ypoints, 3);
-                break;
-            }
-            case FLECHE_ASSOSCIATION -> {
-                g.setColor(Color.BLACK);
-                g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
-                g.drawLine(destX+decX, destY +decY, xpoints[1], ypoints[1]);
-                g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
-                g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
-                break;
-            }
-            default -> new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
         }
 
     }

@@ -82,6 +82,7 @@ public class Principale {
         panelPrincipal.setRightComponent(vueDiagramme);
         modele.setVueDiagramme(vueDiagramme);
         vueDiagramme.addMouseListener(controleurDiagramme);
+        vueDiagramme.addMouseMotionListener(controleurDiagramme);
 
         //affichage
         frame.setVisible(true);

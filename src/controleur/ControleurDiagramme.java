@@ -5,11 +5,12 @@ import modele.classe.ObjectClasse;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 /**
  * Controleur de l'affichage du diagramme de classe
  */
-public class ControleurDiagramme implements MouseListener {
+public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     /**
      * constante qui represante le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
@@ -25,6 +26,12 @@ public class ControleurDiagramme implements MouseListener {
      * position a laquelle on a commencer a cliquer gauche, permet d'eviter de selectionner si on ne deplace pas la souris
      */
     private int positionDebutMaintientX, positionDebutMaintientY;
+    private int positionMaintientX, positionMaintientY;
+
+    /**
+     * dernier objectClasse sur lequel l'utilisateur a cliquer dessus
+     */
+    private ObjectClasse objectClasse;
 
     /**
      * Contructeur de ControleurDiagramme
@@ -56,6 +63,19 @@ public class ControleurDiagramme implements MouseListener {
         //On memorise le début du maintient
         positionDebutMaintientX = e.getX();
         positionDebutMaintientY = e.getY();
+        positionMaintientX = e.getX();
+        positionMaintientY = e.getY();
+
+        //on cherche l'objectClasse
+        try {
+            objectClasse = modele.getObjectClasseEnPosition(positionDebutMaintientX, positionDebutMaintientY);
+        } catch (ClassNotFoundException ex) {
+            objectClasse = null;
+        }
+
+        //if (objectClasse!=null) //modele.selectionnerUneClasse(objectClasse);
+
+
     }
 
     /**
@@ -65,78 +85,31 @@ public class ControleurDiagramme implements MouseListener {
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+
+        // on cacule les vecteurs de deplacement a partir de la position initial
         int vecteurDeplacementX = e.getX()-positionDebutMaintientX;
         int vecteurDeplacementY = e.getY()-positionDebutMaintientY;
 
-        ObjectClasse objectClasse = null;
-        boolean trouve;
-
-        //on cherche l'objectClasse
-        try {
-            objectClasse = modele.getObjectClasseEnPosition(positionDebutMaintientX, positionDebutMaintientY);
-            trouve = true;
-        } catch (ClassNotFoundException ex) {
-            trouve = false;
-        }
-
-
         //si on se deplace assez
         if (Math.abs(vecteurDeplacementX) > DEPLACEMENT_MIN || Math.abs(vecteurDeplacementY) > DEPLACEMENT_MIN) {
-
             //si on a trouve la classe
-            if (trouve) {
-
+            if (objectClasse!=null) {
                 //si la classe est selectionne
-                if (!modele.getSelection().contains(objectClasse)) {
-
-                    //si c'est pas un ctrl click
-                    if (!e.isControlDown()) {
-
-                        //le click va deselectionner
-                        modele.deselectionner();
-                    }
-
-                    modele.selectionnerUneClasse(objectClasse);
+                if (!modele.getSelection().contains(objectClasse) && !e.isControlDown()) {
+                    //le click va deselectionner
+                    modele.deselectionner();
+                } else {
+                    //modele.selectionnerUneClasse(objectClasse);
                 }
-                //si on a pas trouve la classe
-            } else {
-                modele.deselectionner();
-            }
-
-            //si on a rien selectionne
-            if (modele.getSelection().isEmpty()) {
-
-                //On change le decalage
-                modele.deplacerDecalageX(vecteurDeplacementX);
-                modele.deplacerDecalageY(vecteurDeplacementY);
-
-                //sinon on deplace la selection de classe
-            } else {
-                modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
             }
 
         } else {
-
-            //si c'est pas un ctrl click
-            if (!e.isControlDown()) {
-
-                //le click va deselectionner
-                modele.deselectionner();
+            if (objectClasse!=null) {
+                if (!e.isControlDown()) modele.deselectionner();
+                modele.selectionnerUneClasse(objectClasse);
             }
-
-            //on a clicker sur une classe
-            if (trouve) {
-                //System.out.println(objectClasse.getX() + ", " + objectClasse.getY() +"   "+ objectClasse.isVisible());
-
-                //si c'est un click gauche
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    modele.selectionnerUneClasse(objectClasse);
-                }
-            }
-
+            else modele.deselectionner();
         }
-
 
     }
 
@@ -157,6 +130,31 @@ public class ControleurDiagramme implements MouseListener {
      */
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // on caclcule le vecteur de deplacement
+        int vecteurDeplacementX = e.getX()-positionMaintientX;
+        int vecteurDeplacementY = e.getY()-positionMaintientY;
+        // On change la position de la selection
+        if (!modele.getSelection().isEmpty() && objectClasse!=null && modele.getSelection().contains(objectClasse)){
+            modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
+        }
+        else {
+            //On change le decalage
+            modele.deplacerDecalageX(vecteurDeplacementX);
+            modele.deplacerDecalageY(vecteurDeplacementY);
+            //sinon on deplace la selection de classe
+        }
+        // On reactualise la position du maitien avec celle de la souris à cet instant
+        positionMaintientX = e.getX();
+        positionMaintientY = e.getY();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 }

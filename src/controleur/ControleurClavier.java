@@ -60,10 +60,11 @@ public class ControleurClavier implements KeyListener {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DELETE){
             modele.dechargerClasseSelectionne();
+            for (ObjectClasse o: modele.getObjectClasses()
+            ) {
+                modele.ajouterClasse(o, 0, 0);
+            }
         }
-        for (ObjectClasse o: modele.getObjectClasses()
-             ) {
-            modele.ajouterClasse(o, 0, 0);
-        }
+
     }
 }
