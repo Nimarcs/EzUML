@@ -55,9 +55,17 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
     private final int ECART_VISUELLE_X = 100;
     private final int ECART_VISUELLE_Y = 40;
 
+    private BufferedImage tabInfo;
+
 
     public VueDiagramme(Modele m) {
         this.modele = m;
+        try {
+            tabInfo = ImageIO.read(new File("ressources/TableauInfo.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            tabInfo = null;
+        }
     }
 
 	/**
@@ -174,9 +182,10 @@ public class VueDiagramme extends JPanel implements Observateur { //extends JPan
                     }
                 }
             }
-
         }
 
+        // Pour finir, on affiche le rectangle d'information.
+        g.drawImage(tabInfo, getWidth()-tabInfo.getWidth()/2, getHeight()-tabInfo.getHeight()/2, tabInfo.getWidth()/2, tabInfo.getHeight()/2, null);
     }
 
 	/**
