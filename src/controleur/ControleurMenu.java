@@ -135,6 +135,7 @@ public class ControleurMenu implements ActionListener {
                     modele.exporterEnImage(extension,cheminFichier );
                 }
 
+                oldFrame.requestFocus();
                 break;
             default:
                 throw new IllegalStateException("Bouton non traite");
