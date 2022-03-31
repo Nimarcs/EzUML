@@ -23,8 +23,17 @@ public class ImageSaveFilterBuilder {
         List<ImageSaveFilter> imageSaveFilterBuilder = new ArrayList<>();
         Iterator<ImageWriterSpi> serviceProviders = IIORegistry.getDefaultInstance().getServiceProviders(ImageWriterSpi.class, false);
         while (serviceProviders.hasNext()) {
+            //on recupere les extentions du servuceProviders courant
             ImageWriterSpi next = serviceProviders.next();
-            imageSaveFilterBuilder.add(new ImageSaveFilter(next.getFormatNames()));
+            String[] formatNames=next.getFormatNames();
+
+            //on interdit ces deux formats car il ne marche pas
+            //pour une raison inconnue
+            List<String> formatNamesList = List.of(formatNames);
+            if (!formatNamesList.contains("bmp") && !formatNamesList.contains("jpg")) {
+                //on ajoute un nouveau filtre
+                imageSaveFilterBuilder.add(new ImageSaveFilter(formatNames));
+            }
         }
         filters = imageSaveFilterBuilder;
     }
