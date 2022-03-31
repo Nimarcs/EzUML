@@ -138,7 +138,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
     }
 
     /**
-     * méthode qui permet de generer chaque noeud de l'arbre de maniere recursive
+     * mï¿½thode qui permet de generer chaque noeud de l'arbre de maniere recursive
      * @param racine 
      * @param p
      */

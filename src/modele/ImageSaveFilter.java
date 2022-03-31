@@ -21,7 +21,7 @@ public class ImageSaveFilter extends FileFilter {
      */
     public ImageSaveFilter(String[] nomsExtentionAcceptee){
         if (nomsExtentionAcceptee == null) throw new NullPointerException("nomsExtentionAcceptee ne doit pas etre null");
-        this.nomsExtentionAcceptee = List.of(nomsExtentionAcceptee);
+        this.nomsExtentionAcceptee = Arrays.asList(nomsExtentionAcceptee);
         if (this.nomsExtentionAcceptee.isEmpty()) throw new IllegalArgumentException("nomsExtentionAcceptee ne doit pas etre vide");
     }
 

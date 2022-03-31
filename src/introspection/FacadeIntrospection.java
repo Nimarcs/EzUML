@@ -50,24 +50,24 @@ public class FacadeIntrospection {
 		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
 		int m = cls.getModifiers();
 		if (cls.isEnum()) {
-			 obc = new Enumeration(cls.getName(), cls.getPackageName(), 0, 0);
+			 obc = new Enumeration(cls.getName(), cls.getPackage().getName(), 0, 0);
 		} else if (Modifier.isInterface(m)) {
-			 obc = new Interface(cls.getName(), cls.getPackageName(), 0, 0);
+			 obc = new Interface(cls.getName(), cls.getPackage().getName(), 0, 0);
 		}else if (Modifier.isAbstract(m)) {
 
 			if (cls.getSuperclass()!=null){
-				Extendable e= new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
+				Extendable e= new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
 				int mExtend =cls.getSuperclass().getModifiers();
 				if ( Modifier.isAbstract(mExtend)) {
-					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
+					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
 
 				} else{
-					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
+					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
 				}
 			} else {
-				obc = new Abstraite(cls.getName(), cls.getPackageName(), 0, 0);
+				obc = new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
 
 			}
 
@@ -76,21 +76,21 @@ public class FacadeIntrospection {
 
 			//on regarde si il herite d'une classe
 			if (cls.getSuperclass()!=null){
-				Extendable e= new Classe(cls.getName(), cls.getPackageName(), 0, 0);
+				Extendable e= new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
 				int mExtend =cls.getSuperclass().getModifiers();
 				//on regarde si la classe hérité est une classe abstraite ou une classe
 				if ( Modifier.isAbstract(mExtend)) {
-					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
+					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
 
 				} else{
-					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackageName(), 0, 0));
+					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
 
 				}
 
 			} else {
-				obc = new Classe(cls.getName(), cls.getPackageName(), 0, 0);
+				obc = new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
 			}
 		}
 

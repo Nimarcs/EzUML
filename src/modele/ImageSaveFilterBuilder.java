@@ -29,7 +29,7 @@ public class ImageSaveFilterBuilder {
 
             //on interdit ces deux formats car il ne marche pas
             //pour une raison inconnue
-            List<String> formatNamesList = List.of(formatNames);
+            List<String> formatNamesList = Arrays.asList(formatNames);
             if (!formatNamesList.contains("bmp") && !formatNamesList.contains("jpg")) {
                 //on ajoute un nouveau filtre
                 imageSaveFilterBuilder.add(new ImageSaveFilter(formatNames));

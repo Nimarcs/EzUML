@@ -270,7 +270,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
             int[] ypoints = {destY + decY, (int) ym + decY, (int) yn + decY};
 
             switch (choixFleche) {
-                case FLECHE_HERITAGE -> {
+                case FLECHE_HERITAGE :
                     g.setColor(Color.BLACK);
                     g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                     g.setColor(Color.WHITE);
@@ -278,8 +278,8 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     g.setColor(Color.BLACK);
                     g.drawPolygon(xpoints, ypoints, 3);
                     break;
-                }
-                case FLECHE_IMPLEMENTS -> {
+
+                case FLECHE_IMPLEMENTS :
                     Graphics2D gg = ((Graphics2D) g);
                     Stroke s = gg.getStroke();
                     gg.setColor(Color.BLACK);
@@ -292,16 +292,17 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     g.setColor(Color.BLACK);
                     g.drawPolygon(xpoints, ypoints, 3);
                     break;
-                }
-                case FLECHE_ASSOSCIATION -> {
+
+                case FLECHE_ASSOSCIATION :
                     g.setColor(Color.BLACK);
                     g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                     g.drawLine(destX+decX, destY +decY, xpoints[1], ypoints[1]);
                     g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
                     g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
                     break;
-                }
-                default -> throw new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
+
+                default :
+                    throw new Error("Impossible, un choix de fleche doit etre fait parmis celle existante");
             }
         }
 
