@@ -465,47 +465,47 @@ public class Modele extends Sujet implements Serializable {
 
         ObjectOutputStream oos = null;
 /*
-            JFrame frame = new JFrame();
-            FileDialog fd = new FileDialog(frame, "Sauvegarder votre fichier", FileDialog.SAVE);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame();
+        FileDialog fd = new FileDialog(frame, "Sauvegarder votre fichier", FileDialog.SAVE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            fd.setDirectory("C:");
-            fd.setVisible(true);
-            fd.setFilenameFilter();
-            fd.setMode();*/
-            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-            fc.addChoosableFileFilter(new EzumlSaveFilter());
-            //fc.setFileFilter(new EzumlSaveFilter());
-            fc.setDialogTitle("Sauvegarder le nom de votre fichier");
+        fd.setDirectory("C:");
+        fd.setVisible(true);
+        fd.setFilenameFilter();
+        fd.setMode();*/
+        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        fc.addChoosableFileFilter(new EzumlSaveFilter());
+        //fc.setFileFilter(new EzumlSaveFilter());
+        fc.setDialogTitle("Sauvegarder le nom de votre fichier");
 
-            int returnValue = fc.showOpenDialog(null);
+        int returnValue = fc.showOpenDialog(null);
 
-            if(returnValue==JFileChooser.APPROVE_OPTION){
+        if(returnValue==JFileChooser.APPROVE_OPTION){
 
-                String cheminFichier=fc.getSelectedFile().getAbsolutePath();
-                if(!cheminFichier.endsWith(".ezuml")){
-                    cheminFichier=cheminFichier+".ezuml";
-                }
+            String cheminFichier=fc.getSelectedFile().getAbsolutePath();
+            if(!cheminFichier.endsWith(".ezuml")){
+                cheminFichier=cheminFichier+".ezuml";
+            }
 
+            try {
+                final FileOutputStream fichier = new FileOutputStream(cheminFichier);
+                oos = new ObjectOutputStream(fichier);
+                oos.writeObject(this);
+                oos.flush();
+            } catch( final java.io.IOException e){
+                e.printStackTrace();
+            } finally{
                 try {
-                    final FileOutputStream fichier = new FileOutputStream(cheminFichier);
-                    oos = new ObjectOutputStream(fichier);
-                    oos.writeObject(this);
-                    oos.flush();
-                } catch( final java.io.IOException e){
-                    e.printStackTrace();
-                } finally{
-                    try {
-                        if (oos != null) {
-                            oos.flush();
-                            oos.close();
-                        }
-                    } catch (final IOException ex) {
-                        ex.printStackTrace();
+                    if (oos != null) {
+                        oos.flush();
+                        oos.close();
                     }
+                } catch (final IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
+    }
 
         public void deserilization(){
             ObjectInputStream ois = null;
