@@ -4,6 +4,7 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
+import vue.AffichageErreur;
 import vue.VueArborescence;
 import vue.VueDiagramme;
 
@@ -29,6 +30,10 @@ public class Principale {
         JFrame frame = new JFrame("EzUML");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //defini la taille minimum de la fenetre
+
+        //on instancie l'affichage d'erreur
+        AffichageErreur.instancier(frame);
+        AffichageErreur.getInstance().afficherErreur("Test erreur");
 
         //Controleur
         ControleurClavier controleurClavier = new ControleurClavier(modele);

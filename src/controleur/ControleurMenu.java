@@ -60,7 +60,7 @@ public class ControleurMenu implements ActionListener {
                 if (fd.getDirectory() != null) {
                     File[] f = fd.getFiles();
                     for (File fichier : f) {
-                        System.out.println(fichier.getAbsolutePath());
+                        //System.out.println(fichier.getAbsolutePath());
                         File fich = new File(fichier.getAbsolutePath());
                         modele.chargerArborescenceProjet(fich);
 

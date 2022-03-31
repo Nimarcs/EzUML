@@ -3,6 +3,7 @@ package modele;
 import introspection.FacadeIntrospection;
 import modele.classe.Attribut;
 import modele.classe.ObjectClasse;
+import vue.AffichageErreur;
 import vue.VueDiagramme;
 
 import javax.swing.*;
@@ -149,7 +150,8 @@ public class Modele extends Sujet implements Serializable {
                 try {
                     o = facade.introspectionClasse(f);
                 } catch (MalformedURLException e) {
-                    throw new IllegalStateException("Erreur pas encore traitee");
+                    AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement de la classe");
+                    return;
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
@@ -458,8 +460,8 @@ public class Modele extends Sujet implements Serializable {
         try{
             //On cree l'image
             ImageIO.write(bi,typeImage, new FileOutputStream(cheminFichier));
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (IllegalArgumentException | IOException ignored) {
+            AffichageErreur.getInstance().afficherErreur("Erreur lors de l'exportation en image " + typeImage);
             //erreur
         }
     }
@@ -498,7 +500,8 @@ public class Modele extends Sujet implements Serializable {
                 oos.writeObject(this);
                 oos.flush();
             } catch( final java.io.IOException e){
-                e.printStackTrace();
+                AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
+                return;
             } finally{
                 try {
                     if (oos != null) {
@@ -506,7 +509,8 @@ public class Modele extends Sujet implements Serializable {
                         oos.close();
                     }
                 } catch (final IOException ex) {
-                    ex.printStackTrace();
+                    AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
+                    return;
                 }
             }
         }
@@ -529,7 +533,7 @@ public class Modele extends Sujet implements Serializable {
                     ois = new ObjectInputStream(fichier);
                     final Modele p = (Modele) ois.readObject();
 
-                    System.out.println(p.getObjectClasses());
+                    //System.out.println(p.getObjectClasses());
                     this.collectionObjectClasse = p.getCollectionObjectClasse();
                     this.afficherPackage = p.isAfficherPackage();
                     this.dossierCourant= p.getDossierCourant();
@@ -537,17 +541,17 @@ public class Modele extends Sujet implements Serializable {
                     this.setVueDiagramme(p.getVueDiagramme());
                     notifierObservateurs();
 
-                } catch (final java.io.IOException e) {
-                    e.printStackTrace();
-                } catch (final ClassNotFoundException e) {
-                    e.printStackTrace();
+                } catch (java.io.IOException | ClassNotFoundException e) {
+                    AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement du diagramme");
+                    return;
                 } finally {
                     try {
                         if (ois != null) {
                             ois.close();
                         }
                     } catch (final IOException ex) {
-                        ex.printStackTrace();
+                        AffichageErreur.getInstance().afficherErreur("Erreur lors de la fermeture du chargement du diagramme");
+                        return;
                     }
                 }
             }

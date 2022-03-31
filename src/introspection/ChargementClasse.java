@@ -1,5 +1,7 @@
 package introspection;
 
+import vue.AffichageErreur;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -104,7 +106,7 @@ public class ChargementClasse {
                 cls = chargerClass(f, p);
             }
         } else {
-            System.out.println("on ne trouve pas votre fichier");
+            AffichageErreur.getInstance().afficherErreur("On ne trouve pas votre fichier");
         }
 
         return cls;
