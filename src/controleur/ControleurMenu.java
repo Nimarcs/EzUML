@@ -1,8 +1,11 @@
 package controleur;
 
+import modele.ImageSaveFilter;
+import modele.ImageSaveFilterBuilder;
 import modele.Modele;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,7 +97,44 @@ public class ControleurMenu implements ActionListener {
                 Permet d'exporter en image le diagramme
              */
             case "Exporter en image" :
-                modele.exporterEnImage("png", new File("test.png"));
+                //menu de choix
+                JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                fc.setApproveButtonText("Sauvegarder");
+
+
+
+                //on recupere les filters
+                for (ImageSaveFilter imgFilter: ImageSaveFilterBuilder.getFilters()) {
+                    fc.addChoosableFileFilter(imgFilter);
+                }
+                fc.setDialogTitle("Choisissez ou exporter votre image");
+                int returnValue = fc.showOpenDialog(null);
+
+                if(returnValue==JFileChooser.APPROVE_OPTION){
+                    String cheminFichier = fc.getSelectedFile().getAbsolutePath();
+                    String extension;
+
+                    //Si le fileFilter est un des notre et qu'il manque l'extension on la rajoute
+                    try {
+                        ImageSaveFilter fileFilterChoisi = (ImageSaveFilter) fc.getFileFilter();
+
+                        extension = cheminFichier.substring(cheminFichier.lastIndexOf('.') + 1);
+                        if (!fileFilterChoisi.getExtentions().contains(extension)) {
+                            cheminFichier = cheminFichier + "." + fileFilterChoisi.getExtentions().get(0);
+                        }
+                    } catch (ClassCastException ignored){}
+
+                    //on recupere l'extension
+                    int indexExtention = cheminFichier.lastIndexOf('.')+1;
+                    if (indexExtention > 0)
+                        extension= cheminFichier.substring(indexExtention);
+                    else
+                        extension= "png"; // si il n'y pas d'extension
+
+                    //pour une raison inconnue les exportations en jpg et bmp ne marche pas
+                    modele.exporterEnImage(extension,cheminFichier );
+                }
+
                 break;
             default:
                 throw new IllegalStateException("Bouton non traite");

@@ -423,9 +423,9 @@ public class Modele extends Sujet implements Serializable {
     /**
      * Methode qui permet d'exporter le diagramme dans un fichier
      * @param typeImage type d'image dans lequel on veut enregistrer l'image
-     * @param fichier fichier dans lequel on veut enregistrer l'image
+     * @param cheminFichier fichier dans lequel on veut enregistrer l'image
      */
-    public void exporterEnImage(String typeImage, File fichier){
+    public void exporterEnImage(String typeImage, String cheminFichier){
         //valeurs initiale
         Rectangle bounds = getBoundsDiagramme();
         BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
@@ -453,8 +453,9 @@ public class Modele extends Sujet implements Serializable {
 
         try{
             //On cree l'image
-            ImageIO.write(bi,typeImage,fichier);
-        }catch (Exception ignored) {
+            ImageIO.write(bi,typeImage, new FileOutputStream(cheminFichier));
+        }catch (Exception e) {
+            e.printStackTrace();
             //erreur
         }
     }
