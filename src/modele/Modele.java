@@ -365,11 +365,15 @@ public class Modele extends Sujet implements Serializable {
      */
     public ObjectClasse getObjectClasseEnPosition(int x, int y) throws ClassNotFoundException {
 
-        //l'obejctclasse trouve sera stocke dans cette variable
+        //l'objectclasse trouve sera stocke dans cette variable
         ObjectClasse res = null;
 
+        //L'affichage est inverse donc on inverse
+        List<ObjectClasse> classesChargeeInversee = new ArrayList<>(collectionObjectClasse.getClassesChargees());
+        Collections.reverse(classesChargeeInversee);
+
         //on prepare un parcours des objectClasses
-        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        Iterator<ObjectClasse> ite = classesChargeeInversee.iterator();
         boolean trouve = false;
 
         //on parcourt les differents objectClasse
