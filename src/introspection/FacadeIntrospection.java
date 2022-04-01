@@ -133,7 +133,7 @@ public class FacadeIntrospection {
 
 		for (Field attri : fdd) {
 			String nom= attri.getName();
-			String typeAttribut = attri.getAnnotatedType().toString();
+			String typeAttribut = attri.getAnnotatedType().getType().toString();
 
 			// la fonction getmodifiers est un int qui change en fonction des particularites du Field
 			int mAtt = attri.getModifiers();
@@ -166,7 +166,7 @@ public class FacadeIntrospection {
 		Method[] meth = cls.getDeclaredMethods();
 		for (Method methode : meth) {
 			String nom= methode.getName();
-			String typeRetour= methode.getAnnotatedReturnType().toString();
+			String typeRetour= methode.getAnnotatedReturnType().getType().toString();
 
 			//tableau qui contient le nom des classes en parametres
 			AnnotatedType[] c = methode.getAnnotatedParameterTypes();
