@@ -33,7 +33,6 @@ public class Principale {
 
         //on instancie l'affichage d'erreur
         AffichageErreur.instancier(frame);
-        AffichageErreur.getInstance().afficherErreur("Test erreur");
 
         //Controleur
         ControleurClavier controleurClavier = new ControleurClavier(modele);
