@@ -172,7 +172,7 @@ public class FacadeIntrospection {
 			AnnotatedType[] c = methode.getAnnotatedParameterTypes();
 			List<String> tabList = new ArrayList<String>();
 			for (AnnotatedType cla : c) {
-				tabList.add(cla.toString());
+				tabList.add(cla.getType().toString());
 			}
 			//modifier qui change en fonction de ce que contient la methode, public/privée/abstraite/finale/...
 			int mMet = methode.getModifiers();
@@ -214,7 +214,7 @@ public class FacadeIntrospection {
 			AnnotatedType[] c = co.getAnnotatedParameterTypes();
 			List<String> tabList = new ArrayList<String>();
 			for (AnnotatedType cla : c) {
-				tabList.add(cla.toString());
+				tabList.add(cla.getType().toString());
 			}
 
 			Methode m= new Methode(nom, s, null, tabList,false, false, false);
