@@ -1,5 +1,6 @@
 package controleur;
 
+import modele.EzumlSaveFilter;
 import modele.ImageSaveFilter;
 import modele.ImageSaveFilterBuilder;
 import modele.Modele;
@@ -85,38 +86,57 @@ public class ControleurMenu implements ActionListener {
                 Permet d'enregistrer la classe modele
              */
             case "Sauvegarder":
-                modele.enregistrement();
+                JFileChooser fc1 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                fc1.addChoosableFileFilter(new EzumlSaveFilter());
+                //fc.setFileFilter(new EzumlSaveFilter());
+                fc1.setDialogTitle("Sauvegarder le nom de votre fichier");
+
+                int returnValue1 = fc1.showOpenDialog(null);
+
+                if(returnValue1==JFileChooser.APPROVE_OPTION){
+                    modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
+
+                }
                 break;
                 /*
                     Permet de charger une classe modele Sauvegarder
                  */
             case "Charger diagramme":
-                modele.deserilization();
+                JFileChooser fc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                fc2.addChoosableFileFilter(new EzumlSaveFilter());
+                //fc.setFileFilter(new EzumlSaveFilter());
+                fc2.setDialogTitle("Ouvrir votre fichier");
+
+                int returnValue2 = fc2.showOpenDialog(null);
+
+                if(returnValue2==JFileChooser.APPROVE_OPTION) {
+                    modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
+                }
             break;
             /*
                 Permet d'exporter en image le diagramme
              */
             case "Exporter en image" :
                 //menu de choix
-                JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                fc.setApproveButtonText("Sauvegarder");
+                JFileChooser fc3 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                fc3.setApproveButtonText("Sauvegarder");
 
 
 
                 //on recupere les filters
                 for (ImageSaveFilter imgFilter: ImageSaveFilterBuilder.getFilters()) {
-                    fc.addChoosableFileFilter(imgFilter);
+                    fc3.addChoosableFileFilter(imgFilter);
                 }
-                fc.setDialogTitle("Choisissez ou exporter votre image");
-                int returnValue = fc.showOpenDialog(null);
+                fc3.setDialogTitle("Choisissez ou exporter votre image");
+                int returnValue = fc3.showOpenDialog(null);
 
                 if(returnValue==JFileChooser.APPROVE_OPTION){
-                    String cheminFichier = fc.getSelectedFile().getAbsolutePath();
+                    String cheminFichier = fc3.getSelectedFile().getAbsolutePath();
                     String extension;
 
                     //Si le fileFilter est un des notre et qu'il manque l'extension on la rajoute
                     try {
-                        ImageSaveFilter fileFilterChoisi = (ImageSaveFilter) fc.getFileFilter();
+                        ImageSaveFilter fileFilterChoisi = (ImageSaveFilter) fc3.getFileFilter();
 
                         extension = cheminFichier.substring(cheminFichier.lastIndexOf('.') + 1);
                         if (!fileFilterChoisi.getExtentions().contains(extension)) {
