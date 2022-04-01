@@ -61,7 +61,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
     private final int ECART_VISUELLE_X = 100;
     private final int ECART_VISUELLE_Y = 40;
 
-    private BufferedImage tabInfo;
+    private transient BufferedImage tabInfo;
 
 
     public VueDiagramme(Modele m) {

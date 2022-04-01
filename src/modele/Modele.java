@@ -499,6 +499,7 @@ public class Modele extends Sujet implements Serializable {
                 oos.writeObject(this);
                 oos.flush();
             } catch( final java.io.IOException e){
+                //e.printStackTrace();
                 AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
                 return;
             } finally{
