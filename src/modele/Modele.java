@@ -200,7 +200,7 @@ public class Modele extends Sujet implements Serializable {
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
-                //ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
+                ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
             }
         }
     }
