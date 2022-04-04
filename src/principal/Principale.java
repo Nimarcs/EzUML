@@ -88,10 +88,11 @@ public class Principale {
         contentPane.add(panelPrincipal, BorderLayout.CENTER);
 
         //VueArborescence
-        VueArborescence vueArborescence = new VueArborescence();
+        VueArborescence vueArborescence = new VueArborescence(modele);
         panelPrincipal.setDividerLocation(TAILLE_ARBORESCENCE);
-        vueArborescence.getBase().getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);;
-        vueArborescence.getBase().addTreeSelectionListener(controleurArborescence);
+        controleurArborescence.setArbre(vueArborescence.getBase());
+        vueArborescence.getBase().getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+        vueArborescence.getBase().addMouseListener(controleurArborescence);
 
         modele.ajouterObservateur(vueArborescence);
         panelPrincipal.setLeftComponent(vueArborescence);

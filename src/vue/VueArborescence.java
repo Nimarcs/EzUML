@@ -1,8 +1,9 @@
 package vue;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,6 +16,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import modele.*;
 import modele.Package;
+import modele.classe.ObjectClasse;
 
 /**
  * Vue de l'arborescence
@@ -33,16 +35,16 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	/**
 	 * Le constructeur instancie un arbre vide dans le JScrollPane
 	 */
-	public VueArborescence() {
+	public VueArborescence(Modele modele) {
 
 
 		rootArbre = new DefaultMutableTreeNode("Racine");
-		//purement esthetique
-		rootArbre.add(new DefaultMutableTreeNode(new Package("src")));
+
+		rootArbre.add(new DefaultMutableTreeNode(new Package("src")));//purement esthetique
 
 		base = new JTree(rootArbre);
-		
-		base.setCellRenderer(new CustomRenderArbo());
+		base.setToggleClickCount(1);
+		base.setCellRenderer(new CustomRenderArbo(modele));
 		
 		base.setRootVisible(false);
 		
@@ -51,67 +53,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	}
 	
 	
-	/**
-	 * Classe CustomRenderArbo, permet d'afficher chaque element de l'arborescence de maniere correcte
-	 *
-	 */
-    public class CustomRenderArbo extends DefaultTreeCellRenderer {
-    	
-    	private final ImageIcon vert;
-    	private final ImageIcon rouge;
-    	private final JLabel label;
-    	
-    	
-    	public CustomRenderArbo() {
-    		this.vert = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointvert.png"));    		
 
-    		this.rouge = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointrouge.png"));    		
-    	
-    		this.label = new JLabel();
-    	}
-    	
-		public Component getTreeCellRendererComponent(JTree tree, Object value,boolean sel,boolean expanded,boolean leaf, int row,boolean hasFocus) {
-
-			Object objet = ((DefaultMutableTreeNode) value).getUserObject();
-
-			/*
-			 * le custom render va regarder si l'objet est un package ou pas
-			 * puis si l'objet est visible ou pas et afficher chaque element de maniere correcte
-			 *
-			 */
-
-			//affichage du package dans l'arbre, il s'agit d'un simple label avec le nom du package ou un placeholder si le .class n'a pas de package
-			if(objet instanceof Package) {
-				label.setIcon(null);
-				if(((Package) objet).getNom()=="") {
-					label.setText("PackageSansNom");
-				} else {
-					  label.setText(((Package) objet).getNom());
-
-				}
-
-			}
-
-			//affichage de la classe, avec une pastille verte si il est affiche ou rouge sinon
-			if(objet instanceof String) {
-
-				String[] tabstring = (((String) objet).split(Pattern.quote(".")));
-
-				if(tabstring.length==0) {
-					label.setText((String) objet);
-				}else {
-					label.setText(tabstring[tabstring.length-1]);
-
-				}
-				label.setIcon(rouge);
-			}
-
-			return label;
-
-		}
-    
-    
-    }
 
 
     @Override

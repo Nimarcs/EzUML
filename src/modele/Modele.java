@@ -155,7 +155,7 @@ public class Modele extends Sujet implements Serializable {
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
-                ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
+                //ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
             }
         }
     }
@@ -214,7 +214,7 @@ public class Modele extends Sujet implements Serializable {
      * @param y position sur l'axe des ordonnees de la classe sur le diagramme lors de l'ajout
      */
     public void ajouterClasse(ObjectClasse objectClasse, int x, int y ){
-
+        assert objectClasse != null;
         assert collectionObjectClasse.verifierClasseCharge(objectClasse) : "La classe doit etre chargee";
         //on verifie que la classe est chargee
 
@@ -381,6 +381,7 @@ public class Modele extends Sujet implements Serializable {
         //on parcourt les differents objectClasse
         while (!trouve && ite.hasNext()){
             ObjectClasse o = ite.next();
+            if (!o.isVisible()) continue;
 
             //on calcule la zone dans laquelle est l'objectClasse
             int minX = o.getX() + decalageX, maxX = minX + vueDiagramme.calculerLargeur(o);
