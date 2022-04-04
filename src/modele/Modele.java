@@ -500,6 +500,8 @@ public class Modele extends Sujet implements Serializable {
             }
 
         }
+        AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer à l'emplacement :\n"+cheminAbs);
+
     }
 
     /**

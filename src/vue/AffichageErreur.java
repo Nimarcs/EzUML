@@ -57,4 +57,14 @@ public class AffichageErreur {
         JOptionPane.showMessageDialog(oldFrame, message, "Erreur", JOptionPane.ERROR_MESSAGE);
         oldFrame.requestFocus();
     }
+
+
+    /**
+     * Methode qui permet d'afficher un message
+     * @param message message d'erreur a afficher
+     */
+    public void afficherMessage(String message){
+        JOptionPane.showMessageDialog(oldFrame, message, "Message Systeme", JOptionPane.INFORMATION_MESSAGE);
+        oldFrame.requestFocus();
+    }
 }

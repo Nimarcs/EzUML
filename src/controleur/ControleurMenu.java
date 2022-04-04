@@ -3,6 +3,7 @@ package controleur;
 import modele.ImageSaveFilter;
 import modele.ImageSaveFilterBuilder;
 import modele.Modele;
+import vue.AffichageErreur;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -103,22 +104,28 @@ public class ControleurMenu implements ActionListener {
                 Permet d'enregistrer la classe modele
              */
             case "Sauvegarder":
-                JFileChooser fc1 = new JFileChooser(dossierCourant);
-                //fc.setFileFilter(new EzumlSaveFilter());
-                fc1.setDialogTitle("Sauvegarder le nom de votre fichier");
-                fc1.setApproveButtonText("Sauvegarder");
-                fc1.setAcceptAllFileFilterUsed(false);
+                if(modele.getObjectClasses().isEmpty()){
+                    AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
 
-                FileNameExtensionFilter filtreEzuml = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
-                fc1.addChoosableFileFilter(filtreEzuml);
+                } else {
+                    JFileChooser fc1 = new JFileChooser(dossierCourant);
+                    //fc.setFileFilter(new EzumlSaveFilter());
+                    fc1.setDialogTitle("Sauvegarder votre fichier");
+                    fc1.setApproveButtonText("Sauvegarder");
+                    fc1.setAcceptAllFileFilterUsed(false);
+
+                    FileNameExtensionFilter filtreEzuml = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
+                    fc1.addChoosableFileFilter(filtreEzuml);
 
 
-                int returnValue1 = fc1.showOpenDialog(null);
+                    int returnValue1 = fc1.showOpenDialog(null);
 
-                if(returnValue1==JFileChooser.APPROVE_OPTION){
-                    modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
+                    if(returnValue1==JFileChooser.APPROVE_OPTION){
+                        modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
 
+                    }
                 }
+
                 oldFrame.requestFocus();
                 break;
                 /*
@@ -183,7 +190,11 @@ public class ControleurMenu implements ActionListener {
 
                     //pour une raison inconnue les exportations en jpg et bmp ne marche pas
                     modele.exporterEnImage(extension,cheminFichier );
+
+                    AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer à l'emplacement :\n"+cheminFichier);
+
                 }
+
 
                 oldFrame.requestFocus();
                 break;
@@ -215,12 +226,17 @@ public class ControleurMenu implements ActionListener {
                     }
 
 
+                    File fich =null;
                     //On regarde dans la liste result pour voir si il contient des .class
                     for (int i = 0; i < result.size(); i++) {
                         if (result.get(i).endsWith(".class") == true) {
-                            File fich = new File(result.get(i));
+                            fich = new File(result.get(i));
                             modele.chargerArborescenceProjet(fich);
                         }
+                    }
+
+                    if(fich==null){
+                        AffichageErreur.getInstance().afficherMessage("Le répertoire que vous avez choisi ne contient pas de .class");
                     }
                 }
 
