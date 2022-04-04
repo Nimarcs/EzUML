@@ -194,13 +194,14 @@ public class Modele extends Sujet implements Serializable {
                 ObjectClasse o;
                 try {
                     o = facade.introspectionClasse(f);
+
                 } catch (MalformedURLException e) {
                     AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement de la classe");
                     return;
                 }
-
                 collectionObjectClasse.ajouterObjectClasse(o);
                 //ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
+
             }
         }
     }

@@ -33,9 +33,13 @@ public class FacadeIntrospection {
 	public ObjectClasse introspectionClasse(File f) throws MalformedURLException {
 		Class cls = new ChargementClasse().chargerClass(f, 1);
 
-		//Todo gestion erreur
-		ObjectClasse obc= this.faireIntrospection(cls);
-		return obc;
+		if(cls==null){
+			return null;
+		} else {
+			ObjectClasse obc= this.faireIntrospection(cls);
+			return obc;
+		}
+
 	}
 
 
