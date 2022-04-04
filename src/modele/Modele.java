@@ -135,32 +135,6 @@ public class Modele extends Sujet implements Serializable {
     }
 
     /**
-     * Methode qui permet de charger une classe en lui donnant un fichier
-     * @param f fichier a charger
-     */
-    private void chargerClasse(File f){
-        //si le fichier est pas null
-        if (f != null){
-
-            //si le fichier est un .class
-            if(f.isFile() && f.getName().contains(".class")) {
-
-                //on recupere l'objectClasse
-                ObjectClasse o;
-                try {
-                    o = facade.introspectionClasse(f);
-                } catch (MalformedURLException e) {
-                    AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement de la classe");
-                    return;
-                }
-
-                collectionObjectClasse.ajouterObjectClasse(o);
-                //ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
-            }
-        }
-    }
-
-    /**
      * Methode qui permet de charger l'arborescence et les differents fichier le composant
      * Appelle la methode privee adapte et change le dossier projet
      * @param f fichier a tester
@@ -226,7 +200,7 @@ public class Modele extends Sujet implements Serializable {
                 }
 
                 collectionObjectClasse.ajouterObjectClasse(o);
-                ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
+                //ajouterClasse(collectionObjectClasse.getObjectClasse(o.getNomObjectClasse()), 0 , 0);
             }
         }
     }
