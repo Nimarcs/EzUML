@@ -1,5 +1,6 @@
 package principal;
 
+import controleur.ControleurArborescence;
 import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
@@ -9,6 +10,7 @@ import vue.VueArborescence;
 import vue.VueDiagramme;
 
 import javax.swing.*;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 public class Principale {
@@ -38,6 +40,7 @@ public class Principale {
         ControleurClavier controleurClavier = new ControleurClavier(modele);
         ControleurMenu controleurMenu= new ControleurMenu(modele, frame);
         ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
+        ControleurArborescence controleurArborescence = new ControleurArborescence(modele);
         //on ajoute le controleur
         frame.addKeyListener(controleurClavier);
 
@@ -89,8 +92,11 @@ public class Principale {
         contentPane.add(panelPrincipal, BorderLayout.CENTER);
 
         //VueArborescence
-        VueArborescence vueArborescence = new VueArborescence();
+        VueArborescence vueArborescence = new VueArborescence(modele);
         panelPrincipal.setDividerLocation(TAILLE_ARBORESCENCE);
+        controleurArborescence.setArbre(vueArborescence.getBase());
+        vueArborescence.getBase().getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+        vueArborescence.getBase().addMouseListener(controleurArborescence);
 
         modele.ajouterObservateur(vueArborescence);
         panelPrincipal.setLeftComponent(vueArborescence);
