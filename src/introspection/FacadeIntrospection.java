@@ -7,6 +7,7 @@ import java.lang.reflect.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * FacadeIntrospection permet de creer l'ObjetClasse a partir d'un File
@@ -134,6 +135,8 @@ public class FacadeIntrospection {
 		for (Field attri : fdd) {
 			String nom= attri.getName();
 			String typeAttribut = attri.getAnnotatedType().getType().toString();
+
+			if (Pattern.matches("class(.*)", typeAttribut)) typeAttribut = typeAttribut.substring(6);
 
 			// la fonction getmodifiers est un int qui change en fonction des particularites du Field
 			int mAtt = attri.getModifiers();
