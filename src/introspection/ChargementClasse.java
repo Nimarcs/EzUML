@@ -99,7 +99,13 @@ public class ChargementClasse {
                 URLClassLoader loader = new URLClassLoader(new URL[] { fl.toURL() }, getClass().getClassLoader());
 
                 // la methode forname renvoie la classe associe a s[1]
-                cls = Class.forName(s[1], false, loader);
+                try {
+                    cls = Class.forName(s[1], false, loader);
+                } catch( ClassFormatError e ){
+                    AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n"+f.getAbsolutePath());
+
+                    return null;
+                }
 
             } catch (NoClassDefFoundError | ClassNotFoundException e) {
                 // execption levee quand le loader n'est pas bon
@@ -108,7 +114,7 @@ public class ChargementClasse {
                 cls = chargerClass(f, p);
             }
         } else {
-            AffichageErreur.getInstance().afficherErreur("On ne trouve pas votre fichier");
+            AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n"+f.getAbsolutePath());
         }
 
         return cls;

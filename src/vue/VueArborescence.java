@@ -1,10 +1,9 @@
 package vue;
 
 import java.awt.Component;
-import java.util.HashSet;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 
 
 import modele.*;
@@ -26,22 +26,25 @@ import modele.classe.ObjectClasse;
  */
 
 public class VueArborescence extends JScrollPane implements Observateur{
-	
 
-    
 
+	private final JTree base;
+
+	private final DefaultMutableTreeNode rootArbre;
 	
 	/**
 	 * Le constructeur instancie un arbre vide dans le JScrollPane
 	 */
-	public VueArborescence() {
-		
-	    
-	    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Racine");
+	public VueArborescence(Modele modele) {
 
-		JTree base = new JTree(root);
-		
-		base.setCellRenderer(new CustomRenderArbo());
+
+		rootArbre = new DefaultMutableTreeNode("Racine");
+
+		rootArbre.add(new DefaultMutableTreeNode(new Package("src")));//purement esthetique
+
+		base = new JTree(rootArbre);
+		base.setToggleClickCount(1);
+		base.setCellRenderer(new CustomRenderArbo(modele));
 		
 		base.setRootVisible(false);
 		
@@ -50,67 +53,7 @@ public class VueArborescence extends JScrollPane implements Observateur{
 	}
 	
 	
-	/**
-	 * Classe CustomRenderArbo, permet d'afficher chaque element de l'arborescence de maniere correcte
-	 *
-	 */
-    public class CustomRenderArbo extends DefaultTreeCellRenderer {
-    	
-    	private final ImageIcon vert;
-    	private final ImageIcon rouge;
-    	private final JLabel label;
-    	
-    	
-    	public CustomRenderArbo() {
-    		this.vert = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointvert.png"));    		
 
-    		this.rouge = new ImageIcon(VueArborescence.class.getResource("imagesfeuilles/pointrouge.png"));    		
-    	
-    		this.label = new JLabel();
-    	}
-    	
-    	 public Component getTreeCellRendererComponent(JTree tree, Object value,boolean sel,boolean expanded,boolean leaf, int row,boolean hasFocus) {
-    	
-    	Object objet = ((DefaultMutableTreeNode) value).getUserObject();
-    		 
-    	/*
-    	 * le custom render va regarder si l'objet est un package ou pas
-    	 * puis si l'objet est visible ou pas et afficher chaque element de maniere correcte
-    	 * 
-    	 */
-
-    	//affichage du package dans l'arbre, il s'agit d'un simple label avec le nom du package ou un placeholder si le .class n'a pas de package
-    	if(objet instanceof Package) {
-    		label.setIcon(null);
-    		if(((Package) objet).getNom()=="") {
-    		    label.setText("PackageSansNom");
-    		} else {
-    	          label.setText(((Package) objet).getNom());
-
-    		}
-
-    	}
-    	
-    	//affichage de la classe, avec une pastille verte si il est affiche ou rouge sinon
-    	if(objet instanceof String) {
-     
-    	    String[] tabstring = (((String) objet).split(Pattern.quote(".")));
-    	    
-    	    if(tabstring.length==0) {
-    	        label.setText((String) objet);
-    	    }else {
-    	        label.setText(tabstring[tabstring.length-1]);
-
-    	    }
-   			label.setIcon(rouge);
-   		} 
-    	    	
-    	return label;    	
-    	
-    	}
-    
-    
-    }
 
 
     @Override
@@ -121,21 +64,22 @@ public class VueArborescence extends JScrollPane implements Observateur{
         Package p = m.getPackages();
         
         //initialistaion de la racine principale
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(p);
+        DefaultMutableTreeNode rootPackage = new DefaultMutableTreeNode(p);
         
         //appelle la methode ajouterNoeud, qui permet de generer l'arborescence en entier
-        ajouterNoeud(root,p);
+        ajouterNoeud(rootPackage,p);
 
         //creer l'arbre a partir du noeud root contenant l'arborescence en entier
-        JTree base = new JTree(root);
-        
-        //cela permet a l'arbre d'avoir l'apparence que l'on veut
-        base.setCellRenderer(new CustomRenderArbo());
-        
-        base.setRootVisible(true);
-        
-        this.setViewportView(base);        
-    }
+		rootArbre.removeAllChildren();
+		rootArbre.add(rootPackage);
+
+		//on actualise la vue
+		DefaultTreeModel model = (DefaultTreeModel) (base.getModel());
+		model.reload();
+
+		//on ouvre src pour qu'on puisse voir les packages
+		if (base.getRowCount() > 0) base.expandRow(0);
+	}
 
     /**
      * m�thode qui permet de generer chaque noeud de l'arbre de maniere recursive
@@ -286,4 +230,8 @@ public class VueArborescence extends JScrollPane implements Observateur{
 //		
 //	}
 
+
+	public JTree getBase() {
+		return base;
+	}
 }
