@@ -466,95 +466,71 @@ public class Modele extends Sujet implements Serializable {
     }
 
 
-
-    public void enregistrement(){
-
+    /**
+     * Methode qui permet d'enregistrer le diagramme que l'on vient de charger
+     * @param cheminAbs chemin absolue où l'image sera enregistrer
+     */
+    public void enregistrement(String cheminAbs){
         ObjectOutputStream oos = null;
-/*
-        JFrame frame = new JFrame();
-        FileDialog fd = new FileDialog(frame, "Sauvegarder votre fichier", FileDialog.SAVE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        fd.setDirectory("C:");
-        fd.setVisible(true);
-        fd.setFilenameFilter();
-        fd.setMode();*/
-        JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        fc.addChoosableFileFilter(new EzumlSaveFilter());
-        //fc.setFileFilter(new EzumlSaveFilter());
-        fc.setDialogTitle("Sauvegarder le nom de votre fichier");
+        if(!cheminAbs.endsWith(".ezuml")){
+            cheminAbs=cheminAbs+".ezuml";
+        }
 
-        int returnValue = fc.showOpenDialog(null);
-
-        if(returnValue==JFileChooser.APPROVE_OPTION){
-
-            String cheminFichier=fc.getSelectedFile().getAbsolutePath();
-            if(!cheminFichier.endsWith(".ezuml")){
-                cheminFichier=cheminFichier+".ezuml";
-            }
-
+        try {
+            final FileOutputStream fichier = new FileOutputStream(cheminAbs);
+            oos = new ObjectOutputStream(fichier);
+            oos.writeObject(this);
+            oos.flush();
+        } catch( final java.io.IOException e){
+            //e.printStackTrace();
+            AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
+            return;
+        } finally{
             try {
-                final FileOutputStream fichier = new FileOutputStream(cheminFichier);
-                oos = new ObjectOutputStream(fichier);
-                oos.writeObject(this);
-                oos.flush();
-            } catch( final java.io.IOException e){
-                //e.printStackTrace();
+                if (oos != null) {
+                    oos.flush();
+                    oos.close();
+                }
+            } catch (final IOException ex) {
                 AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
                 return;
-            } finally{
-                try {
-                    if (oos != null) {
-                        oos.flush();
-                        oos.close();
-                    }
-                } catch (final IOException ex) {
-                    AffichageErreur.getInstance().afficherErreur("Erreur lors de la sauvegarde du diagramme");
-                    return;
-                }
             }
+
         }
     }
 
-        public void deserilization(){
-            ObjectInputStream ois = null;
+    /**
+     * Methode qui permet de désérialiser un fichier que l'utilisateur à enregistrer
+     * @param cheminAbs chemin absolue où l'image sera désérialisé
+     */
+    public void deserilization(String cheminAbs){
+        ObjectInputStream ois = null;
+        try {
+            final FileInputStream fichier = new FileInputStream(cheminAbs);
+            ois = new ObjectInputStream(fichier);
+            final Modele p = (Modele) ois.readObject();
 
-            JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-            fc.addChoosableFileFilter(new EzumlSaveFilter());
-            //fc.setFileFilter(new EzumlSaveFilter());
-            fc.setDialogTitle("Ouvrir votre fichier");
-
-            int returnValue = fc.showOpenDialog(null);
-
-            if(returnValue==JFileChooser.APPROVE_OPTION) {
-
-                try {
-                    final FileInputStream fichier = new FileInputStream(fc.getSelectedFile().getAbsolutePath());
-                    ois = new ObjectInputStream(fichier);
-                    final Modele p = (Modele) ois.readObject();
-
-                    //System.out.println(p.getObjectClasses());
-                    this.collectionObjectClasse = p.getCollectionObjectClasse();
-                    this.afficherPackage = p.isAfficherPackage();
-                    this.dossierCourant= p.getDossierCourant();
-                    this.associations = p.getAssociations();
-                    this.setVueDiagramme(p.getVueDiagramme());
-                    notifierObservateurs();
-
-                } catch (java.io.IOException | ClassNotFoundException e) {
-                    AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement du diagramme");
-                    return;
-                } finally {
-                    try {
-                        if (ois != null) {
-                            ois.close();
-                        }
-                    } catch (final IOException ex) {
-                        AffichageErreur.getInstance().afficherErreur("Erreur lors de la fermeture du chargement du diagramme");
-                        return;
-                    }
+            //System.out.println(p.getObjectClasses());
+            this.collectionObjectClasse = p.getCollectionObjectClasse();
+            this.afficherPackage = p.isAfficherPackage();
+            this.dossierCourant= p.getDossierCourant();
+            this.associations = p.getAssociations();
+            this.setVueDiagramme(p.getVueDiagramme());
+            notifierObservateurs();
+        } catch (java.io.IOException | ClassNotFoundException e) {
+            AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement du diagramme");
+            return;
+        } finally {
+            try {
+                if (ois != null) {
+                    ois.close();
                 }
+            } catch (final IOException ex) {
+                AffichageErreur.getInstance().afficherErreur("Erreur lors de la fermeture du chargement du diagramme");
+                return;
             }
+        }
     }
 
 

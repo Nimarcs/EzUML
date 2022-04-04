@@ -34,6 +34,7 @@ public class FacadeIntrospection {
 	public ObjectClasse introspectionClasse(File f) throws MalformedURLException {
 		Class cls = new ChargementClasse().chargerClass(f, 1);
 
+		//Todo gestion erreur
 		ObjectClasse obc= this.faireIntrospection(cls);
 		return obc;
 	}
@@ -49,6 +50,7 @@ public class FacadeIntrospection {
 	private ObjectClasse faireIntrospection(Class cls){
 		ObjectClasse obc = null;
 		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
+
 		int m = cls.getModifiers();
 		if (cls.isEnum()) {
 			 obc = new Enumeration(cls.getName(), cls.getPackage().getName(), 0, 0);

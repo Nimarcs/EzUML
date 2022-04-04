@@ -55,6 +55,10 @@ public class Principale {
         JButton boutonCharger = new JButton ("Charger un .class");
         menu.add(boutonCharger);
         boutonCharger.addActionListener(controleurMenu);
+        //ajout d'un bouton charger un répertoire
+        JButton boutonChargerRep = new JButton ("Charger un répertoire");
+        menu.add(boutonChargerRep);
+        boutonChargerRep.addActionListener(controleurMenu);
         //ajout d'un bouton nouveau
         JButton boutonNouveau = new JButton ("Nouveau");
         menu.add(boutonNouveau);

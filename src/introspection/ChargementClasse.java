@@ -43,7 +43,9 @@ public class ChargementClasse {
         //On regarde quel est le système d'exploitation, pour agir sur les chemins d'acces
         String SE = System.getProperty("os.name").toLowerCase();
 
-        String a;
+        String a= File.separator;
+
+        /*
         if (SE.indexOf("win") >= 0) {
             //systeme window
             a = "\\";
@@ -53,7 +55,7 @@ public class ChargementClasse {
         } else{
             //systeme par pris en compte
             a = "/";
-        }
+        }*/
 
 
         // condition qui regarde que le nombre de repertoire n'est pas superieur a p
