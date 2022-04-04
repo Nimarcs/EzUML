@@ -54,22 +54,17 @@ public class ControleurArborescence implements MouseListener {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         if (node == null) return;
 
-        System.out.println("notnull");
         //on regarde si c'est une feuille donc un objectClasse
         if (node.isLeaf()){
-            System.out.print("leaf");
-            System.out.println(node.getUserObject().getClass());
 
+            //si c'est un double click sur une node qui contient un string (donc le chemin vers un objectclasse)
             Object o = node.getUserObject();
             if (o instanceof String && e.getClickCount() >= 2) {
+
+                //on l'ajoute si elle est chargee
                 String cheminComplet = (String) o;
                 ObjectClasse objectClasse = modele.getObjectClasse(cheminComplet);
                 if (objectClasse != null) modele.ajouterClasse(objectClasse, 0, 0);
-                System.out.println(objectClasse);
-                for (ObjectClasse objectClasse1 :  modele.getCollectionObjectClasse().getClassesChargees() ) {
-                    System.out.print(objectClasse1 + " : ");
-                    System.out.println(objectClasse1.isVisible());
-                }
             }
         }
 
