@@ -1,22 +1,31 @@
 package controleur;
 
-import modele.EzumlSaveFilter;
 import modele.ImageSaveFilter;
 import modele.ImageSaveFilterBuilder;
 import modele.Modele;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ControleurMenu implements ActionListener {
 
     private Modele modele;
 
     private JFrame oldFrame;
+
+    private File dossierCourant;
     /**
      * Contructeur de ControleurDiagramme
      * @param m modele a modifier, ne doit pas etre null
@@ -26,6 +35,7 @@ public class ControleurMenu implements ActionListener {
         assert frame != null;
         modele=m;
         oldFrame = frame;
+        dossierCourant=FileSystemView.getFileSystemView().getHomeDirectory();
     }
 
 
@@ -48,25 +58,32 @@ public class ControleurMenu implements ActionListener {
              */
             case "Charger un .class":
 
-                JFrame frame = new JFrame();
-                FileDialog fd = new FileDialog(frame, "Choix d'un fichier .class", FileDialog.LOAD);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                fd.setDirectory("C:");
-                fd.setFile("*.class");
-                fd.setMultipleMode(true);
-                fd.setVisible(true);
+                JFileChooser fc = new JFileChooser(dossierCourant);
+                //fc.setFileFilter(new EzumlSaveFilter());
+                fc.setDialogTitle("Ouvrir un .class");
+                fc.setApproveButtonText("Ouvrir");
+                fc.setMultiSelectionEnabled(true);
 
 
-                if (fd.getDirectory() != null) {
-                    File[] f = fd.getFiles();
-                    for (File fichier : f) {
-                        //System.out.println(fichier.getAbsolutePath());
+                fc.setAcceptAllFileFilterUsed(false);
+
+                FileNameExtensionFilter restrict = new FileNameExtensionFilter("Only .class files", "class");
+                fc.addChoosableFileFilter(restrict);
+
+
+
+                int returnValue = fc.showOpenDialog(null);
+
+                if(returnValue==JFileChooser.APPROVE_OPTION){
+
+                    File files[] = fc.getSelectedFiles();
+                    for (File fichier : files) {
                         File fich = new File(fichier.getAbsolutePath());
                         modele.chargerArborescenceProjet(fich);
 
                     }
                 }
+
                 //permet a la fenetre de regagner le focus une fois la popup finie
                 oldFrame.requestFocus();
                 break;
@@ -86,10 +103,15 @@ public class ControleurMenu implements ActionListener {
                 Permet d'enregistrer la classe modele
              */
             case "Sauvegarder":
-                JFileChooser fc1 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                fc1.addChoosableFileFilter(new EzumlSaveFilter());
+                JFileChooser fc1 = new JFileChooser(dossierCourant);
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc1.setDialogTitle("Sauvegarder le nom de votre fichier");
+                fc1.setApproveButtonText("Sauvegarder");
+                fc1.setAcceptAllFileFilterUsed(false);
+
+                FileNameExtensionFilter filtreEzuml = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
+                fc1.addChoosableFileFilter(filtreEzuml);
+
 
                 int returnValue1 = fc1.showOpenDialog(null);
 
@@ -97,22 +119,30 @@ public class ControleurMenu implements ActionListener {
                     modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
 
                 }
+                oldFrame.requestFocus();
                 break;
                 /*
                     Permet de charger une classe modele Sauvegarder
                  */
             case "Charger diagramme":
                 JFileChooser fc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                fc2.addChoosableFileFilter(new EzumlSaveFilter());
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc2.setDialogTitle("Ouvrir votre fichier");
+                fc2.setApproveButtonText("Ouvrir");
+                fc2.setAcceptAllFileFilterUsed(false);
+
+                FileNameExtensionFilter filtreEzumlO = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
+                fc2.addChoosableFileFilter(filtreEzumlO);
+
 
                 int returnValue2 = fc2.showOpenDialog(null);
 
                 if(returnValue2==JFileChooser.APPROVE_OPTION) {
                     modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
                 }
-            break;
+                oldFrame.requestFocus();
+
+                break;
             /*
                 Permet d'exporter en image le diagramme
              */
@@ -128,9 +158,9 @@ public class ControleurMenu implements ActionListener {
                     fc3.addChoosableFileFilter(imgFilter);
                 }
                 fc3.setDialogTitle("Choisissez ou exporter votre image");
-                int returnValue = fc3.showOpenDialog(null);
+                int returnValue3 = fc3.showOpenDialog(null);
 
-                if(returnValue==JFileChooser.APPROVE_OPTION){
+                if(returnValue3==JFileChooser.APPROVE_OPTION){
                     String cheminFichier = fc3.getSelectedFile().getAbsolutePath();
                     String extension;
 
@@ -157,6 +187,47 @@ public class ControleurMenu implements ActionListener {
 
                 oldFrame.requestFocus();
                 break;
+                /*
+                Permet de charger des .class dans un repertoire choisi par l'utilisateur
+                 */
+            case "Charger un répertoire":
+
+                JFileChooser fc4 = new JFileChooser(dossierCourant);
+                fc4.setDialogTitle("Ouvrir un répertoire");
+                fc4.setApproveButtonText("Ouvrir un répertoire");
+                fc4.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                int returnValue4 = fc4.showOpenDialog(null);
+
+                if(returnValue4==JFileChooser.APPROVE_OPTION) {
+                    String f = fc4.getSelectedFile().getAbsolutePath()+File.separator;
+                    File rep = new File(f);
+
+
+                    //partie qui donne tout les fichiers que contient un repertoire meme dans des sous-repertoire
+                    List<String> result = new ArrayList<>();
+                    try (Stream<Path> walk = Files.walk(Paths.get(rep.getAbsolutePath()))) {
+                        result = walk.filter(Files::isRegularFile)
+                                .map(x -> x.toString()).collect(Collectors.toList());
+
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+
+                    //On regarde dans la liste result pour voir si il contient des .class
+                    for (int i = 0; i < result.size(); i++) {
+                        if (result.get(i).endsWith(".class") == true) {
+                            File fich = new File(result.get(i));
+                            modele.chargerArborescenceProjet(fich);
+                        }
+                    }
+                }
+
+                //permet a la fenetre de regagner le focus une fois la popup finie
+                oldFrame.requestFocus();
+                break;
+
             default:
                 throw new IllegalStateException("Bouton non traite");
         }
