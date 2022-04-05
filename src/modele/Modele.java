@@ -2,12 +2,12 @@ package modele;
 
 import introspection.FacadeIntrospection;
 import modele.classe.Attribut;
+import modele.classe.Extendable;
 import modele.classe.ObjectClasse;
+import modele.classe.TypeClasse;
 import vue.AffichageErreur;
 import vue.VueDiagramme;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -16,6 +16,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -112,8 +113,8 @@ public class Modele extends Sujet implements Serializable {
      * Methode qui vide la selection
      */
     public void deselectionner(){
-       selection.clear();
-       notifierObservateurs();
+        selection.clear();
+        notifierObservateurs();
     }
 
 
@@ -229,7 +230,9 @@ public class Modele extends Sujet implements Serializable {
         for (Attribut a:objectClasse.getAttributs()) {
 
             //on verifie si le type correspond a une classe chargee
-            ObjectClasse o = collectionObjectClasse.getObjectClasse( a.getTypeAttribut());
+
+            ObjectClasse o = uniformisationNomObjectClasse(a);
+
             if (o != null){
                 //la classe est chargee
 
@@ -247,9 +250,11 @@ public class Modele extends Sujet implements Serializable {
             //on parcourt les attributs qui sont visible
             for (Attribut a: o.getAttributs().stream().filter(Attribut::isVisible).collect(Collectors.toList())) {
 
+                ObjectClasse oc = uniformisationNomObjectClasse(a);
                 //si l'attribut corresponds a l'object classe
-                if (a.getTypeAttribut().equals(objectClasse.getNomObjectClasse())){
+                if (oc!=null && oc.equals(objectClasse)){
                     //on transforme en fleche
+                    System.out.println("YES");
                     transformerEnFleche(o, a, objectClasse);
                 }
 
@@ -258,6 +263,27 @@ public class Modele extends Sujet implements Serializable {
         }
 
         notifierObservateurs();
+    }
+
+    /**
+     * Methode qui par son attribut donne en parametre, retourne l'objectClasse correspondant
+     * Pour cela, on doit formater le nom pour permettre de retrouver la bonne classe chargée (Fonctionne pour les listes, les tableaux et les types simples)
+     * @param a Attribut: dont on extrait l'objectClasse
+     * @return ObjectClasse bien
+     */
+    public ObjectClasse uniformisationNomObjectClasse(Attribut a) {
+
+        if (a.getTypeAttribut().contains("<")&&a.getTypeAttribut().contains(">")) {
+            String[] tabTmp = a.getTypeAttribut().split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
+            String[] tabContenuTemp = tabTmp[1].split(Pattern.quote("."));
+            System.out.println("Type: "+ tabContenuTemp[tabContenuTemp.length - 1]);
+
+        } if(a.getTypeAttribut().matches("\\[L(.*)")) {
+            // Un attribut tableau est de la form [L..., il faut donc retirer les deux premier caracteres
+            return collectionObjectClasse.getObjectClasse((a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1)));
+        } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
+            return collectionObjectClasse.getObjectClasse(a.getTypeAttribut());
+        }
     }
 
     /**
@@ -350,7 +376,7 @@ public class Modele extends Sujet implements Serializable {
 
         boolean trouve  =false;
         for (Attribut a: source.getAttributs()) {
-            if (a.getTypeAttribut().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom())){
+            if (uniformisationNomObjectClasse(a).getNomObjectClasse().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom().substring(2))){
                 a.changerVisibilite(true);
                 trouve = true;
             }
@@ -515,7 +541,6 @@ public class Modele extends Sujet implements Serializable {
             ois = new ObjectInputStream(fichier);
             final Modele p = (Modele) ois.readObject();
 
-            //System.out.println(p.getObjectClasses());
             this.collectionObjectClasse = p.getCollectionObjectClasse();
             this.afficherPackage = p.isAfficherPackage();
             this.dossierCourant= p.getDossierCourant();
@@ -535,6 +560,28 @@ public class Modele extends Sujet implements Serializable {
                 return;
             }
         }
+    }
+
+    public int nbOccurencesFleches(ObjectClasse src, ObjectClasse dest) {
+        int res = 0;
+        ObjectClasse o;
+        if (src.getType() == TypeClasse.CLASSE || src.getType() == TypeClasse.ABSTRACT) {
+            o = ((Extendable)src).getObjectClasseExtends();
+            if (o!=null && o.equals(dest)) res++;
+        }
+        else if (dest.getType() == TypeClasse.CLASSE || dest.getType() == TypeClasse.ABSTRACT) {
+            o = ((Extendable)dest).getObjectClasseExtends();
+            if (o!=null && o.equals(src)) res++;
+        } else if (src.getListeObjectClasseImplements().contains(dest)) res++;
+        else if (dest.getListeObjectClasseImplements().contains(src)) res++;
+        FlecheAssociation a = this.associations.get(0);
+        int j=0;
+        while (!a.getSrc().equals(src) && !a.getDest().equals(dest)) {
+            a = this.associations.get(j);
+            if (a.getSrc().equals(src)) res++;
+            j++;
+        }
+        return res;
     }
 
 
