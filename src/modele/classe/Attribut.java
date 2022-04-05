@@ -95,9 +95,12 @@ public class Attribut implements Serializable {
 
             } else { // cas pour le reste avec 1 seul type
                 String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
-                type = tabChemin2[tabChemin2.length-1] + "<" + tabContenuTemp[tabContenuTemp.length-1];
+                type = tabChemin2[tabChemin2.length - 1] + "<" + tabContenuTemp[tabContenuTemp.length - 1];
             }
-
+        } if(this.typeAttribut.matches("\\[L(.*)")) {
+            String tabContenu[] = this.typeAttribut.split(Pattern.quote("."));
+            String val = tabContenu[tabContenu.length-1];
+            type = val.substring(0, val.length()-1)+" []";
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
             type = tabChemin[tabChemin.length-1];
         }
