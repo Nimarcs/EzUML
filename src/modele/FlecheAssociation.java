@@ -5,6 +5,7 @@ import modele.classe.ObjectClasse;
 import modele.classe.Statut;
 
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * FlecheAssociation qui permet de representer une association
@@ -29,6 +30,11 @@ public class FlecheAssociation implements Serializable {
     private String nom;
 
     /**
+     * String contenant les cardinalités de sources et de dest
+     */
+    private String cardSrc, cardDest;
+
+    /**
      * Constructeur de fleche
      * @param src object source de la fleche
      * @param dest object avec lequel la fleche associe la source
@@ -45,6 +51,14 @@ public class FlecheAssociation implements Serializable {
         else if (attribut.getStatutAttribut() == Statut.PRIVATE) res = "- ";
         else res = "# ";
         this.nom = res + attribut.getNomAttribut();
+        if (attribut.getNomAttribut().contains("<")&&attribut.getNomAttribut().contains(">")||attribut.getNomAttribut().contains("[]")) {
+            cardSrc = "*";
+            cardDest = "*";
+        } else{
+            cardSrc = "*";
+            cardDest = "0..1";
+        }
+
     }
 
     //getter setter
@@ -90,4 +104,21 @@ public class FlecheAssociation implements Serializable {
     public String getNom() {
         return nom;
     }
+
+    /**
+     * Getter de la cardinalité de la classe source
+     * @return String
+     */
+    public String getCardSrc() {
+        return cardSrc;
+    }
+
+    /**
+     * Getter de la cardinalité de la classe destination
+     * @return String
+     */
+    public String getCardDest() {
+        return cardDest;
+    }
+
 }
