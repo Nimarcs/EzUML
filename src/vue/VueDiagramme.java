@@ -222,6 +222,8 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
     void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, String message) {
 
         ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
+        int decX = modele.getDecalageX();
+        int decY = modele.getDecalageY();
 
         if (dest!=null) {
             int srcX, srcY, destX, destY;
@@ -260,11 +262,14 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     }
                 }
             } else {
-                srcX = src.getX() + calculerLargeur(src) / 3;
-                srcY = 50+src.getY() + calculerHauteur(src);
-                destX = src.getX() + calculerLargeur(src) / 3 * 2;
-                destY = 50+src.getY() + calculerHauteur(src);
-                System.out.println(srcX +" "+srcY+" "+destX+" "+destY);
+                System.out.println(src.getX());
+                int largeur = calculerLargeur(src);
+                g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY, src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3);
+                g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3, src.getX()+ + decX + largeur/3 + largeur/3, src.getY()+decY-largeur/3);
+                srcX = src.getX()+largeur/3+largeur/3;
+                srcY = src.getY()-largeur/3;
+                destX = src.getX()+largeur/3+largeur/3;
+                destY = src.getY();
             }
 
             int dx = destX - srcX, dy = destY - srcY;
@@ -279,8 +284,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
             yn = xn * sin + yn * cos + srcY;
             xn = x;
 
-            int decX = modele.getDecalageX();
-            int decY = modele.getDecalageY();
+
             int[] xpoints = {destX + decX, (int) xm + decX, (int) xn + decX};
             int[] ypoints = {destY + decY, (int) ym + decY, (int) yn + decY};
 
@@ -309,10 +313,9 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     break;
 
                 case FLECHE_ASSOSCIATION :
-                    System.out.println(src.getNomObjectClasse()+" "+dest.getNomObjectClasse());
                     g.setColor(Color.BLACK);
-                    //g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
-                    dessinerFlecheArc(srcX, srcY, destX, destY, decX, decY, g);
+                    g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
+                    g.drawLine(destX+decX, destY+decY, xpoints[1], ypoints[1]);
                     g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
                     g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
                     break;
@@ -322,30 +325,6 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
             }
         }
 
-    }
-
-    private void dessinerFlecheArc(int srcX, int srcY, int destX, int destY, int decX, int decY, Graphics g) {
-        double x1 = srcX, y1 = srcY;
-        double x2 = destX, y2 = destY;
-        double hh = 100;
-
-        double x3 = (x1+x2)/2, y3 = (y1+y2)/2; // (x3,y3) middle of (x1,y1) and (x2,y2)
-        double p = Math.hypot(x3-x1,y3-y1); // distance between (x1,y1) and (x3,y3) solve (x3-x1)²+(y3-y1)²=p²
-        double r = (p*p+hh*hh)/(2*hh); // on right triangle, solve p²+(r-h)²=r²
-
-        double a = (y1-y2) / (x1-x2), b = (x1*y2 - x2*y1) / (x1-x2); // y=ax+b for (x1,y1) and (x2,y2)
-        double c = -1/a, dd = y3-c*x3; // line y=cx+d is perpendicular with line y=ax+b
-
-        // y0=c.x0+d so distance between (x0,y0) and (x3,y3) solve (x3-x0)²+(y3-(c.x0+d))² = (r-h)²
-        double x0 = resolve(x3, -1, y3-dd, -c, r-hh), y0 = c*x0+dd;
-
-        double alpha1 = Math.atan2(y1-y0,x1-x0), alpha2 = Math.atan2(y2-y0,x2-x0);
-
-        int x = (int) Math.round(x0 - r), y = (int) Math.round(y0 - r), width = (int) Math.round(2*r), height = width;
-        // angles are negative because Swing origin is on top-left corner with descending ordinates
-        int startAngle = (int) -Math.round(Math.toDegrees(alpha1)), arcAngle = (int) -Math.round(Math.toDegrees(alpha2 - alpha1));
-
-        g.drawArc(x+decX, y+decY, width, height, startAngle, arcAngle);
     }
 
     private static double resolve(double a, double b, double c, double d, double e) {
