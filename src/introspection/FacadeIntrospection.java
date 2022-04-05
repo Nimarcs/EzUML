@@ -104,7 +104,7 @@ public class FacadeIntrospection {
 			}
 		}
 
-		//Puis on regarde les méthode, attributs et les constructeurs
+		//Puis on regarde les methode, attributs et les constructeurs
 		if (!cls.isEnum()){
 			//Les Constructeurs
 			introConstructeur(cls, obc);
@@ -113,9 +113,9 @@ public class FacadeIntrospection {
 			//Les attributs
 			introAttribut(cls, obc);
 
-			//méthode qui donne toutes les interfaces de la classe introspecter
+			//methode qui donne toutes les interfaces de la classe introspecter
 			Class[] claInter= cls.getInterfaces();
-			//ces classe on les développe en faisant une nouvelle introspection
+			//ces classe on les developpe en faisant une nouvelle introspection
 			for (Class inter : claInter) {
 				//peut avoir probleme que l'on retourne pas une interface, mais normalement cela marche
 				//on trouve l'interface tant quel ce trouve dans le meme packages ou bien un import

@@ -198,7 +198,7 @@ public class ControleurMenu implements ActionListener {
                     dernierRepOuvert=fc3.getSelectedFile().getParentFile();
 
 
-                    AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer à l'emplacement :\n"+cheminFichier);
+                    AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n"+cheminFichier);
 
                 }
 
