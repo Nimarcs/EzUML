@@ -60,7 +60,6 @@ public class VueArborescence extends JScrollPane implements Observateur{
         Modele m =(Modele)s;
 
         Package p = m.getPackages();
-		System.out.println(p.toString());
         //initialistaion de la racine principale
         DefaultMutableTreeNode rootPackage = new DefaultMutableTreeNode(p);
         
