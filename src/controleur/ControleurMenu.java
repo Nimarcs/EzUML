@@ -104,7 +104,7 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet d'enregistrer la classe modele
              */
-            case "Sauvegarder en .ezuml":
+            case "Sauvegarder .ezuml":
                 if(modele.getObjectClasses().isEmpty()){
                     AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
 
@@ -134,7 +134,7 @@ public class ControleurMenu implements ActionListener {
                 /*
                     Permet de charger une classe modele Sauvegarder
                  */
-            case "Charger en .ezuml":
+            case "Charger .ezuml":
                 JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc2.setDialogTitle("Ouvrir votre fichier");
