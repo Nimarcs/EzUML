@@ -12,6 +12,7 @@ import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Controleur qui permet de faire les actions avec les touches du clavier
@@ -67,7 +68,17 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
                 //on l'ajoute si elle est chargee
                 String cheminComplet = (String) o;
                 ObjectClasse objectClasse = modele.getObjectClasse(cheminComplet);
-                if (objectClasse != null) modele.ajouterClasse(objectClasse, modele.getDecalageX(), modele.getDecalageY());
+                if (objectClasse != null) {
+                    if (objectClasse.isVisible()) {
+                        List<ObjectClasse> tmp = modele.getSelection();
+                        modele.deselectionner();
+                        modele.selectionnerUneClasse(objectClasse);
+                        modele.retirerClasseSelectionne();
+                        modele.setSelection(tmp);
+                    } else {
+                        modele.ajouterClasse(objectClasse, modele.getDecalageX(), modele.getDecalageY());
+                    }
+                }
             }
         }else{
 
