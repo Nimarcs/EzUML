@@ -149,11 +149,9 @@ public class CollectionObjectClasse implements Serializable {
 
         //on part de la racine
         Package pCourant = src;
-        System.out.println(Arrays.deepToString(Arrays.stream(nomPackages).toArray()));
         //pour chaque package cite dans l'objectClasse
         for (String nomPackage : nomPackages) {
             for (Package sousPackage: pCourant.getSousPackages()) {
-                System.out.println("pCourant" + pCourant.getNom());
                 if (sousPackage.getNom().equals(p.getNom())) return sousPackage;
                 if (sousPackage.getNom().equals(nomPackage)) {
                     pCourant = sousPackage;

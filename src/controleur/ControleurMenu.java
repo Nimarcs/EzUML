@@ -211,8 +211,8 @@ public class ControleurMenu implements ActionListener {
             case "Charger dossier":
 
                 JFileChooser fc4 = new JFileChooser(dernierRepOuvert);
-                fc4.setDialogTitle("Ouvrir un répertoire");
-                fc4.setApproveButtonText("Ouvrir un répertoire");
+                fc4.setDialogTitle("Ouvrir un repertoire");
+                fc4.setApproveButtonText("Ouvrir un repertoire");
                 fc4.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
                 int returnValue4 = fc4.showOpenDialog(null);
@@ -243,7 +243,7 @@ public class ControleurMenu implements ActionListener {
                     }
 
                     if(fich==null){
-                        AffichageErreur.getInstance().afficherMessage("Le répertoire que vous avez choisi ne contient pas de .class");
+                        AffichageErreur.getInstance().afficherMessage("Le repertoire que vous avez choisi ne contient pas de .class");
                     } else {
                         dernierRepOuvert=fich.getParentFile();
 
