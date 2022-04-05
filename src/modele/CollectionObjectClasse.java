@@ -1,6 +1,7 @@
 package modele;
 
 import modele.classe.ObjectClasse;
+import vue.AffichageErreur;
 
 import java.io.Serializable;
 import java.util.*;
@@ -137,11 +138,38 @@ public class CollectionObjectClasse implements Serializable {
 
     /**
      * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
+     * Fournit le package reel donc permet de le modifier
      * Utilise les packages pour chercher une classe au bon endroit
      * @param objectClasse objectClasse dont on veut obtenir le package
-     * @return copie du package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
+     * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
-    public Package trouvePackageDeClasse(ObjectClasse objectClasse){
+    private Package trouvePackageDeClasseLocalAvecPackage(ObjectClasse objectClasse, Package p){
+        //on verifie le package auquel l'objectClasse appartient
+        String[] nomPackages = objectClasse.getNomObjectClasse().split("\\.");
+
+        //on part de la racine
+        Package pCourant = src;
+        System.out.println(Arrays.deepToString(Arrays.stream(nomPackages).toArray()));
+        //pour chaque package cite dans l'objectClasse
+        for (String nomPackage : nomPackages) {
+            for (Package sousPackage: pCourant.getSousPackages()) {
+                System.out.println("pCourant" + pCourant.getNom());
+                if (sousPackage.getNom().equals(p.getNom())) return sousPackage;
+                if (sousPackage.getNom().equals(nomPackage)) {
+                    pCourant = sousPackage;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
+     * Utilise les packages pour chercher une classe au bon endroit
+     * @param objectClasse objectClasse dont on veut obtenir le package
+     * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
+     */
+    private Package trouvePackageDeClasse(ObjectClasse objectClasse){
         Package p = trouvePackageDeClasseLocal(objectClasse);
         if (p == null) return null;
         else return new Package(p);
@@ -156,6 +184,25 @@ public class CollectionObjectClasse implements Serializable {
     public boolean verifierClasseCharge(ObjectClasse objectClasse){
         return classesChargees.containsValue(objectClasse);
     }
+
+    public void changerOuverture(Package p){
+        Package pOriginel = trouverPackageOriginel(src, p);
+        if (pOriginel == null) AffichageErreur.getInstance().afficherErreur("le package originel n'a pas été retrouvé ");
+        else pOriginel.changerOuverture();
+    }
+
+    private Package trouverPackageOriginel(Package src, Package p) {
+        Iterator<String> ite = src.getClassesContenues().iterator();
+        if (ite.hasNext()) return trouvePackageDeClasseLocalAvecPackage(classesChargees.get(ite.next()), p);
+        else {
+            for (Package fils: src.getSousPackages()) {
+                Package aPackage =  trouverPackageOriginel(fils, p);
+                if (aPackage != null) return aPackage;
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Methode qui permet de decharger les classes fournies

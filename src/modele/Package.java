@@ -31,6 +31,11 @@ public class Package implements Serializable {
      */
     private final String nom;
 
+    /**
+     * Permet de savoir est ce que le package est cense etre ouvert dans l'arborescence ou non
+     */
+    private boolean ouvert;
+
 
     //Constructeur
 
@@ -61,6 +66,7 @@ public class Package implements Serializable {
             for (Package p: packageACopier.sousPackages) {
                 sousPackages.add(new Package(p));
             }
+            ouvert = packageACopier.ouvert;
         } else {
             throw new NullPointerException();
         }
@@ -154,5 +160,28 @@ public class Package implements Serializable {
         return classesContenues;
     }
 
+    /**
+     * permet d'inverser la position fermer ou ouverte du package
+     */
+    public void changerOuverture() {
+        ouvert = !ouvert;
+    }
 
+    /**
+     * getter de l'ouverture
+     * @return booleen ouvert, vrai si il si il est cense etre ouvert
+     */
+    public boolean isOuvert() {
+        return ouvert;
+    }
+
+    @Override
+    public String toString() {
+        return "Package{" +
+                "classesContenues=" + classesContenues +
+                ", sousPackages=" + sousPackages.size() +
+                ", nom='" + nom + '\'' +
+                ", ouvert=" + ouvert +
+                '}';
+    }
 }

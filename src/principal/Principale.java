@@ -50,6 +50,8 @@ public class Principale {
         contentPane.setPreferredSize(new Dimension(LARGEUR_FEN,  HAUTEUR_FEN));
         contentPane.setLayout(new BorderLayout());
 
+
+        //Menu
         Font fontMenu = new Font("Arial", Font.BOLD, 16);
 
         JMenuBar menuBar = new JMenuBar();
@@ -89,46 +91,7 @@ public class Principale {
         edit.add(retirerSelectionDiagramme);
         edit.add(rechargerUniquementDernierChargement);
 
-                /**
-        //Menu
-        JPanel menu = new JPanel();
-        menu.setLayout(new GridLayout(1, 5));
-        menu.setPreferredSize(new Dimension(LARGEUR_FEN,TAILLE_MENU));
-
-        //ajout d'un bouton charger
-        JButton boutonCharger = new JButton ("Charger un .class");
-        menu.add(boutonCharger);
-        boutonCharger.addActionListener(controleurMenu);
-        //ajout d'un bouton charger un répertoire
-        JButton boutonChargerRep = new JButton ("Charger un répertoire");
-        menu.add(boutonChargerRep);
-        boutonChargerRep.addActionListener(controleurMenu);
-        //ajout d'un bouton nouveau
-        JButton boutonNouveau = new JButton ("Nouveau");
-        menu.add(boutonNouveau);
-        boutonNouveau.addActionListener(controleurMenu);
-        //ajout d'un bouton Retirer Selection du diagramme
-        JButton boutonRetirerDuDiag = new JButton ("Retirer Selection du diagramme");
-        menu.add(boutonRetirerDuDiag);
-        boutonRetirerDuDiag.addActionListener(controleurMenu);
-        //ajout d'un bouton pour sauvegarder un diagramme
-        JButton boutonSauver = new JButton("Sauvegarder");
-        menu.add(boutonSauver);
-        boutonSauver.addActionListener(controleurMenu);
-        //ajout d'un bouton pour charger unn diagramme sauvegarder
-        JButton boutonChargerDiag = new JButton("Charger diagramme");
-        menu.add(boutonChargerDiag);
-        boutonChargerDiag.addActionListener(controleurMenu);
-        //ajout d'un bouton Exporter en image
-        JButton boutonExporterImage = new JButton ("Exporter en image");
-        menu.add(boutonExporterImage);
-        boutonExporterImage.addActionListener(controleurMenu);
-
-        contentPane.add(menu, BorderLayout.NORTH);
-
-                 */
-
-                contentPane.add(menuBar, BorderLayout.NORTH);
+        contentPane.add(menuBar, BorderLayout.NORTH);
 
         //PanelPrincipal
         JSplitPane panelPrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -142,6 +105,7 @@ public class Principale {
         controleurArborescence.setArbre(vueArborescence.getBase());
         vueArborescence.getBase().getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         vueArborescence.getBase().addMouseListener(controleurArborescence);
+        vueArborescence.addMouseListener(controleurArborescence);
 
         modele.ajouterObservateur(vueArborescence);
         panelPrincipal.setLeftComponent(vueArborescence);

@@ -1,10 +1,12 @@
 package controleur;
 
 import modele.Modele;
+import modele.Package;
 import modele.classe.ObjectClasse;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 /**
  * Controleur qui permet de faire les actions avec les touches du clavier
  */
-public class ControleurArborescence implements MouseListener {
+public class ControleurArborescence implements MouseListener, TreeSelectionListener {
 
     /**
      * modele dont on veut controler les valeurs
@@ -47,25 +49,35 @@ public class ControleurArborescence implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         assert arbre != null;
         //on recupere le path
-        TreePath treePath = arbre.getPathForLocation(e.getX(), e.getY());
+        TreePath treePath = arbre.getPathForRow(arbre.getClosestRowForLocation(e.getX(), e.getY()));
         if (treePath == null) return;
 
         //on recupere la node
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         if (node == null) return;
 
+        Object o = node.getUserObject();
+
         //on regarde si c'est une feuille donc un objectClasse
         if (node.isLeaf()){
 
             //si c'est un double click sur une node qui contient un string (donc le chemin vers un objectclasse)
-            Object o = node.getUserObject();
             if (o instanceof String && e.getClickCount() >= 2) {
 
                 //on l'ajoute si elle est chargee
                 String cheminComplet = (String) o;
                 ObjectClasse objectClasse = modele.getObjectClasse(cheminComplet);
-                if (objectClasse != null) modele.ajouterClasse(objectClasse, 0, 0);
+                if (objectClasse != null) modele.ajouterClasse(objectClasse, modele.getDecalageX(), modele.getDecalageY());
             }
+        }else{
+
+            //sinon c'est un package
+            if (o instanceof Package) {
+
+                Package p = (Package) o;
+                this.modele.getCollectionObjectClasse().changerOuverture(p);
+            }
+
         }
 
     }
@@ -113,4 +125,15 @@ public class ControleurArborescence implements MouseListener {
     public void setArbre(JTree arbre) {
         this.arbre = arbre;
     }
+
+    /**
+     * Called whenever the value of the selection changes.
+     *
+     * @param e the event that characterizes the change.
+     */
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+
+    }
+
 }

@@ -21,8 +21,6 @@ import modele.classe.ObjectClasse;
 /**
  * Vue de l'arborescence
  * Elle permet de voir les fichiers .class que l'ont peut ajouter dans notre projet
- * 
- * 
  */
 
 public class VueArborescence extends JScrollPane implements Observateur{
@@ -60,9 +58,9 @@ public class VueArborescence extends JScrollPane implements Observateur{
     public void actualiser(Sujet s) {
        
         Modele m =(Modele)s;
-        
+
         Package p = m.getPackages();
-        
+		System.out.println(p.toString());
         //initialistaion de la racine principale
         DefaultMutableTreeNode rootPackage = new DefaultMutableTreeNode(p);
         
@@ -77,12 +75,28 @@ public class VueArborescence extends JScrollPane implements Observateur{
 		DefaultTreeModel model = (DefaultTreeModel) (base.getModel());
 		model.reload();
 
-		//on ouvre src pour qu'on puisse voir les packages
-		if (base.getRowCount() > 0) base.expandRow(0);
+		//on ouvre les packages qui étais deja ouvert
+		ouvrirPackage();
 	}
 
-    /**
-     * m�thode qui permet de generer chaque noeud de l'arbre de maniere recursive
+	/**
+	 * methode qui permet d'ouvrir les packages qui sont ouvert selon le stockage
+	 */
+	private void ouvrirPackage() {
+		if (base.getRowCount() > 0) base.expandRow(0);
+		for (int i = 0; i < base.getRowCount(); i++) { //on parcours toute les colonnes
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) base.getPathForRow(i).getLastPathComponent();
+			if (!node.isLeaf()){
+				Package p = (Package) node.getUserObject();
+				if (p.isOuvert()){
+					base.expandRow(i);
+				}
+			}
+		}
+	}
+
+	/**
+     * methode qui permet de generer chaque noeud de l'arbre de maniere recursive
      * @param racine 
      * @param p
      */
