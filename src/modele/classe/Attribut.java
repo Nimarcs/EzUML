@@ -97,7 +97,7 @@ public class Attribut implements Serializable {
                 String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
                 type = tabChemin2[tabChemin2.length - 1] + "<" + tabContenuTemp[tabContenuTemp.length - 1];
             }
-        } if(this.typeAttribut.matches("\\[L(.*)")) {
+        } else if(this.typeAttribut.matches("\\[L(.*)")) {
             String tabContenu[] = this.typeAttribut.split(Pattern.quote("."));
             String val = tabContenu[tabContenu.length-1];
             type = val.substring(0, val.length()-1)+" []";

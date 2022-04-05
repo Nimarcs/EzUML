@@ -249,12 +249,10 @@ public class Modele extends Sujet implements Serializable {
 
             //on parcourt les attributs qui sont visible
             for (Attribut a: o.getAttributs().stream().filter(Attribut::isVisible).collect(Collectors.toList())) {
-
                 ObjectClasse oc = uniformisationNomObjectClasse(a);
                 //si l'attribut corresponds a l'object classe
                 if (oc!=null && oc.equals(objectClasse)){
                     //on transforme en fleche
-                    System.out.println("YES");
                     transformerEnFleche(o, a, objectClasse);
                 }
 
@@ -275,10 +273,9 @@ public class Modele extends Sujet implements Serializable {
 
         if (a.getTypeAttribut().contains("<")&&a.getTypeAttribut().contains(">")) {
             String[] tabTmp = a.getTypeAttribut().split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
-            String[] tabContenuTemp = tabTmp[1].split(Pattern.quote("."));
-            System.out.println("Type: "+ tabContenuTemp[tabContenuTemp.length - 1]);
-
-        } if(a.getTypeAttribut().matches("\\[L(.*)")) {
+            String res = tabTmp[tabTmp.length-1];
+            return collectionObjectClasse.getObjectClasse(res.substring(0, res.length()-1));
+        } else if(a.getTypeAttribut().matches("\\[L(.*)")) {
             // Un attribut tableau est de la form [L..., il faut donc retirer les deux premier caracteres
             return collectionObjectClasse.getObjectClasse(a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1));
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
@@ -564,7 +561,7 @@ public class Modele extends Sujet implements Serializable {
         }
     }
 
-    public int nbOccurencesFleches(ObjectClasse src, ObjectClasse dest) {
+    public int nbOccurencesFleches(ObjectClasse src, ObjectClasse dest, String nameAssos) {
         int res = 0;
         ObjectClasse o;
         if (src.getType() == TypeClasse.CLASSE || src.getType() == TypeClasse.ABSTRACT) {
@@ -578,10 +575,10 @@ public class Modele extends Sujet implements Serializable {
         else if (dest.getListeObjectClasseImplements().contains(src)) res++;
         FlecheAssociation a = this.associations.get(0);
         int j=0;
-        while (!a.getSrc().equals(src) && !a.getDest().equals(dest)) {
-            a = this.associations.get(j);
-            if (a.getSrc().equals(src)) res++;
+        while (!a.getNom().equals(nameAssos) || !a.getSrc().equals(src) && !a.getDest().equals(dest)) {
+            if (a.getSrc().equals(src)||a.getSrc().equals(dest)) res++;
             j++;
+            a = this.associations.get(j);
         }
         return res;
     }

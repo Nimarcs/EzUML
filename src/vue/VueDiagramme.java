@@ -63,7 +63,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
 
     private transient BufferedImage tabInfo;
 
-    private final static int DECALAGE_FLECHE = 20;
+    private final static int DECALAGE_FLECHE = 25;
 
 
     public VueDiagramme(Modele m) {
@@ -274,14 +274,15 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 destY = src.getY();
             }
 
+            int nbOcc = 0;
             if (choixFleche==FLECHE_ASSOSCIATION) {
-                int nbOcc = modele.nbOccurencesFleches(src, dest);
+                nbOcc = modele.nbOccurencesFleches(src, dest, fleche.getNom());
                 if (cote.equals("Droite")||cote.equals("Gauche")) {
-                    srcY+=DECALAGE_FLECHE;
-                    destY+=DECALAGE_FLECHE;
+                    srcY+=DECALAGE_FLECHE*nbOcc;
+                    destY+=DECALAGE_FLECHE*nbOcc;
                 } else if (cote.equals("Bas")||cote.equals("Haut")) {
-                    srcX+=DECALAGE_FLECHE;
-                    destX+=DECALAGE_FLECHE;
+                    srcX+=DECALAGE_FLECHE*nbOcc;
+                    destX+=DECALAGE_FLECHE*nbOcc;
                 }
             }
 
@@ -330,7 +331,11 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                     g.drawLine(destX+decX, destY+decY, xpoints[1], ypoints[1]);
                     g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
-                    g.drawString(fleche.getNom(), srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
+                    if (cote.equals("Haut")||cote.equals("Bas")) {
+                        g.drawString(fleche.getNom(), srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2+nbOcc*DECALAGE_FLECHE);
+                    } else {
+                        g.drawString(fleche.getNom(), srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
+                    }
                     g.drawString(fleche.getCardSrc(), srcX+decX+(destX-srcX)/8, srcY+decY+(destY-srcY)/8);
                     g.drawString(fleche.getCardDest(), (int) (srcX+decX+(destX-srcX)*0.875), (int) (srcY+decY+(destY-srcY)*0.875));
                     break;
