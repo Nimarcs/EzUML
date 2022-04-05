@@ -57,7 +57,7 @@ public class ControleurMenu implements ActionListener {
              * Cela a pour effet d'ouvrir une fenetre d'exploration window
              * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
              */
-            case "Charger un .class":
+            case "Charger fichiers .class":
 
                 JFileChooser fc = new JFileChooser(dernierRepOuvert);
                 //fc.setFileFilter(new EzumlSaveFilter());
@@ -92,19 +92,19 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet de commencer un nouveau diagramme
              */
-            case "Nouveau":
+            case "Recharger dernier chargement":
                 modele.reintialiserDiagramme();
                 break;
             /*
                 Permet de retirer les classe selectionne du diagramme
              */
-            case "Retirer Selection du diagramme" :
+            case "Retirer selection du diagramme" :
                 modele.retirerClasseSelectionne();
                 break;
             /*
                 Permet d'enregistrer la classe modele
              */
-            case "Sauvegarder":
+            case "Sauvegarder en .ezuml":
                 if(modele.getObjectClasses().isEmpty()){
                     AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
 
@@ -134,7 +134,7 @@ public class ControleurMenu implements ActionListener {
                 /*
                     Permet de charger une classe modele Sauvegarder
                  */
-            case "Charger diagramme":
+            case "Charger en .ezuml":
                 JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc2.setDialogTitle("Ouvrir votre fichier");
@@ -158,7 +158,7 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet d'exporter en image le diagramme
              */
-            case "Exporter en image" :
+            case "Exporter" :
                 //menu de choix
                 JFileChooser fc3 = new JFileChooser(dernierRepOuvert);
                 fc3.setApproveButtonText("Sauvegarder");
@@ -208,7 +208,7 @@ public class ControleurMenu implements ActionListener {
                 /*
                 Permet de charger des .class dans un repertoire choisi par l'utilisateur
                  */
-            case "Charger un répertoire":
+            case "Charger dossier":
 
                 JFileChooser fc4 = new JFileChooser(dernierRepOuvert);
                 fc4.setDialogTitle("Ouvrir un répertoire");
