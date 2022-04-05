@@ -71,7 +71,7 @@ public class Principale {
         JMenuItem retirerSelectionDiagramme = new JMenuItem("Retirer selection du diagramme");
         retirerSelectionDiagramme.addActionListener(controleurMenu);
         retirerSelectionDiagramme.setFont(fontMenu);
-        JMenuItem save = new JMenuItem("Sauvegarder en .ezuml");
+        JMenuItem save = new JMenuItem("Sauvegarder .ezuml");
         save.addActionListener(controleurMenu);
         save.setFont(fontMenu);
         JMenuItem charger = new JMenuItem("Charger .ezuml");

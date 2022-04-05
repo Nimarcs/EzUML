@@ -280,7 +280,7 @@ public class Modele extends Sujet implements Serializable {
 
         } if(a.getTypeAttribut().matches("\\[L(.*)")) {
             // Un attribut tableau est de la form [L..., il faut donc retirer les deux premier caracteres
-            return collectionObjectClasse.getObjectClasse((a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1)));
+            return collectionObjectClasse.getObjectClasse(a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1));
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
             return collectionObjectClasse.getObjectClasse(a.getTypeAttribut());
         }
@@ -376,7 +376,8 @@ public class Modele extends Sujet implements Serializable {
 
         boolean trouve  =false;
         for (Attribut a: source.getAttributs()) {
-            if (uniformisationNomObjectClasse(a).getNomObjectClasse().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom().substring(2))){
+            System.out.println(a.getTypeAttribut());
+            if (a.getNomAttribut().equals(association.getNom().substring(2))){
                 a.changerVisibilite(true);
                 trouve = true;
             }
@@ -683,6 +684,14 @@ public class Modele extends Sujet implements Serializable {
     public void setVueDiagramme(VueDiagramme vueDiagramme) {
         assert vueDiagramme != null;
         this.vueDiagramme = vueDiagramme;
+    }
+
+    /**
+     * Setter selection
+     * @param selection
+     */
+    public void setSelection(List<ObjectClasse> selection) {
+        this.selection = selection;
     }
 
     public VueDiagramme getVueDiagramme(){
