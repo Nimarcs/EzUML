@@ -461,7 +461,8 @@ public class Modele extends Sujet implements Serializable {
     public void exporterEnImage(String typeImage, String cheminFichier){
         //valeurs initiale
         Rectangle bounds = getBoundsDiagramme();
-        BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
+        Dimension dimLegende = vueDiagramme.getTabInfo();
+        BufferedImage bi = new BufferedImage(bounds.width + dimLegende.width, bounds.height + dimLegende.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
 
         //on recupere les valeurs avant le changement
