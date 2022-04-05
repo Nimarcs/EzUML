@@ -77,7 +77,7 @@ public class Principale {
         JMenuItem charger = new JMenuItem("Charger .ezuml");
         charger.addActionListener(controleurMenu);
         charger.setFont(fontMenu);
-        JMenuItem exporter = new JMenu("Exporter");
+        JMenuItem exporter = new JMenuItem("Exporter");
         exporter.addActionListener(controleurMenu);
         exporter.setFont(fontMenu);
 
