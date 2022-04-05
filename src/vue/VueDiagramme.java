@@ -99,7 +99,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
                     Extendable e = (Extendable) oc;
                     if (e.getObjectClasseExtends()!=null) {
-                        if (modele.getObjectClasses().contains(e.getObjectClasseExtends())) {
+                        if (modele.getObjectClasses().contains(e.getObjectClasseExtends()) && e.getObjectClasseExtends().isVisible()) {
                             drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE, null);
                         }
                     }
@@ -110,7 +110,9 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                  */
                 if (!oc.getListeObjectClasseImplements().isEmpty()) {
                     for (Interface i:oc.getListeObjectClasseImplements()) {
-                        drawArrow(g, oc, i, FLECHE_IMPLEMENTS, null);
+                        if (i.isVisible()) {
+                            drawArrow(g, oc, i, FLECHE_IMPLEMENTS, null);
+                        }
                     }
                 }
             }

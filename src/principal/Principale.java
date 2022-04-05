@@ -57,8 +57,6 @@ public class Principale {
         fichier.setFont(fontMenu);
         JMenu edit = new JMenu("Edition");
         edit.setFont(fontMenu);
-        JMenuItem nouveau = new JMenuItem("Nouveau");
-        nouveau.setFont(fontMenu);
         JMenuItem rechargerUniquementDernierChargement = new JMenuItem("Recharger dernier chargement");
         rechargerUniquementDernierChargement.addActionListener(controleurMenu);
         rechargerUniquementDernierChargement.setFont(fontMenu);
@@ -83,7 +81,6 @@ public class Principale {
 
         menuBar.add(fichier);
         menuBar.add(edit);
-        fichier.add(nouveau);
         fichier.add(chargerFileClasse);
         fichier.add(chargerDossier);
         fichier.add(charger);
