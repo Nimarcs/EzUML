@@ -10,6 +10,7 @@ import vue.VueArborescence;
 import vue.VueDiagramme;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
@@ -49,6 +50,49 @@ public class Principale {
         contentPane.setPreferredSize(new Dimension(LARGEUR_FEN,  HAUTEUR_FEN));
         contentPane.setLayout(new BorderLayout());
 
+        Font fontMenu = new Font("Arial", Font.BOLD, 16);
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fichier = new JMenu("Fichier");
+        fichier.setFont(fontMenu);
+        JMenu edit = new JMenu("Edition");
+        edit.setFont(fontMenu);
+        JMenuItem nouveau = new JMenuItem("Nouveau");
+        nouveau.setFont(fontMenu);
+        JMenuItem rechargerUniquementDernierChargement = new JMenuItem("Recharger dernier chargement");
+        rechargerUniquementDernierChargement.addActionListener(controleurMenu);
+        rechargerUniquementDernierChargement.setFont(fontMenu);
+        JMenuItem chargerFileClasse = new JMenuItem("Charger fichiers .class");
+        chargerFileClasse.addActionListener(controleurMenu);
+        chargerFileClasse.setFont(fontMenu);
+        JMenuItem chargerDossier = new JMenuItem("Charger dossier");
+        chargerDossier.addActionListener(controleurMenu);
+        chargerDossier.setFont(fontMenu);
+        JMenuItem retirerSelectionDiagramme = new JMenuItem("Retirer selection du diagramme");
+        retirerSelectionDiagramme.addActionListener(controleurMenu);
+        retirerSelectionDiagramme.setFont(fontMenu);
+        JMenuItem save = new JMenuItem("Sauvegarder en .ezuml");
+        save.addActionListener(controleurMenu);
+        save.setFont(fontMenu);
+        JMenuItem charger = new JMenuItem("Charger .ezuml");
+        charger.addActionListener(controleurMenu);
+        charger.setFont(fontMenu);
+        JMenuItem exporter = new JMenu("Exporter");
+        exporter.addActionListener(controleurMenu);
+        exporter.setFont(fontMenu);
+
+        menuBar.add(fichier);
+        menuBar.add(edit);
+        fichier.add(nouveau);
+        fichier.add(chargerFileClasse);
+        fichier.add(chargerDossier);
+        fichier.add(charger);
+        fichier.add(save);
+        fichier.add(exporter);
+        edit.add(retirerSelectionDiagramme);
+        edit.add(rechargerUniquementDernierChargement);
+
+                /**
         //Menu
         JPanel menu = new JPanel();
         menu.setLayout(new GridLayout(1, 5));
@@ -84,6 +128,10 @@ public class Principale {
         boutonExporterImage.addActionListener(controleurMenu);
 
         contentPane.add(menu, BorderLayout.NORTH);
+
+                 */
+
+                contentPane.add(menuBar, BorderLayout.NORTH);
 
         //PanelPrincipal
         JSplitPane panelPrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
