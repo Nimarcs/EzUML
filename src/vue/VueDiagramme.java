@@ -63,6 +63,8 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
 
     private transient BufferedImage tabInfo;
 
+    private final static int DECALAGE_FLECHE = 20;
+
 
     public VueDiagramme(Modele m) {
         this.modele = m;
@@ -99,7 +101,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 if (oc.getType()==TypeClasse.CLASSE || oc.getType()==TypeClasse.ABSTRACT) {
                     Extendable e = (Extendable) oc;
                     if (e.getObjectClasseExtends()!=null) {
-                        if (modele.getObjectClasses().contains(e.getObjectClasseExtends()) && e.getObjectClasseExtends().isVisible()) {
+                        if (modele.getObjectClasses().contains(e.getObjectClasseExtends())) {
                             drawArrow(g, oc, e.getObjectClasseExtends(), FLECHE_HERITAGE, null);
                         }
                     }
@@ -110,9 +112,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                  */
                 if (!oc.getListeObjectClasseImplements().isEmpty()) {
                     for (Interface i:oc.getListeObjectClasseImplements()) {
-                        if (i.isVisible()) {
-                            drawArrow(g, oc, i, FLECHE_IMPLEMENTS, null);
-                        }
+                        drawArrow(g, oc, i, FLECHE_IMPLEMENTS, null);
                     }
                 }
             }
@@ -120,7 +120,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
 
         // Affichage de toutes les fleches d'associations
         for (FlecheAssociation f:modele.getAssociations()) {
-            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f.getNom());
+            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f);
         }
 
 		// On execute pour tous les objectClasse
@@ -192,11 +192,6 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
             }
         }
 
-        // Affichage de toutes les fleches d'associations
-        for (FlecheAssociation f:modele.getAssociations()) {
-            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f.getNom());
-        }
-
         // Pour finir, on affiche le rectangle d'information.
         g.drawImage(tabInfo, getWidth()-tabInfo.getWidth()/2, getHeight()-tabInfo.getHeight()/2, tabInfo.getWidth()/2, tabInfo.getHeight()/2, null);
     }
@@ -221,13 +216,14 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
         return taille;
     }
 
-    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, String message) {
+    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, FlecheAssociation fleche) {
 
         ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
         int decX = modele.getDecalageX();
         int decY = modele.getDecalageY();
+        String cote = null;
 
-        if (dest!=null) {
+        if (dest!=null && src.isVisible() && dest.isVisible()) {
             int srcX, srcY, destX, destY;
 
             if (!src.getNomObjectClasse().equals(dest.getNomObjectClasse())) {
@@ -240,11 +236,13 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                         && milieuDestY <= src.getY() - ECART_VISUELLE_Y
                         || milieuDestY >= src.getY() + calculerHauteur(src) + ECART_VISUELLE_Y) {
                     if (dest.getY() <= src.getY()) {
+                        cote = "Haut";
                         srcX = src.getX() + calculerLargeur(src) / 2;
                         srcY = src.getY();
                         destX = dest.getX() + calculerLargeur(dest) / 2;
                         destY = dest.getY() + calculerHauteur(dest);
                     } else {
+                        cote = "Bas";
                         srcX = src.getX() + calculerLargeur(src) / 2;
                         srcY = src.getY() + calculerHauteur(src);
                         destX = dest.getX() + calculerLargeur(dest) / 2;
@@ -252,11 +250,13 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     }
                 } else {
                     if (dest.getX() <= src.getX()) {
+                        cote = "Gauche";
                         srcX = src.getX();
                         srcY = src.getY() + calculerHauteur(src) / 2;
                         destX = dest.getX() + calculerLargeur(dest);
                         destY = dest.getY() + calculerHauteur(dest) / 2;
                     } else {
+                        cote = "Droite";
                         srcX = src.getX() + calculerLargeur(src);
                         srcY = src.getY() + calculerHauteur(src) / 2;
                         destX = dest.getX();
@@ -264,7 +264,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     }
                 }
             } else {
-                System.out.println(src.getX());
+                cote = "null";
                 int largeur = calculerLargeur(src);
                 g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY, src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3);
                 g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3, src.getX()+ + decX + largeur/3 + largeur/3, src.getY()+decY-largeur/3);
@@ -272,6 +272,17 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 srcY = src.getY()-largeur/3;
                 destX = src.getX()+largeur/3+largeur/3;
                 destY = src.getY();
+            }
+
+            if (choixFleche==FLECHE_ASSOSCIATION) {
+                int nbOcc = modele.nbOccurencesFleches(src, dest);
+                if (cote.equals("Droite")||cote.equals("Gauche")) {
+                    srcY+=DECALAGE_FLECHE;
+                    destY+=DECALAGE_FLECHE;
+                } else if (cote.equals("Bas")||cote.equals("Haut")) {
+                    srcX+=DECALAGE_FLECHE;
+                    destX+=DECALAGE_FLECHE;
+                }
             }
 
             int dx = destX - srcX, dy = destY - srcY;
@@ -319,7 +330,9 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                     g.drawLine(srcX + decX, srcY + decY, destX + decX, destY + decY);
                     g.drawLine(destX+decX, destY+decY, xpoints[1], ypoints[1]);
                     g.drawLine(destX+decX, destY +decY, xpoints[2], ypoints[2]);
-                    g.drawString(message, srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
+                    g.drawString(fleche.getNom(), srcX+decX+(destX-srcX)/2, srcY+decY+(destY-srcY)/2);
+                    g.drawString(fleche.getCardSrc(), srcX+decX+(destX-srcX)/8, srcY+decY+(destY-srcY)/8);
+                    g.drawString(fleche.getCardDest(), (int) (srcX+decX+(destX-srcX)*0.875), (int) (srcY+decY+(destY-srcY)*0.875));
                     break;
 
                 default :
