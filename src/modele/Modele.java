@@ -280,7 +280,7 @@ public class Modele extends Sujet implements Serializable {
 
         } if(a.getTypeAttribut().matches("\\[L(.*)")) {
             // Un attribut tableau est de la form [L..., il faut donc retirer les deux premier caracteres
-            return collectionObjectClasse.getObjectClasse(a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1));
+            return collectionObjectClasse.getObjectClasse((a.getTypeAttribut().substring(2, a.getTypeAttribut().length()-1)));
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
             return collectionObjectClasse.getObjectClasse(a.getTypeAttribut());
         }
@@ -376,8 +376,7 @@ public class Modele extends Sujet implements Serializable {
 
         boolean trouve  =false;
         for (Attribut a: source.getAttributs()) {
-            System.out.println(a.getTypeAttribut());
-            if (a.getNomAttribut().equals(association.getNom().substring(2))){
+            if (uniformisationNomObjectClasse(a).getNomObjectClasse().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom().substring(2))){
                 a.changerVisibilite(true);
                 trouve = true;
             }
@@ -451,7 +450,8 @@ public class Modele extends Sujet implements Serializable {
             if (o.getY() + vueDiagramme.calculerHauteur(o) > ymax) ymax = o.getY() + vueDiagramme.calculerHauteur(o);
             if (o.getY() < ymin) ymin = o.getY();
         }
-        return new Rectangle( xmin-10, ymin-10, Math.abs(xmax-xmin)+20, Math.abs(ymax-ymin)+20);
+        Dimension dimLegende = vueDiagramme.getDimensionsLegende();
+        return new Rectangle( xmin-10, ymin-10, Math.abs(xmax-xmin)+20+ dimLegende.width, Math.abs(ymax-ymin)+20+ dimLegende.height);
     }
 
     /**
@@ -462,8 +462,7 @@ public class Modele extends Sujet implements Serializable {
     public void exporterEnImage(String typeImage, String cheminFichier){
         //valeurs initiale
         Rectangle bounds = getBoundsDiagramme();
-        Dimension dimLegende = vueDiagramme.getTabInfo();
-        BufferedImage bi = new BufferedImage(bounds.width + dimLegende.width, bounds.height + dimLegende.height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
 
         //on recupere les valeurs avant le changement
@@ -528,7 +527,7 @@ public class Modele extends Sujet implements Serializable {
             }
 
         }
-        AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n"+cheminAbs);
+        AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer à l'emplacement :\n"+cheminAbs);
 
     }
 
