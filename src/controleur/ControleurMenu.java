@@ -26,7 +26,7 @@ public class ControleurMenu implements ActionListener {
 
     private JFrame oldFrame;
 
-    private File dossierCourant;
+    private File dernierRepOuvert;
     /**
      * Contructeur de ControleurDiagramme
      * @param m modele a modifier, ne doit pas etre null
@@ -36,7 +36,7 @@ public class ControleurMenu implements ActionListener {
         assert frame != null;
         modele=m;
         oldFrame = frame;
-        dossierCourant=FileSystemView.getFileSystemView().getHomeDirectory();
+        dernierRepOuvert=FileSystemView.getFileSystemView().getHomeDirectory();
     }
 
 
@@ -59,7 +59,7 @@ public class ControleurMenu implements ActionListener {
              */
             case "Charger un .class":
 
-                JFileChooser fc = new JFileChooser(dossierCourant);
+                JFileChooser fc = new JFileChooser(dernierRepOuvert);
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc.setDialogTitle("Ouvrir un .class");
                 fc.setApproveButtonText("Ouvrir");
@@ -83,6 +83,7 @@ public class ControleurMenu implements ActionListener {
                         modele.chargerArborescenceProjet(fich);
 
                     }
+                    dernierRepOuvert=files[0].getParentFile();
                 }
 
                 //permet a la fenetre de regagner le focus une fois la popup finie
@@ -108,7 +109,7 @@ public class ControleurMenu implements ActionListener {
                     AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
 
                 } else {
-                    JFileChooser fc1 = new JFileChooser(dossierCourant);
+                    JFileChooser fc1 = new JFileChooser(dernierRepOuvert);
                     //fc.setFileFilter(new EzumlSaveFilter());
                     fc1.setDialogTitle("Sauvegarder votre fichier");
                     fc1.setApproveButtonText("Sauvegarder");
@@ -123,6 +124,8 @@ public class ControleurMenu implements ActionListener {
                     if(returnValue1==JFileChooser.APPROVE_OPTION){
                         modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
 
+                        dernierRepOuvert=fc1.getSelectedFile().getParentFile();
+
                     }
                 }
 
@@ -132,7 +135,7 @@ public class ControleurMenu implements ActionListener {
                     Permet de charger une classe modele Sauvegarder
                  */
             case "Charger diagramme":
-                JFileChooser fc2 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
                 //fc.setFileFilter(new EzumlSaveFilter());
                 fc2.setDialogTitle("Ouvrir votre fichier");
                 fc2.setApproveButtonText("Ouvrir");
@@ -146,6 +149,8 @@ public class ControleurMenu implements ActionListener {
 
                 if(returnValue2==JFileChooser.APPROVE_OPTION) {
                     modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
+                    dernierRepOuvert=fc2.getSelectedFile().getParentFile();
+
                 }
                 oldFrame.requestFocus();
 
@@ -155,7 +160,7 @@ public class ControleurMenu implements ActionListener {
              */
             case "Exporter en image" :
                 //menu de choix
-                JFileChooser fc3 = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                JFileChooser fc3 = new JFileChooser(dernierRepOuvert);
                 fc3.setApproveButtonText("Sauvegarder");
 
 
@@ -190,6 +195,8 @@ public class ControleurMenu implements ActionListener {
 
                     //pour une raison inconnue les exportations en jpg et bmp ne marche pas
                     modele.exporterEnImage(extension,cheminFichier );
+                    dernierRepOuvert=fc3.getSelectedFile().getParentFile();
+
 
                     AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer à l'emplacement :\n"+cheminFichier);
 
@@ -203,7 +210,7 @@ public class ControleurMenu implements ActionListener {
                  */
             case "Charger un répertoire":
 
-                JFileChooser fc4 = new JFileChooser(dossierCourant);
+                JFileChooser fc4 = new JFileChooser(dernierRepOuvert);
                 fc4.setDialogTitle("Ouvrir un répertoire");
                 fc4.setApproveButtonText("Ouvrir un répertoire");
                 fc4.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -237,6 +244,9 @@ public class ControleurMenu implements ActionListener {
 
                     if(fich==null){
                         AffichageErreur.getInstance().afficherMessage("Le répertoire que vous avez choisi ne contient pas de .class");
+                    } else {
+                        dernierRepOuvert=fich.getParentFile();
+
                     }
                 }
 
