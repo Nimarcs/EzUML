@@ -81,7 +81,7 @@ public class FacadeIntrospection {
 			} else {
 
 			//on regarde si il herite d'une classe
-			if (cls.getSuperclass()!=null){
+			if (!cls.getSuperclass().getName().equals("java.lang.Object")){
 				Extendable e= new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
 				int mExtend =cls.getSuperclass().getModifiers();
 				//on regarde si la classe hérité est une classe abstraite ou une classe
@@ -92,11 +92,14 @@ public class FacadeIntrospection {
 				} else{
 					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
-
 				}
 
 			} else {
-				obc = new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
+				try{
+					obc = new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
+				} catch (NullPointerException e ){
+					obc = new Classe(cls.getName(), "" , 0, 0);
+				}
 			}
 		}
 
