@@ -379,4 +379,14 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
         setBounds(bounds);
     }
 
+    /**
+     * getter de la dimension de tabInfo
+     * @return dimension de tabInfo
+     */
+    public Dimension getTabInfo() {
+        if (tabInfo == null) throw new NullPointerException("tabInfo doit etre initialisee");
+        return new Dimension(tabInfo.getWidth(), tabInfo.getHeight());
+    }
+
+
 }
