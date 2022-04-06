@@ -96,7 +96,6 @@ public class ControleurClavier implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Key released");
         switch(e.getKeyCode()){
             case KeyEvent.VK_DELETE://suppr
                 modele.retirerClasseSelectionne();
@@ -125,10 +124,18 @@ public class ControleurClavier implements KeyListener {
                     controleurMenu.charger();
                 }
                 break;
-            default:
-                //on fait rien
-                System.out.println(e.getKeyCode());
-
+            case KeyEvent.VK_D://ctrl shift D
+                if (e.isControlDown() && e.isShiftDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.chargerDossier();
+                }
+                break;
+            case KeyEvent.VK_F://ctrl shift F
+                if (e.isControlDown() && e.isShiftDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.chargerFichiers();
+                }
+                break;
         }
 
     }

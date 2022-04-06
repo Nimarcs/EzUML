@@ -5,6 +5,7 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
+import sun.awt.image.ToolkitImage;
 import vue.AffichageErreur;
 import vue.VueArborescence;
 import vue.VueDiagramme;
@@ -12,6 +13,8 @@ import vue.VueDiagramme;
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Principale {
 
@@ -27,9 +30,9 @@ public class Principale {
         //Modele
         Modele modele = new Modele();
 
-
         //JFrame
         JFrame frame = new JFrame("EzUML");
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Principale.class.getResource("icon.png")));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //defini la taille minimum de la fenetre
 
@@ -60,25 +63,25 @@ public class Principale {
         fichier.setFont(fontMenu);
         JMenu edit = new JMenu("Edition");
         edit.setFont(fontMenu);
-        JMenuItem rechargerUniquementDernierChargement = new JMenuItem("Recharger dernier chargement");
+        JMenuItem rechargerUniquementDernierChargement = new JMenuItem(ControleurMenu.RECHARGER_DERNIER_CHARGEMENT_TXT);
         rechargerUniquementDernierChargement.addActionListener(controleurMenu);
         rechargerUniquementDernierChargement.setFont(fontMenu);
-        JMenuItem chargerFileClasse = new JMenuItem("Charger fichiers .class");
+        JMenuItem chargerFileClasse = new JMenuItem(ControleurMenu.CHARGER_FICHIERS_CLASS_TXT);
         chargerFileClasse.addActionListener(controleurMenu);
         chargerFileClasse.setFont(fontMenu);
-        JMenuItem chargerDossier = new JMenuItem("Charger dossier");
+        JMenuItem chargerDossier = new JMenuItem(ControleurMenu.CHARGER_DOSSIER_TXT);
         chargerDossier.addActionListener(controleurMenu);
         chargerDossier.setFont(fontMenu);
-        JMenuItem retirerSelectionDiagramme = new JMenuItem("Retirer selection du diagramme");
+        JMenuItem retirerSelectionDiagramme = new JMenuItem(ControleurMenu.RETIRER_SELECTION_DU_DIAGRAMME_TXT);
         retirerSelectionDiagramme.addActionListener(controleurMenu);
         retirerSelectionDiagramme.setFont(fontMenu);
-        JMenuItem save = new JMenuItem("Sauvegarder .ezuml");
+        JMenuItem save = new JMenuItem(ControleurMenu.SAUVEGARDER_EZUML_TXT);
         save.addActionListener(controleurMenu);
         save.setFont(fontMenu);
-        JMenuItem charger = new JMenuItem("Charger .ezuml");
+        JMenuItem charger = new JMenuItem(ControleurMenu.CHARGER_EZUML_TXT);
         charger.addActionListener(controleurMenu);
         charger.setFont(fontMenu);
-        JMenuItem exporter = new JMenuItem("Exporter");
+        JMenuItem exporter = new JMenuItem(ControleurMenu.EXPORTER_TXT);
         exporter.addActionListener(controleurMenu);
         exporter.setFont(fontMenu);
 
