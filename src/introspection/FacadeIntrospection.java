@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * FacadeIntrospection permet de creer l'ObjetClasse a partir d'un File
- * 
- * @author Guillaume renard
+ * FacadeIntrospection permet de d'instancier l'ObjetClasse a partir d'un File donne
+ * On va dans un premier temps creer l'objet classe qui correspond au File.
+ * Puis on vas instancier l'ObjectClasse et les autres classes prevues pour faire un diagramme,
+ * grace a l'introspection le l'objet classe cree
  *
  */
 public class FacadeIntrospection {
