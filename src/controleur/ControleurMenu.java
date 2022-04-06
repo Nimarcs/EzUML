@@ -28,6 +28,15 @@ public class ControleurMenu implements ActionListener {
     private JFrame oldFrame;
 
     private File dernierRepOuvert;
+
+    public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class  ᶜᵗʳˡ ˢʰᶦᶠᵗ ᶠ";
+    public static final String CHARGER_DOSSIER_TXT = "Charger dossier              ᶜᵗʳˡ ˢʰᶦᶠᵗ ᵈ";
+    public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme  ˢᵘᵖᵖʳ.";
+    public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml             ᶜᵗʳˡ ˢ";
+    public static final String CHARGER_EZUML_TXT = "Charger .ezuml                      ᶜᵗʳˡ ᵒ";
+    public static final String EXPORTER_TXT = "Exporter                                   ᶜᵗʳˡ ᵉ";
+    public static final String RECHARGER_DERNIER_CHARGEMENT_TXT = "Recharger dernier chargement";
+
     /**
      * Contructeur de ControleurDiagramme
      * @param m modele a modifier, ne doit pas etre null
@@ -57,7 +66,7 @@ public class ControleurMenu implements ActionListener {
              * Cela a pour effet d'ouvrir une fenetre d'exploration window
              * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
              */
-            case "Charger fichiers .class":
+            case CHARGER_FICHIERS_CLASS_TXT:
 
                 chargerFichiers();
 
@@ -65,40 +74,40 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet de commencer un nouveau diagramme
              */
-            case "Recharger dernier chargement":
+            case RECHARGER_DERNIER_CHARGEMENT_TXT:
                 modele.reintialiserDiagramme();
                 break;
             /*
                 Permet de retirer les classe selectionne du diagramme
              */
-            case "Retirer selection du diagramme" :
+            case RETIRER_SELECTION_DU_DIAGRAMME_TXT :
                 modele.retirerClasseSelectionne();
                 break;
             /*
                 Permet d'enregistrer la classe modele
              */
-            case "Sauvegarder .ezuml":
+            case SAUVEGARDER_EZUML_TXT:
                 sauvegarde();
 
                 break;
                 /*
                     Permet de charger une classe modele Sauvegarder
                  */
-            case "Charger .ezuml":
+            case CHARGER_EZUML_TXT:
                 charger();
 
                 break;
             /*
                 Permet d'exporter en image le diagramme
              */
-            case "Exporter" :
+            case EXPORTER_TXT :
                 exporterEnImage();
 
                 break;
                 /*
                 Permet de charger des .class dans un repertoire choisi par l'utilisateur
                  */
-            case "Charger dossier":
+            case CHARGER_DOSSIER_TXT:
 
                 chargerDossier();
 
