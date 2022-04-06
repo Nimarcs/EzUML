@@ -155,7 +155,8 @@ public class FacadeIntrospection {
 
 		for (Field attri : fdd) {
 			String nom= attri.getName();
-			String typeAttribut = attri.getAnnotatedType().getType().toString();
+			String typeAttribut = attri.getAnnotatedType().getType().getTypeName();
+			System.out.println("1 : "+ typeAttribut);
 
 			if (Pattern.matches("class(.*)", typeAttribut)) typeAttribut = typeAttribut.substring(6);
 
@@ -188,13 +189,13 @@ public class FacadeIntrospection {
 		Method[] meth = cls.getDeclaredMethods();
 		for (Method methode : meth) {
 			String nom= methode.getName();
-			String typeRetour= methode.getAnnotatedReturnType().getType().toString();
+			String typeRetour= methode.getAnnotatedReturnType().getType().getTypeName();
 
 			//tableau qui contient le nom des classes en parametres
 			AnnotatedType[] c = methode.getAnnotatedParameterTypes();
 			List<String> tabList = new ArrayList<String>();
 			for (AnnotatedType cla : c) {
-				tabList.add(cla.getType().toString());
+				tabList.add(cla.getType().getTypeName());
 			}
 			//modifier qui change en fonction de ce que contient la methode, public/privée/abstraite/finale/...
 			int mMet = methode.getModifiers();
@@ -237,7 +238,7 @@ public class FacadeIntrospection {
 			AnnotatedType[] c = co.getAnnotatedParameterTypes();
 			List<String> tabList = new ArrayList<String>();
 			for (AnnotatedType cla : c) {
-				tabList.add(cla.getType().toString());
+				tabList.add(cla.getType().getTypeName());
 			}
 
 			Methode m= new Methode(nom, s, null, tabList,false, false, false);
