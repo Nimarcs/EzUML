@@ -156,7 +156,6 @@ public class FacadeIntrospection {
 		for (Field attri : fdd) {
 			String nom= attri.getName();
 			String typeAttribut = attri.getAnnotatedType().getType().getTypeName();
-			System.out.println("1 : "+ typeAttribut);
 
 			if (Pattern.matches("class(.*)", typeAttribut)) typeAttribut = typeAttribut.substring(6);
 
