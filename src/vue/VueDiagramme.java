@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 public class VueDiagramme extends JPanel implements Observateur,Serializable { //extends JPanel temporaire
 
@@ -69,7 +71,8 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
     public VueDiagramme(Modele m) {
         this.modele = m;
         try {
-            tabInfo = ImageIO.read(new File("ressources/TableauInfo.png"));
+            System.out.println();
+            tabInfo = ImageIO.read(Objects.requireNonNull(getClass().getResource("/ressources/TableauInfo.png")));
         } catch (IOException e) {
             e.printStackTrace();
             tabInfo = null;

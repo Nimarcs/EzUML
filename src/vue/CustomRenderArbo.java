@@ -4,10 +4,12 @@ import modele.Modele;
 import modele.Package;
 import modele.classe.ObjectClasse;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.io.File;
 import java.util.Objects;
 
 /**
@@ -16,8 +18,8 @@ import java.util.Objects;
  */
 public class CustomRenderArbo extends DefaultTreeCellRenderer {
 
-    private static final ImageIcon VERT =  new ImageIcon(Objects.requireNonNull(VueArborescence.class.getResource("imagesfeuilles/pointvert.png")));
-    private static final ImageIcon ROUGE=new ImageIcon(Objects.requireNonNull(VueArborescence.class.getResource("imagesfeuilles/pointrouge.png")));
+    private static final ImageIcon VERT =  new ImageIcon(CustomRenderArbo.class.getResource("/ressources/pointvert.png"));
+    private static final ImageIcon ROUGE=new ImageIcon(CustomRenderArbo.class.getResource("/ressources/pointrouge.png"));
     private final JLabel label;
     private final Modele modele;
 

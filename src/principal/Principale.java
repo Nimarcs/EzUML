@@ -5,13 +5,12 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
-import vue.AffichageErreur;
-import vue.VueArborescence;
-import vue.VueDiagramme;
+import vue.*;
 
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.io.File;
 
 public class Principale {
 
@@ -29,7 +28,7 @@ public class Principale {
 
         //JFrame
         JFrame frame = new JFrame("EzUML");
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Principale.class.getResource("icon.png")));
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Principale.class.getResource("/ressources/icon.png")));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //defini la taille minimum de la fenetre
 
