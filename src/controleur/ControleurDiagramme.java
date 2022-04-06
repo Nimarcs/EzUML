@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Controleur qui regarde les actions faites par la souris de l'utilisateur sur l'affichage du diagramme
+ * Controleur qui regarde les actions faites sur le diagramme
  */
 public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 

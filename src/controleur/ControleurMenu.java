@@ -26,12 +26,24 @@ import java.util.stream.Stream;
  */
 public class ControleurMenu implements ActionListener {
 
+    /**
+     * modele dont on veut controler les valeurs
+     */
     private Modele modele;
 
+    /**
+     * permet de reprendre le focus sur le JFrame principal et pas sur celui des pop-up
+     */
     private JFrame oldFrame;
 
+    /**
+     * chemin absolue du dernier repertoire ouvert, il se situe au "C://" au debut
+     */
     private File dernierRepOuvert;
 
+    /**
+     * nom des boutons qui se situe dans la barre de menu
+     */
     public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1DA0";
     public static final String CHARGER_DOSSIER_TXT = "Charger dossier - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1D48";
     public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme - \u02E2\u1D58\u1D56\u1D56\u02B3";
@@ -145,8 +157,7 @@ public class ControleurMenu implements ActionListener {
             //partie qui donne tout les fichiers que contient un repertoire meme dans des sous-repertoire
             List<String> result = new ArrayList<>();
             try (Stream<Path> walk = Files.walk(Paths.get(rep.getAbsolutePath()))) {
-                result = walk.filter(Files::isRegularFile)
-                        .map(x -> x.toString()).collect(Collectors.toList());
+                result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -266,8 +277,7 @@ public class ControleurMenu implements ActionListener {
 
             //on recupere l'extension
             int indexExtention = cheminFichier.lastIndexOf('.') + 1;
-            if (indexExtention > 0)
-                extension = cheminFichier.substring(indexExtention);
+            if (indexExtention > 0) extension = cheminFichier.substring(indexExtention);
             else {
                 extension = "png"; // si il n'y pas d'extension
                 cheminFichier += ".png";//on la rajoute aussi au fichier
