@@ -5,7 +5,6 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
-import sun.awt.image.ToolkitImage;
 import vue.AffichageErreur;
 import vue.VueArborescence;
 import vue.VueDiagramme;
@@ -13,8 +12,6 @@ import vue.VueDiagramme;
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
 
 public class Principale {
 
