@@ -10,7 +10,6 @@ import vue.VueArborescence;
 import vue.VueDiagramme;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
@@ -38,12 +37,14 @@ public class Principale {
         AffichageErreur.instancier(frame);
 
         //Controleur
-        ControleurClavier controleurClavier = new ControleurClavier(modele);
         ControleurMenu controleurMenu= new ControleurMenu(modele, frame);
+        ControleurClavier controleurClavier = new ControleurClavier(modele, controleurMenu);
         ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
-        ControleurArborescence controleurArborescence = new ControleurArborescence(modele);
+        ControleurArborescence controleurArborescence = new ControleurArborescence(modele, frame);
         //on ajoute le controleur
         frame.addKeyListener(controleurClavier);
+        frame.setFocusable(true);
+        frame.requestFocus();
 
         //ContentPane
         JPanel contentPane = (JPanel) frame.getContentPane();
