@@ -110,23 +110,7 @@ public class ControleurMenu implements ActionListener {
                     Permet de charger une classe modele Sauvegarder
                  */
             case "Charger .ezuml":
-                JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
-                //fc.setFileFilter(new EzumlSaveFilter());
-                fc2.setDialogTitle("Ouvrir votre fichier");
-                fc2.setApproveButtonText("Ouvrir");
-                fc2.setAcceptAllFileFilterUsed(false);
-
-                FileNameExtensionFilter filtreEzumlO = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
-                fc2.addChoosableFileFilter(filtreEzumlO);
-
-
-                int returnValue2 = fc2.showOpenDialog(null);
-
-                if(returnValue2==JFileChooser.APPROVE_OPTION) {
-                    modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
-                    dernierRepOuvert=fc2.getSelectedFile().getParentFile();
-
-                }
+                charger();
 
                 break;
             /*
@@ -189,6 +173,29 @@ public class ControleurMenu implements ActionListener {
         //permet a la fenetre de regagner le focus une fois fini
         oldFrame.requestFocus();
 
+    }
+
+    /**
+     * Methode qui lance le menu pour chosir la sauvegarde et la charger
+     */
+    public void charger() {
+        JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
+        //fc.setFileFilter(new EzumlSaveFilter());
+        fc2.setDialogTitle("Ouvrir votre fichier");
+        fc2.setApproveButtonText("Ouvrir");
+        fc2.setAcceptAllFileFilterUsed(false);
+
+        FileNameExtensionFilter filtreEzumlO = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
+        fc2.addChoosableFileFilter(filtreEzumlO);
+
+
+        int returnValue2 = fc2.showOpenDialog(null);
+
+        if(returnValue2==JFileChooser.APPROVE_OPTION) {
+            modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
+            dernierRepOuvert=fc2.getSelectedFile().getParentFile();
+
+        }
     }
 
     /**

@@ -119,6 +119,12 @@ public class ControleurClavier implements KeyListener {
                     controleurMenu.exporterEnImage();
                 }
                 break;
+            case KeyEvent.VK_O://ctrl O
+                if (e.isControlDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.charger();
+                }
+                break;
             default:
                 //on fait rien
                 System.out.println(e.getKeyCode());
