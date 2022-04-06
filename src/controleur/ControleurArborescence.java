@@ -79,7 +79,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
                         modele.retirerClasseSelectionne();
                         modele.setSelection(tmp);
                     } else {
-                        modele.ajouterClasse(objectClasse, modele.getDecalageX(), modele.getDecalageY());
+                        modele.ajouterClasse(objectClasse, -modele.getDecalageX(), -modele.getDecalageY());
                     }
                 }
             }
