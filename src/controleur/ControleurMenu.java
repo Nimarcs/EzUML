@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Controleur qui regarde les actions faites sur la barre du menu en haut de notre interface graphique
+ */
 public class ControleurMenu implements ActionListener {
 
     private Modele modele;
