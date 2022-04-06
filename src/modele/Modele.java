@@ -694,6 +694,7 @@ public class Modele extends Sujet implements Serializable {
      */
     public void setSelection(List<ObjectClasse> selection) {
         this.selection = selection;
+        notifierObservateurs();
     }
 
     public VueDiagramme getVueDiagramme(){
