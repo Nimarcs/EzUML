@@ -43,8 +43,7 @@ public class ControleurMenu implements ActionListener {
 
     /**
      * methode qui est appelé à chaque fois que l'utilisateur appuie sur un bouton de la barre de menu
-     *
-     * @param e
+     * @param e contient le nom du bouton qui a ete appuyer
      */
     @Override
     public void actionPerformed(ActionEvent e) {

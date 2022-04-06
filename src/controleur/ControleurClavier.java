@@ -59,9 +59,8 @@ public class ControleurClavier implements KeyListener {
     }
 
     /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
+     * methode appele lorsque l'on relache n'importe quel touche,
+     * cela permet de faire les raccourcis clavier
      *
      * @param e the event to be processed
      */
