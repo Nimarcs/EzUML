@@ -28,7 +28,7 @@ public class FacadeIntrospection {
 	 * cherche a avoir la classe objet du File puis on cree ObjetClasse en fonction
 	 * de lui
 	 * 
-	 * @param f
+	 * @param f chemin absolue du fichier ou l'on veut faire un diagramme
 	 * @return
 	 */
 	public ObjectClasse introspectionClasse(File f) throws MalformedURLException {
@@ -45,16 +45,15 @@ public class FacadeIntrospection {
 
 
 	/**
-	 * methode qui permet de construire l'ObjetClasse a partir d'un objet classe
-	 * de lui
+	 * methode qui permet de construire l'ObjetClasse a partir de la classe en parametre
 	 *
 	 * @param cls
 	 * @return
 	 */
 	private ObjectClasse faireIntrospection(Class cls){
 		ObjectClasse obc = null;
-		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
 
+		//on regarde si les classes sont des Enum, Interfaces, Abstract ou une Classe
 		int m = cls.getModifiers();
 		if (cls.isEnum()) {
 			 obc = new Enumeration(cls.getName(), cls.getPackage().getName(), 0, 0);
@@ -62,8 +61,14 @@ public class FacadeIntrospection {
 			 obc = new Interface(cls.getName(), cls.getPackage().getName(), 0, 0);
 		}else if (Modifier.isAbstract(m)) {
 
-			if (cls.getSuperclass()!=null){
-				Extendable e= new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
+			//on regarde si la classe herite d'une autre classe
+			if (!cls.getSuperclass().getName().equals("java.lang.Object")){
+				Extendable e;
+				try{
+					e= new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
+				} catch (NullPointerException ex ){
+					e= new Abstraite(cls.getName(), "", 0, 0);
+				}
 				int mExtend =cls.getSuperclass().getModifiers();
 				if ( Modifier.isAbstract(mExtend)) {
 					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
@@ -74,8 +79,11 @@ public class FacadeIntrospection {
 					obc = e;
 				}
 			} else {
-				obc = new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
-
+				try{
+					obc = new Abstraite(cls.getName(), cls.getPackage().getName(), 0, 0);
+				} catch (NullPointerException e ){
+					obc = new Abstraite(cls.getName(), "" , 0, 0);
+				}
 			}
 
 
@@ -83,13 +91,18 @@ public class FacadeIntrospection {
 
 			//on regarde si il herite d'une classe
 			if (!cls.getSuperclass().getName().equals("java.lang.Object")){
-				Extendable e= new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
+				Extendable e;
+				try{
+					e= new Classe(cls.getName(), cls.getPackage().getName(), 0, 0);
+				} catch (NullPointerException ex ){
+					e= new Classe(cls.getName(), "", 0, 0);
+				}
+
 				int mExtend =cls.getSuperclass().getModifiers();
 				//on regarde si la classe hérité est une classe abstraite ou une classe
 				if ( Modifier.isAbstract(mExtend)) {
 					e.changerExtends((Extendable) new Abstraite(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
-
 				} else{
 					e.changerExtends((Extendable) new Classe(cls.getSuperclass().getName(), cls.getSuperclass().getPackage().getName(), 0, 0));
 					obc = e;
@@ -130,15 +143,14 @@ public class FacadeIntrospection {
 	}
 
 	/**
-	 * methode privée qui permet de faire l'introspection des attributs de l'ObjectClasse en parametre
-	 *
+	 * methode privée qui permet de faire l'introspection des attributs de la classe en parametre
+	 * Pour ajouter un ou des attributs a l'bjectClasse
 	 * @param cls
 	 * @param obc
 	 * @return
 	 */
 	private void introAttribut(Class cls, ObjectClasse obc ){
-		//Les attributs
-
+		//methode qui donne toute les attributs declare dans cls
 		Field[] fdd = cls.getDeclaredFields();
 
 		for (Field attri : fdd) {
@@ -164,15 +176,13 @@ public class FacadeIntrospection {
 	}
 
 	/**
-	 * methode privée qui permet de faire l'introspection des méthodes de l'ObjectClasse en parametre
-	 *
+	 * methode privée qui permet de faire l'introspection des méthodes de la classe en parametre
+	 * Pour ajouter une ou plusieurs methode a l'bjectClasse
 	 * @param cls
 	 * @param obc
 	 * @return
 	 */
 	private void introMethode(Class cls, ObjectClasse obc ){
-
-		//Les methodes
 
 		//liste de toutes les methodes declare, quel soit public/privés/protected
 		Method[] meth = cls.getDeclaredMethods();
@@ -203,15 +213,16 @@ public class FacadeIntrospection {
 	}
 
 	/**
-	 * methode privée qui permet de faire l'introspection des constructeurs de l'ObjectClasse en parametre
+	 * methode privée qui permet de faire l'introspection des constructeurs de la classe en parametre
+	 * Pour ajouter un ou des constructeurs a l'bjectClasse
 	 * les constructeurs sont considérés comme des méthodes dans l'objectClasse
 	 * @param cls
 	 * @param obc
 	 * @return
 	 */
 	private void introConstructeur(Class cls, ObjectClasse obc ){
-		//Les constructeurs
 
+		//Methode qui donne un tableau avec tout les constructeurs declare
 		Constructor[] cons = cls.getDeclaredConstructors();
 
 		for (Constructor co : cons) {
@@ -230,16 +241,16 @@ public class FacadeIntrospection {
 			}
 
 			Methode m= new Methode(nom, s, null, tabList,false, false, false);
-			//ajout de constructeur dans l'ObjectClass, on considère qu'un constructeur est une méthode dans l'ObjectClass
+			//ajout de constructeur dans l'ObjectClass, on considère qu'un constructeur est une méthode de l'ObjectClass
 			obc.ajouterMethode(m);
 
 		}
 	}
 
 	/**
-	 * methode privée qui en fonction du int quel recoit retourne un statut
-	 * @param mod
-	 * @return
+	 * methode privée qui en fonction du int quel recoit, renvoie le statut associe a ce nombre
+	 * @param mod int
+	 * @return Statut
 	 */
 	private Statut avoirStatut(int mod){
 		Statut s = null;

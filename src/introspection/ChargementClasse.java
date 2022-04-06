@@ -20,46 +20,30 @@ public class ChargementClasse {
      * le chemin pour construire le classLoader doit etre :
      * C:\\Users\\guill\\eclipse-workspace\\ReadFichier\\bin\\
      *
-     * avec lireFichier comme package le reste est utilisé pour trouve le fichier
+     * avec lireFichier comme package le reste est utilisé pour instancier la classe
      * exemple : lireFichier.lectureTXT
      *
      *
      * probleme, il peut avoir un packages dans en packages dans un packages...
      * et on connait pas le nombre de packages qu'il y a dans le File, la
      * methode teste donc tout d'abord pour aucun package
-     * Si le fichier n'a aucun package , on renvoie la Class
-     * sinon  on catch l'execption et refait la methode pour
-     * tester notre File avec un package puis ainsi de suite jusqu'a ce que le FIle n'est plus de repertoire
+     * Si le classLoader ne revele aucune erreur, on renvoie la Class
+     * sinon  on catch l'execption et on refait la methode pour
+     * tester notre File avec un package puis avec 2 package puis ainsi de suite jusqu'a ce que le FIle n'est plus de repertoire ce qui revelera une exception
      *
      * @param f fichier ou l'on veut sa class
      * @param p nombre de fois que la méthode chargerClass est appelé
-     * @return
+     * @return Class
      * @throws MalformedURLException
      * @throws ClassNotFoundException
      */
     public Class chargerClass(File f, int p) throws MalformedURLException {
         Class cls = null;
 
-        //On regarde quel est le système d'exploitation, pour agir sur les chemins d'acces
-        String SE = System.getProperty("os.name").toLowerCase();
-
+        // on regarde que elle le directory separator du systeme
         String a= File.separator;
 
-        /*
-        if (SE.indexOf("win") >= 0) {
-            //systeme window
-            a = "\\";
-        } else if (SE.indexOf("mac") >= 0 ||SE.indexOf("nux") >= 0) {
-            //systeme mac ou linux
-            a = "/";
-        } else{
-            //systeme par pris en compte
-            a = "/";
-        }*/
-
-
         // condition qui regarde que le nombre de repertoire n'est pas superieur a p
-
         if (p <= compterBackQuote(f.getAbsolutePath(), a )) {
             //tableau qui contient le chemin d'acces juste avant les packages et le nom du fichier avec ses packages
             String[] s = new String[2];
@@ -69,10 +53,10 @@ public class ChargementClasse {
             int repertoirePackage = 0;
 
 
-            // boucle qui regarde si on trouve \ et qui s'arrete quand on a trouve le bon
+            // boucle qui regarde si on trouve \ ou /(en fonction de a ) et qui s'arrete quand on a trouve le bon
             // nombre qui est celui de p
             while ((i > 0) && (repertoirePackage != p)) {
-                // on regarde si le caractere courant est \
+                // on regarde si le caractere courant est \ ou /
                 if (a.charAt(0) == cheminAbsolue.charAt(i)) {
                     repertoirePackage++;
                 }
@@ -81,24 +65,25 @@ public class ChargementClasse {
 
             // separe le string en 2 pour pouvoir faire le ClassLoader
             if (i != 0) {
-                // la ligne suivante est celle qui va etre un nouveau File sans le fichier et
-                // les packages associe a lui
+                // la ligne suivante est celle qui va etre un nouveau File sans le fichier et sans les packages associe a lui
                 s[0] = cheminAbsolue.substring(0, i + 2);
                 // le reste du string est donne pour rechercher
                 s[1] = cheminAbsolue.substring(i + 2);
                 // on enleve le .class
                 s[1] = s[1].split(Pattern.quote(".")+"class")[0];
-                // on remplace \ par un point
+                // on remplace les \ ou / par des point
                 s[1] = s[1].replace(a, ".");
 
             }
             try {
 
-                // creation d'un classLoader
+                // creation du classLoader
+
+                //On le creer a partir de s[0] qui est le chemin absolue du fichier sans celui-ci et sans les packages associes au fichier
                 File fl = new File(s[0]);
                 URLClassLoader loader = new URLClassLoader(new URL[] { fl.toURL() }, getClass().getClassLoader());
 
-                // la methode forname renvoie la classe associe a s[1]
+                // la methode forname renvoie la classe associe a s[1] et grace au loader fait ci-dessus
                 try {
                     cls = Class.forName(s[1], false, loader);
                 } catch( ClassFormatError e ){
@@ -114,6 +99,7 @@ public class ChargementClasse {
                 cls = chargerClass(f, p);
             }
         } else {
+            // erreur lorsque l'on a fait toute les possibilités de package
             AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n"+f.getAbsolutePath());
         }
 
@@ -121,11 +107,10 @@ public class ChargementClasse {
     }
 
     /**
-     * methode qui compte le nombre de \ dans notre le string que l'on lui donne qui
-     * est le File
+     * methode qui compte le nombre de \ ou de / dans notre le string que l'on lui donne
      *
      * @param text
-     * @return
+     * @return int nombre de a contenu dans le String
      */
     private int compterBackQuote(String text, String a) {
         int count = 0;
