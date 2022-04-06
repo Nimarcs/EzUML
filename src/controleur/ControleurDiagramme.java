@@ -8,22 +8,22 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Controleur de l'affichage du diagramme de classe
+ * Controleur qui regarde les actions faites par la souris de l'utilisateur sur l'affichage du diagramme
  */
 public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     /**
-     * constante qui represante le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
+     * constante qui represente le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
      */
     private static final int DEPLACEMENT_MIN = 5;
 
     /**
-     * modele dont on veut controler les valeurs
+     * modele dont on veut controller les valeurs
      */
     private final Modele modele;
 
     /**
-     * position a laquelle on a commencer a cliquer gauche, permet d'eviter de selectionner si on ne deplace pas la souris
+     * position a laquelle on a commencer a faire un clique gauche, permet d'eviter de selectionner si on ne deplace pas la souris
      */
     private int positionDebutMaintientX, positionDebutMaintientY;
     private int positionMaintientX, positionMaintientY;
@@ -43,20 +43,9 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * Invoked when the mouse button has been clicked (pressed
-     * and released) on a component.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    /**
      * methode qui est appele lorsque l'on appuie sur la souris sur le diagramme
      *
-     * @param e the event to be processed
+     * @param e l'événement à traiter
      */
     @Override
     public void mousePressed(MouseEvent e) {
@@ -81,7 +70,7 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     /**
      * methode appele lorsque l'on arrete d'appuyer sur la souris dans le diagramme
      *
-     * @param e the event to be processed
+     * @param e l'evenement à traiter
      */
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -114,29 +103,9 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * Invoked when the mouse enters a component.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    /**
-     * Invoked when the mouse exits a component.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    /**
      * methode appele lorsque l'on bouge la souris dans le diagramme
      *
-     * @param e the event to be processed
+     * @param e l'événement à traiter
      */
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -160,6 +129,37 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+
+    }
+
+    /**
+     * Invoked when the mouse enters a component.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    /**
+     * Invoked when the mouse exits a component.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    /**
+     * Invoked when the mouse button has been clicked (pressed
+     * and released) on a component.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
     }
 }
