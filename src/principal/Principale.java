@@ -12,8 +12,6 @@ import vue.VueDiagramme;
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
 
 public class Principale {
 
