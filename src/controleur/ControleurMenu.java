@@ -29,12 +29,12 @@ public class ControleurMenu implements ActionListener {
 
     private File dernierRepOuvert;
 
-    public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class - ᶜᵗʳˡ ˢʰᶦᶠᵗ ᶠ";
-    public static final String CHARGER_DOSSIER_TXT = "Charger dossier - ᶜᵗʳˡ ˢʰᶦᶠᵗ ᵈ";
-    public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme - ˢᵘᵖᵖʳ.";
-    public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml - ᶜᵗʳˡ ˢ";
-    public static final String CHARGER_EZUML_TXT = "Charger .ezuml - ᶜᵗʳˡ ᵒ";
-    public static final String EXPORTER_TXT = "Exporter - ᶜᵗʳˡ ᵉ";
+    public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1DA0";
+    public static final String CHARGER_DOSSIER_TXT = "Charger dossier - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1D48";
+    public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme - \u02E2\u1D58\u1D56\u1D56\u02B3";
+    public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml - \u1D9C\u1D57\u02B3\u02E1 \u02E2";
+    public static final String CHARGER_EZUML_TXT = "Charger .ezuml - \u1D9C\u1D57\u02B3\u02E1 \u1D52";
+    public static final String EXPORTER_TXT = "Exporter - \u1D9C\u1D57\u02B3\u02E1 \u1D49";
     public static final String RECHARGER_DERNIER_CHARGEMENT_TXT = "Recharger dernier chargement";
 
     /**
