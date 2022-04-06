@@ -35,11 +35,12 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     /**
      * Contructeur de ControleurDiagramme
+     *
      * @param m modele a modifier, ne doit pas etre null
      */
-    public ControleurDiagramme(Modele m){
+    public ControleurDiagramme(Modele m) {
         assert m != null;
-        modele=m;
+        modele = m;
     }
 
     /**
@@ -76,13 +77,13 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {
 
         // on cacule les vecteurs de deplacement a partir de la position initial
-        int vecteurDeplacementX = e.getX()-positionDebutMaintientX;
-        int vecteurDeplacementY = e.getY()-positionDebutMaintientY;
+        int vecteurDeplacementX = e.getX() - positionDebutMaintientX;
+        int vecteurDeplacementY = e.getY() - positionDebutMaintientY;
 
         //si on se deplace assez
         if (Math.abs(vecteurDeplacementX) > DEPLACEMENT_MIN || Math.abs(vecteurDeplacementY) > DEPLACEMENT_MIN) {
             //si on a trouve la classe
-            if (objectClasse!=null) {
+            if (objectClasse != null) {
                 //si la classe est selectionne
                 if (!modele.getSelection().contains(objectClasse) && !e.isControlDown()) {
                     //le click va deselectionner
@@ -93,11 +94,10 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
             }
 
         } else {
-            if (objectClasse!=null) {
+            if (objectClasse != null) {
                 if (!e.isControlDown()) modele.deselectionner();
                 modele.selectionnerUneClasse(objectClasse);
-            }
-            else modele.deselectionner();
+            } else modele.deselectionner();
         }
 
     }
@@ -110,13 +110,12 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         // on caclcule le vecteur de deplacement
-        int vecteurDeplacementX = e.getX()-positionMaintientX;
-        int vecteurDeplacementY = e.getY()-positionMaintientY;
+        int vecteurDeplacementX = e.getX() - positionMaintientX;
+        int vecteurDeplacementY = e.getY() - positionMaintientY;
         // On change la position de la selection
-        if (!modele.getSelection().isEmpty() && objectClasse!=null && modele.getSelection().contains(objectClasse)){
+        if (!modele.getSelection().isEmpty() && objectClasse != null && modele.getSelection().contains(objectClasse)) {
             modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
-        }
-        else {
+        } else {
             //On change le decalage
             modele.deplacerDecalageX(vecteurDeplacementX);
             modele.deplacerDecalageY(vecteurDeplacementY);
