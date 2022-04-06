@@ -69,7 +69,7 @@ public class Modele extends Sujet implements Serializable {
     /**
      * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
      */
-    private VueDiagramme vueDiagramme;
+    private transient VueDiagramme vueDiagramme;
 
 
     //Contructeurs
@@ -548,7 +548,6 @@ public class Modele extends Sujet implements Serializable {
             this.afficherPackage = p.isAfficherPackage();
             this.dossierCourant= p.getDossierCourant();
             this.associations = p.getAssociations();
-            this.setVueDiagramme(p.getVueDiagramme());
             notifierObservateurs();
         } catch (java.io.IOException | ClassNotFoundException e) {
             AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement du diagramme");
