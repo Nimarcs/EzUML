@@ -114,10 +114,12 @@ public class Methode implements Serializable {
     private String retournerType(String s) {
         String type;
         String[] tabChemin = s.split(Pattern.quote(".")); // tabChemin devise la string par le point
-        if (s.contains("<")&&s.contains(">")) {
-            String tabTmp[] = s.split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
+        String valType = s;
+        if (valType.matches("class(.*)")) valType = valType.substring(6);
+        if (valType.contains("<")&&valType.contains(">")) {
+            String tabTmp[] = valType.split(Pattern.quote("<")); // tabTmp coupe la string en deux a partie du char <
             String tabChemin2[] = tabTmp[0].split(Pattern.quote(".")); // dans la partie de gauche de tabTmp (séparé par <) on fait comme pour tabChemin, on recupere la string la plus a droite séparé par un point
-            if (s.contains(",")) { // cas pour les collections avec 2 type et plus
+            if (valType.contains(",")) { // cas pour les collections avec 2 type et plus
                 String tabTypes[] = tabTmp[1].split(Pattern.quote(",")); // on prend la partie droite de tabTmp et on coupe a partir des virgules
                 type = tabChemin2[tabChemin2.length-1] + "<"; // on ajoute le symbole coupé
                 for (int i=0; i<tabTypes.length; i++) {
@@ -129,8 +131,8 @@ public class Methode implements Serializable {
                 String tabContenuTemp[] = tabTmp[1].split(Pattern.quote("."));
                 type = tabChemin2[tabChemin2.length-1] + "<" + tabContenuTemp[tabContenuTemp.length-1];
             }
-        } if(s.matches("\\[L(.*)")) {
-            String tabContenu[] = s.split(Pattern.quote("."));
+        } else if(valType.matches("\\[L(.*)")) {
+            String tabContenu[] = valType.split(Pattern.quote("."));
             String val = tabContenu[tabContenu.length-1];
             type = val.substring(0, val.length()-1)+" []";
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string

@@ -76,7 +76,6 @@ public class Attribut implements Serializable {
         else if (this.statutAttribut == Statut.PRIVATE) res += "- ";
         else res += "# ";
         String type;
-        String[] tabChemin = this.typeAttribut.split(Pattern.quote(".")); // tabChemin devise la string par le point
 
         /*
         Cas où c'est une collection
@@ -102,6 +101,7 @@ public class Attribut implements Serializable {
             String val = tabContenu[tabContenu.length-1];
             type = val.substring(0, val.length()-1)+" []";
         } else { // sinon, pour un cas simple, on recupére juste le nom du type de l'attribut en fin de string
+            String[] tabChemin = this.typeAttribut.split(Pattern.quote(".")); // tabChemin devise la string par le point
             type = tabChemin[tabChemin.length-1];
         }
 
