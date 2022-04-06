@@ -30,13 +30,14 @@ public class ControleurClavier implements KeyListener {
 
     /**
      * Contructeur de ControleurClavier
-     * @param m modele a modifier, ne doit pas etre null
+     *
+     * @param m              modele a modifier, ne doit pas etre null
      * @param controleurMenu controleur du menu
      */
-    public ControleurClavier(Modele m, ControleurMenu controleurMenu){
+    public ControleurClavier(Modele m, ControleurMenu controleurMenu) {
         this.controleurMenu = controleurMenu;
         assert m != null;
-        modele=m;
+        modele = m;
     }
 
     /**
@@ -61,7 +62,7 @@ public class ControleurClavier implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         //on deplace si c'est une des flèches
-        switch (e.getKeyCode()){
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 modele.deplacerDecalageX(getDeplacement(e.isShiftDown()));
                 break;
@@ -79,6 +80,7 @@ public class ControleurClavier implements KeyListener {
 
     /**
      * on calcule la vitesse de deplacement
+     *
      * @param isShiftDown booleen vrai si le bouton shift est presse, faux sinon
      * @return vitesse de deplacement
      */
@@ -96,42 +98,44 @@ public class ControleurClavier implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        switch(e.getKeyCode()){
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_DELETE://suppr
                 modele.retirerClasseSelectionne();
                 break;
             case KeyEvent.VK_A://ctrl A
-                if (e.isControlDown()){
+                if (e.isControlDown()) {
+                    //liste de toutes les classes qui sont affiche sur le diagramme
                     List<ObjectClasse> objectClasseAfficheList = modele.getObjectClasses().stream().filter(ObjectClasse::isVisible).collect(Collectors.toList());
+                    //selectionne toute les classes qui sont dans la liste
                     modele.setSelection(objectClasseAfficheList);
                 }
                 break;
             case KeyEvent.VK_S://ctrl S
-                if (e.isControlDown()){
+                if (e.isControlDown()) {
                     //lance le menu de sauvegarde
                     controleurMenu.sauvegarde();
                 }
                 break;
             case KeyEvent.VK_E://ctrl E
-                if (e.isControlDown()){
+                if (e.isControlDown()) {
                     //lance le menu de sauvegarde
                     controleurMenu.exporterEnImage();
                 }
                 break;
             case KeyEvent.VK_O://ctrl O
-                if (e.isControlDown()){
+                if (e.isControlDown()) {
                     //lance le menu de sauvegarde
                     controleurMenu.charger();
                 }
                 break;
             case KeyEvent.VK_D://ctrl shift D
-                if (e.isControlDown() && e.isShiftDown()){
+                if (e.isControlDown() && e.isShiftDown()) {
                     //lance le menu de sauvegarde
                     controleurMenu.chargerDossier();
                 }
                 break;
             case KeyEvent.VK_F://ctrl shift F
-                if (e.isControlDown() && e.isShiftDown()){
+                if (e.isControlDown() && e.isShiftDown()) {
                     //lance le menu de sauvegarde
                     controleurMenu.chargerFichiers();
                 }
