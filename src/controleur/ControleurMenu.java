@@ -86,8 +86,6 @@ public class ControleurMenu implements ActionListener {
                     dernierRepOuvert=files[0].getParentFile();
                 }
 
-                //permet a la fenetre de regagner le focus une fois la popup finie
-                oldFrame.requestFocus();
                 break;
             /*
                 Permet de commencer un nouveau diagramme
@@ -129,7 +127,6 @@ public class ControleurMenu implements ActionListener {
                     }
                 }
 
-                oldFrame.requestFocus();
                 break;
                 /*
                     Permet de charger une classe modele Sauvegarder
@@ -152,7 +149,6 @@ public class ControleurMenu implements ActionListener {
                     dernierRepOuvert=fc2.getSelectedFile().getParentFile();
 
                 }
-                oldFrame.requestFocus();
 
                 break;
             /*
@@ -202,8 +198,6 @@ public class ControleurMenu implements ActionListener {
 
                 }
 
-
-                oldFrame.requestFocus();
                 break;
                 /*
                 Permet de charger des .class dans un repertoire choisi par l'utilisateur
@@ -250,13 +244,13 @@ public class ControleurMenu implements ActionListener {
                     }
                 }
 
-                //permet a la fenetre de regagner le focus une fois la popup finie
-                oldFrame.requestFocus();
                 break;
 
             default:
                 throw new IllegalStateException("Bouton non traite");
         }
+        //permet a la fenetre de regagner le focus une fois fini
+        oldFrame.requestFocus();
 
     }
 

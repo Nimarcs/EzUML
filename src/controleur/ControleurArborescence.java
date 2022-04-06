@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,11 +29,15 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
      */
     private JTree arbre;
 
+    private final JFrame oldFrame;
+
     /**
      * Contructeur de ControleurClavier
      * @param m modele a modifier, ne doit pas etre null
+     * @param oldFrame
      */
-    public ControleurArborescence(Modele m){
+    public ControleurArborescence(Modele m, JFrame oldFrame){
+        this.oldFrame = oldFrame;
         this.arbre = null;
         assert m != null;
         modele=m;
@@ -90,7 +93,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
             }
 
         }
-
+        oldFrame.requestFocus();
     }
 
     /**
