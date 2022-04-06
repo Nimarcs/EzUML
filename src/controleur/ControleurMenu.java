@@ -59,32 +59,7 @@ public class ControleurMenu implements ActionListener {
              */
             case "Charger fichiers .class":
 
-                JFileChooser fc = new JFileChooser(dernierRepOuvert);
-                //fc.setFileFilter(new EzumlSaveFilter());
-                fc.setDialogTitle("Ouvrir un .class");
-                fc.setApproveButtonText("Ouvrir");
-                fc.setMultiSelectionEnabled(true);
-
-
-                fc.setAcceptAllFileFilterUsed(false);
-
-                FileNameExtensionFilter restrict = new FileNameExtensionFilter("Only .class files", "class");
-                fc.addChoosableFileFilter(restrict);
-
-
-
-                int returnValue = fc.showOpenDialog(null);
-
-                if(returnValue==JFileChooser.APPROVE_OPTION){
-
-                    File files[] = fc.getSelectedFiles();
-                    for (File fichier : files) {
-                        File fich = new File(fichier.getAbsolutePath());
-                        modele.chargerArborescenceProjet(fich);
-
-                    }
-                    dernierRepOuvert=files[0].getParentFile();
-                }
+                chargerFichiers();
 
                 break;
             /*
@@ -125,45 +100,7 @@ public class ControleurMenu implements ActionListener {
                  */
             case "Charger dossier":
 
-                JFileChooser fc4 = new JFileChooser(dernierRepOuvert);
-                fc4.setDialogTitle("Ouvrir un repertoire");
-                fc4.setApproveButtonText("Ouvrir un repertoire");
-                fc4.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-                int returnValue4 = fc4.showOpenDialog(null);
-
-                if(returnValue4==JFileChooser.APPROVE_OPTION) {
-                    String f = fc4.getSelectedFile().getAbsolutePath()+File.separator;
-                    File rep = new File(f);
-
-
-                    //partie qui donne tout les fichiers que contient un repertoire meme dans des sous-repertoire
-                    List<String> result = new ArrayList<>();
-                    try (Stream<Path> walk = Files.walk(Paths.get(rep.getAbsolutePath()))) {
-                        result = walk.filter(Files::isRegularFile)
-                                .map(x -> x.toString()).collect(Collectors.toList());
-
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-
-
-                    File fich =null;
-                    //On regarde dans la liste result pour voir si il contient des .class
-                    for (int i = 0; i < result.size(); i++) {
-                        if (result.get(i).endsWith(".class") == true) {
-                            fich = new File(result.get(i));
-                            modele.chargerArborescenceProjet(fich);
-                        }
-                    }
-
-                    if(fich==null){
-                        AffichageErreur.getInstance().afficherMessage("Le repertoire que vous avez choisi ne contient pas de .class");
-                    } else {
-                        dernierRepOuvert=fich.getParentFile();
-
-                    }
-                }
+                chargerDossier();
 
                 break;
 
@@ -176,7 +113,84 @@ public class ControleurMenu implements ActionListener {
     }
 
     /**
-     * Methode qui lance le menu pour chosir la sauvegarde et la charger
+     * Methode qui lance le menu pour choisir un repertoire depuis lequel on veut charger les classes et les charge
+     */
+    public void chargerDossier() {
+        JFileChooser fc4 = new JFileChooser(dernierRepOuvert);
+        fc4.setDialogTitle("Ouvrir un repertoire");
+        fc4.setApproveButtonText("Ouvrir un repertoire");
+        fc4.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnValue4 = fc4.showOpenDialog(null);
+
+        if(returnValue4==JFileChooser.APPROVE_OPTION) {
+            String f = fc4.getSelectedFile().getAbsolutePath()+File.separator;
+            File rep = new File(f);
+
+
+            //partie qui donne tout les fichiers que contient un repertoire meme dans des sous-repertoire
+            List<String> result = new ArrayList<>();
+            try (Stream<Path> walk = Files.walk(Paths.get(rep.getAbsolutePath()))) {
+                result = walk.filter(Files::isRegularFile)
+                        .map(x -> x.toString()).collect(Collectors.toList());
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
+            File fich =null;
+            //On regarde dans la liste result pour voir si il contient des .class
+            for (int i = 0; i < result.size(); i++) {
+                if (result.get(i).endsWith(".class") == true) {
+                    fich = new File(result.get(i));
+                    modele.chargerArborescenceProjet(fich);
+                }
+            }
+
+            if(fich==null){
+                AffichageErreur.getInstance().afficherMessage("Le repertoire que vous avez choisi ne contient pas de .class");
+            } else {
+                dernierRepOuvert=fich.getParentFile();
+
+            }
+        }
+    }
+
+    /**
+     * ouvre une fenetre d'exploration window
+     * Si l'utilisateur choisit un fichier .class on lance la méthode "chargerArborescenceProjet" qui permet de faire l'introspection
+     */
+    public void chargerFichiers() {
+        JFileChooser fc = new JFileChooser(dernierRepOuvert);
+        //fc.setFileFilter(new EzumlSaveFilter());
+        fc.setDialogTitle("Ouvrir un .class");
+        fc.setApproveButtonText("Ouvrir");
+        fc.setMultiSelectionEnabled(true);
+
+
+        fc.setAcceptAllFileFilterUsed(false);
+
+        FileNameExtensionFilter restrict = new FileNameExtensionFilter("Only .class files", "class");
+        fc.addChoosableFileFilter(restrict);
+
+
+        int returnValue = fc.showOpenDialog(null);
+
+        if(returnValue==JFileChooser.APPROVE_OPTION){
+
+            File files[] = fc.getSelectedFiles();
+            for (File fichier : files) {
+                File fich = new File(fichier.getAbsolutePath());
+                modele.chargerArborescenceProjet(fich);
+
+            }
+            dernierRepOuvert=files[0].getParentFile();
+        }
+    }
+
+    /**
+     * Methode qui lance le menu pour choisir la sauvegarde et la charger
      */
     public void charger() {
         JFileChooser fc2 = new JFileChooser(dernierRepOuvert);
