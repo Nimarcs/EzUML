@@ -64,7 +64,7 @@ public class Modele extends Sujet implements Serializable {
     /**
      * Represente le decalage de la vision sur le diagramme par rapport au 0 0
      */
-    private transient int decalageX, decalageY;
+    private int decalageX, decalageY;
 
     /**
      * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
