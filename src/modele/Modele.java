@@ -434,8 +434,9 @@ public class Modele extends Sujet implements Serializable {
      * @return Rectangle qui correspond a la zone de capture
      */
     private Rectangle getBoundsDiagramme(){
-        int xmin = 0, xmax  =0, ymin = 0, ymax = 0;
+        int xmin, xmax, ymin, ymax;
         Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().stream().filter(ObjectClasse::isVisible).iterator();
+        //valeur initiale
         if (ite.hasNext()){
             ObjectClasse o = ite.next();
             xmax = o.getX() + vueDiagramme.calculerLargeur(o);
@@ -445,6 +446,7 @@ public class Modele extends Sujet implements Serializable {
         } else {
             throw new IllegalStateException("Le diagramme ne doit pas etre vide");
         }
+        //on cherche le max et min parmi le reste
         while (ite.hasNext()) {
             ObjectClasse o = ite.next();
             if (o.getX() + vueDiagramme.calculerLargeur(o) > xmax) xmax = o.getX() + vueDiagramme.calculerLargeur(o);

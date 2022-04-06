@@ -136,6 +136,9 @@ public class ControleurClavier implements KeyListener {
                     controleurMenu.chargerFichiers();
                 }
                 break;
+            case KeyEvent.VK_F5://F5
+                modele.reintialiserDiagramme();
+                break;
         }
 
     }
