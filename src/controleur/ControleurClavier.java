@@ -19,10 +19,17 @@ public class ControleurClavier implements KeyListener {
     private final Modele modele;
 
     /**
+     * permet de faire les raccourcis du menu
+     */
+    private final ControleurMenu controleurMenu;
+
+    /**
      * Contructeur de ControleurClavier
      * @param m modele a modifier, ne doit pas etre null
+     * @param controleurMenu controleur du menu
      */
-    public ControleurClavier(Modele m){
+    public ControleurClavier(Modele m, ControleurMenu controleurMenu){
+        this.controleurMenu = controleurMenu;
         assert m != null;
         modele=m;
     }
@@ -67,10 +74,14 @@ public class ControleurClavier implements KeyListener {
                 break;
             case KeyEvent.VK_A://ctrl A
                 if (e.isControlDown()){
-                    System.out.println("entree");
                     List<ObjectClasse> objectClasseAfficheList = modele.getObjectClasses().stream().filter(ObjectClasse::isVisible).collect(Collectors.toList());
-                    System.out.println(objectClasseAfficheList);
                     modele.setSelection(objectClasseAfficheList);
+                }
+                break;
+            case KeyEvent.VK_S://ctrl S
+                if (e.isControlDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.sauvegarde();
                 }
                 break;
             default:

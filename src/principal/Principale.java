@@ -37,8 +37,8 @@ public class Principale {
         AffichageErreur.instancier(frame);
 
         //Controleur
-        ControleurClavier controleurClavier = new ControleurClavier(modele);
         ControleurMenu controleurMenu= new ControleurMenu(modele, frame);
+        ControleurClavier controleurClavier = new ControleurClavier(modele, controleurMenu);
         ControleurDiagramme controleurDiagramme = new ControleurDiagramme(modele);
         ControleurArborescence controleurArborescence = new ControleurArborescence(modele, frame);
         //on ajoute le controleur
