@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * Classe Abstraite
- *      herite de ObjectClasse
+ * herite de Expendable qui herite de ObjectClasse
  *
  * Represente un ObjectClasse de type abstract class
  */
