@@ -35,7 +35,7 @@ public class ControleurMenu implements ActionListener {
     public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml - ᶜᵗʳˡ ˢ";
     public static final String CHARGER_EZUML_TXT = "Charger .ezuml - ᶜᵗʳˡ ᵒ";
     public static final String EXPORTER_TXT = "Exporter - ᶜᵗʳˡ ᵉ";
-    public static final String RECHARGER_DERNIER_CHARGEMENT_TXT = "Recharger dernier chargement";
+    public static final String RECHARGER_DERNIER_CHARGEMENT_TXT = "Recharger dernier chargement - \u1da0\u2075";
 
     /**
      * Contructeur de ControleurDiagramme
