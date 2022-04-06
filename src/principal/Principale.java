@@ -5,7 +5,6 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
-import sun.awt.image.ToolkitImage;
 import vue.AffichageErreur;
 import vue.VueArborescence;
 import vue.VueDiagramme;
