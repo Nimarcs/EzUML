@@ -435,7 +435,7 @@ public class Modele extends Sujet implements Serializable {
      */
     private Rectangle getBoundsDiagramme(){
         int xmin = 0, xmax  =0, ymin = 0, ymax = 0;
-        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().stream().filter(ObjectClasse::isVisible).iterator();
         if (ite.hasNext()){
             ObjectClasse o = ite.next();
             xmax = o.getX() + vueDiagramme.calculerLargeur(o);
@@ -443,7 +443,7 @@ public class Modele extends Sujet implements Serializable {
             ymax = o.getY() + vueDiagramme.calculerHauteur(o);
             ymin = o.getY();
         } else {
-            //erreur
+            throw new IllegalStateException("Le diagramme ne doit pas etre vide");
         }
         while (ite.hasNext()) {
             ObjectClasse o = ite.next();
