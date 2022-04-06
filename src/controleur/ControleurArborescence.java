@@ -14,7 +14,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 /**
- * Controleur qui permet de faire les actions avec les touches du clavier
+ * Controleur qui permet de gerer les actions de l'arborescence
  */
 public class ControleurArborescence implements MouseListener, TreeSelectionListener {
 
@@ -29,18 +29,22 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
      */
     private JTree arbre;
 
+    /**
+     * permet de reprendre le focus sur le JFrame principal et pas sur celui des pop-up
+     */
     private final JFrame oldFrame;
 
     /**
      * Contructeur de ControleurClavier
-     * @param m modele a modifier, ne doit pas etre null
-     * @param oldFrame
+     *
+     * @param m        modele a modifier, ne doit pas etre null
+     * @param oldFrame JFrame du diagramme
      */
-    public ControleurArborescence(Modele m, JFrame oldFrame){
+    public ControleurArborescence(Modele m, JFrame oldFrame) {
         this.oldFrame = oldFrame;
         this.arbre = null;
         assert m != null;
-        modele=m;
+        modele = m;
     }
 
     /**
@@ -62,7 +66,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
         Object o = node.getUserObject();
 
         //on regarde si c'est une feuille donc un objectClasse
-        if (node.isLeaf()){
+        if (node.isLeaf()) {
 
             //si c'est un double click sur une node qui contient un string (donc le chemin vers un objectclasse)
             if (o instanceof String && e.getClickCount() >= 2) {
@@ -82,7 +86,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
                     }
                 }
             }
-        }else{
+        } else {
 
             //sinon c'est un package
             if (o instanceof Package) {
@@ -94,6 +98,16 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
         }
         oldFrame.requestFocus();
     }
+
+    /**
+     * methode qui permet de modifier l'arbre
+     *
+     * @param arbre
+     */
+    public void setArbre(JTree arbre) {
+        this.arbre = arbre;
+    }
+
 
     /**
      * Invoked when a mouse button has been pressed on a component.
@@ -135,9 +149,6 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
 
     }
 
-    public void setArbre(JTree arbre) {
-        this.arbre = arbre;
-    }
 
     /**
      * Called whenever the value of the selection changes.
