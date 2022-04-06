@@ -1,9 +1,0 @@
-package FichierTest.sousDossier.sousDossier2;
-
-import FichierTest.sousDossier.Classe2;
-
-public interface Classe3 {
-
-    void methodeClasse3(Classe2 parametre);
-
-}

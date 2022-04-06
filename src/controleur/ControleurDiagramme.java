@@ -54,7 +54,7 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * Invoked when a mouse button has been pressed on a component.
+     * methode qui est appele lorsque l'on appuie sur la souris sur le diagramme
      *
      * @param e the event to be processed
      */
@@ -79,7 +79,7 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * Invoked when a mouse button has been released on a component.
+     * methode appele lorsque l'on arrete d'appuyer sur la souris dans le diagramme
      *
      * @param e the event to be processed
      */
@@ -133,6 +133,11 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     }
 
+    /**
+     * methode appele lorsque l'on bouge la souris dans le diagramme
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         // on caclcule le vecteur de deplacement

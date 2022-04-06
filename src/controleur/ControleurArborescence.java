@@ -44,8 +44,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
     }
 
     /**
-     * Invoked when the mouse button has been clicked (pressed
-     * and released) on a component.
+     * methode appele lorsque l'on appuie sur l'arborescence qui se trouve a gauche
      *
      * @param e the event to be processed
      */
@@ -79,7 +78,7 @@ public class ControleurArborescence implements MouseListener, TreeSelectionListe
                         modele.retirerClasseSelectionne();
                         modele.setSelection(tmp);
                     } else {
-                        modele.ajouterClasse(objectClasse, modele.getDecalageX(), modele.getDecalageY());
+                        modele.ajouterClasse(objectClasse, -modele.getDecalageX(), -modele.getDecalageY());
                     }
                 }
             }

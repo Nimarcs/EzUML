@@ -24,6 +24,11 @@ public class ControleurClavier implements KeyListener {
     private final ControleurMenu controleurMenu;
 
     /**
+     * constante utilise pour le deplacement avec les flèches
+     */
+    private static final int DEPLACEMENT = 1, DEPLACEMENT_MULTIPLICATEUR = 10;
+
+    /**
      * Contructeur de ControleurClavier
      * @param m modele a modifier, ne doit pas etre null
      * @param controleurMenu controleur du menu
@@ -55,19 +60,42 @@ public class ControleurClavier implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        //pas utilise
+        //on deplace si c'est une des flèches
+        switch (e.getKeyCode()){
+            case KeyEvent.VK_LEFT:
+                modele.deplacerDecalageX(getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_RIGHT:
+                modele.deplacerDecalageX(-getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_UP:
+                modele.deplacerDecalageY(getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_DOWN:
+                modele.deplacerDecalageY(-getDeplacement(e.isShiftDown()));
+                break;
+        }
     }
 
     /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
+     * on calcule la vitesse de deplacement
+     * @param isShiftDown booleen vrai si le bouton shift est presse, faux sinon
+     * @return vitesse de deplacement
+     */
+    private int getDeplacement(boolean isShiftDown) {
+        int deplacement = DEPLACEMENT;
+        if (isShiftDown) deplacement *= DEPLACEMENT_MULTIPLICATEUR;
+        return deplacement;
+    }
+
+    /**
+     * methode appele lorsque l'on relache n'importe quel touche,
+     * cela permet de faire les raccourcis clavier
      *
      * @param e the event to be processed
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Key released");
         switch(e.getKeyCode()){
             case KeyEvent.VK_DELETE://suppr
                 modele.retirerClasseSelectionne();
@@ -84,10 +112,30 @@ public class ControleurClavier implements KeyListener {
                     controleurMenu.sauvegarde();
                 }
                 break;
-            default:
-                //on fait rien
-                System.out.println(e.getKeyCode());
-
+            case KeyEvent.VK_E://ctrl E
+                if (e.isControlDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.exporterEnImage();
+                }
+                break;
+            case KeyEvent.VK_O://ctrl O
+                if (e.isControlDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.charger();
+                }
+                break;
+            case KeyEvent.VK_D://ctrl shift D
+                if (e.isControlDown() && e.isShiftDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.chargerDossier();
+                }
+                break;
+            case KeyEvent.VK_F://ctrl shift F
+                if (e.isControlDown() && e.isShiftDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.chargerFichiers();
+                }
+                break;
         }
 
     }

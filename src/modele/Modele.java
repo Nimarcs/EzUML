@@ -64,12 +64,12 @@ public class Modele extends Sujet implements Serializable {
     /**
      * Represente le decalage de la vision sur le diagramme par rapport au 0 0
      */
-    private transient int decalageX, decalageY;
+    private int decalageX, decalageY;
 
     /**
      * On stocke la vueDiagramme, pour etre capable de savoir quel ObjectClasse est à une position
      */
-    private VueDiagramme vueDiagramme;
+    private transient VueDiagramme vueDiagramme;
 
 
     //Contructeurs
@@ -435,7 +435,7 @@ public class Modele extends Sujet implements Serializable {
      */
     private Rectangle getBoundsDiagramme(){
         int xmin = 0, xmax  =0, ymin = 0, ymax = 0;
-        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().iterator();
+        Iterator<ObjectClasse> ite = collectionObjectClasse.getClassesChargees().stream().filter(ObjectClasse::isVisible).iterator();
         if (ite.hasNext()){
             ObjectClasse o = ite.next();
             xmax = o.getX() + vueDiagramme.calculerLargeur(o);
@@ -443,7 +443,7 @@ public class Modele extends Sujet implements Serializable {
             ymax = o.getY() + vueDiagramme.calculerHauteur(o);
             ymin = o.getY();
         } else {
-            //erreur
+            throw new IllegalStateException("Le diagramme ne doit pas etre vide");
         }
         while (ite.hasNext()) {
             ObjectClasse o = ite.next();
@@ -548,7 +548,6 @@ public class Modele extends Sujet implements Serializable {
             this.afficherPackage = p.isAfficherPackage();
             this.dossierCourant= p.getDossierCourant();
             this.associations = p.getAssociations();
-            this.setVueDiagramme(p.getVueDiagramme());
             notifierObservateurs();
         } catch (java.io.IOException | ClassNotFoundException e) {
             AffichageErreur.getInstance().afficherErreur("Erreur lors du chargement du diagramme");
