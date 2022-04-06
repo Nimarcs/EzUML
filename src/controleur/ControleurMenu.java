@@ -29,12 +29,12 @@ public class ControleurMenu implements ActionListener {
 
     private File dernierRepOuvert;
 
-    public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class  ᶜᵗʳˡ ˢʰᶦᶠᵗ ᶠ";
-    public static final String CHARGER_DOSSIER_TXT = "Charger dossier              ᶜᵗʳˡ ˢʰᶦᶠᵗ ᵈ";
-    public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme  ˢᵘᵖᵖʳ.";
-    public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml             ᶜᵗʳˡ ˢ";
-    public static final String CHARGER_EZUML_TXT = "Charger .ezuml                      ᶜᵗʳˡ ᵒ";
-    public static final String EXPORTER_TXT = "Exporter                                   ᶜᵗʳˡ ᵉ";
+    public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class - ᶜᵗʳˡ ˢʰᶦᶠᵗ ᶠ";
+    public static final String CHARGER_DOSSIER_TXT = "Charger dossier - ᶜᵗʳˡ ˢʰᶦᶠᵗ ᵈ";
+    public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme - ˢᵘᵖᵖʳ.";
+    public static final String SAUVEGARDER_EZUML_TXT = "Sauvegarder .ezuml - ᶜᵗʳˡ ˢ";
+    public static final String CHARGER_EZUML_TXT = "Charger .ezuml - ᶜᵗʳˡ ᵒ";
+    public static final String EXPORTER_TXT = "Exporter - ᶜᵗʳˡ ᵉ";
     public static final String RECHARGER_DERNIER_CHARGEMENT_TXT = "Recharger dernier chargement";
 
     /**
