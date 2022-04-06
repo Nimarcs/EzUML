@@ -18,7 +18,7 @@ public class AffichageErreur {
      * Frame de l'application principale
      * ne peut pas etre null
      */
-    private JFrame oldFrame;
+    private final JFrame oldFrame;
 
     /**
      * Constructeur de AffichageErreur

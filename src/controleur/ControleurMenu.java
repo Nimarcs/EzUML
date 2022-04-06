@@ -86,8 +86,6 @@ public class ControleurMenu implements ActionListener {
                     dernierRepOuvert=files[0].getParentFile();
                 }
 
-                //permet a la fenetre de regagner le focus une fois la popup finie
-                oldFrame.requestFocus();
                 break;
             /*
                 Permet de commencer un nouveau diagramme
@@ -105,31 +103,8 @@ public class ControleurMenu implements ActionListener {
                 Permet d'enregistrer la classe modele
              */
             case "Sauvegarder .ezuml":
-                if(modele.getObjectClasses().isEmpty()){
-                    AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
+                sauvegarde();
 
-                } else {
-                    JFileChooser fc1 = new JFileChooser(dernierRepOuvert);
-                    //fc.setFileFilter(new EzumlSaveFilter());
-                    fc1.setDialogTitle("Sauvegarder votre fichier");
-                    fc1.setApproveButtonText("Sauvegarder");
-                    fc1.setAcceptAllFileFilterUsed(false);
-
-                    FileNameExtensionFilter filtreEzuml = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
-                    fc1.addChoosableFileFilter(filtreEzuml);
-
-
-                    int returnValue1 = fc1.showOpenDialog(null);
-
-                    if(returnValue1==JFileChooser.APPROVE_OPTION){
-                        modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
-
-                        dernierRepOuvert=fc1.getSelectedFile().getParentFile();
-
-                    }
-                }
-
-                oldFrame.requestFocus();
                 break;
                 /*
                     Permet de charger une classe modele Sauvegarder
@@ -152,7 +127,6 @@ public class ControleurMenu implements ActionListener {
                     dernierRepOuvert=fc2.getSelectedFile().getParentFile();
 
                 }
-                oldFrame.requestFocus();
 
                 break;
             /*
@@ -202,8 +176,6 @@ public class ControleurMenu implements ActionListener {
 
                 }
 
-
-                oldFrame.requestFocus();
                 break;
                 /*
                 Permet de charger des .class dans un repertoire choisi par l'utilisateur
@@ -250,14 +222,40 @@ public class ControleurMenu implements ActionListener {
                     }
                 }
 
-                //permet a la fenetre de regagner le focus une fois la popup finie
-                oldFrame.requestFocus();
                 break;
 
             default:
                 throw new IllegalStateException("Bouton non traite");
         }
+        //permet a la fenetre de regagner le focus une fois fini
+        oldFrame.requestFocus();
 
+    }
+
+    public void sauvegarde() {
+        if(modele.getObjectClasses().isEmpty()){
+            AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
+
+        } else {
+            JFileChooser fc1 = new JFileChooser(dernierRepOuvert);
+            //fc.setFileFilter(new EzumlSaveFilter());
+            fc1.setDialogTitle("Sauvegarder votre fichier");
+            fc1.setApproveButtonText("Sauvegarder");
+            fc1.setAcceptAllFileFilterUsed(false);
+
+            FileNameExtensionFilter filtreEzuml = new FileNameExtensionFilter("Only .ezuml files", "ezuml");
+            fc1.addChoosableFileFilter(filtreEzuml);
+
+
+            int returnValue1 = fc1.showOpenDialog(null);
+
+            if(returnValue1==JFileChooser.APPROVE_OPTION){
+                modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
+
+                dernierRepOuvert=fc1.getSelectedFile().getParentFile();
+
+            }
+        }
     }
 
 }
