@@ -24,6 +24,11 @@ public class ControleurClavier implements KeyListener {
     private final ControleurMenu controleurMenu;
 
     /**
+     * constante utilise pour le deplacement avec les flèches
+     */
+    private static final int DEPLACEMENT = 1, DEPLACEMENT_MULTIPLICATEUR = 10;
+
+    /**
      * Contructeur de ControleurClavier
      * @param m modele a modifier, ne doit pas etre null
      * @param controleurMenu controleur du menu
@@ -55,7 +60,32 @@ public class ControleurClavier implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        //pas utilise
+        //on deplace si c'est une des flèches
+        switch (e.getKeyCode()){
+            case KeyEvent.VK_LEFT:
+                modele.deplacerDecalageX(getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_RIGHT:
+                modele.deplacerDecalageX(-getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_UP:
+                modele.deplacerDecalageY(getDeplacement(e.isShiftDown()));
+                break;
+            case KeyEvent.VK_DOWN:
+                modele.deplacerDecalageY(-getDeplacement(e.isShiftDown()));
+                break;
+        }
+    }
+
+    /**
+     * on calcule la vitesse de deplacement
+     * @param isShiftDown booleen vrai si le bouton shift est presse, faux sinon
+     * @return vitesse de deplacement
+     */
+    private int getDeplacement(boolean isShiftDown) {
+        int deplacement = DEPLACEMENT;
+        if (isShiftDown) deplacement *= DEPLACEMENT_MULTIPLICATEUR;
+        return deplacement;
     }
 
     /**
