@@ -373,9 +373,14 @@ public class Modele extends Sujet implements Serializable {
 
         boolean trouve  =false;
         for (Attribut a: source.getAttributs()) {
-            if (uniformisationNomObjectClasse(a).getNomObjectClasse().equals(dest.getNomObjectClasse()) && a.getNomAttribut().equals(association.getNom().substring(2))){
-                a.changerVisibilite(true);
-                trouve = true;
+            ObjectClasse OCattribut = uniformisationNomObjectClasse(a);
+            if (OCattribut != null) { //on verifie si c'est uen classe chargee
+                String nomObjectclasse = OCattribut.getNomObjectClasse();
+                if (nomObjectclasse.equals(dest.getNomObjectClasse()) &&
+                        a.getNomAttribut().equals(association.getNom().substring(2))) {
+                    a.changerVisibilite(true);
+                    trouve = true;
+                }
             }
         }
         if (trouve) associations.remove(association);
