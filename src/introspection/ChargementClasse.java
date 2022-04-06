@@ -8,6 +8,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.regex.Pattern;
 
+
+/**
+ * ChargementClasse permet de charger un objet classe a partir du chemin absolue d'un File
+ *
+ */
 public class ChargementClasse {
 
 
