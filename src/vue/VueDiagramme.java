@@ -272,6 +272,7 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
             } else {
                 cote = "null";
                 int largeur = calculerLargeur(src);
+                g.setColor(Color.BLACK);
                 g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY, src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3);
                 g.drawLine(src.getX()+ + decX + largeur/3, src.getY()+decY-largeur/3, src.getX()+ + decX + largeur/3 + largeur/3, src.getY()+decY-largeur/3);
                 srcX = src.getX()+largeur/3+largeur/3;
