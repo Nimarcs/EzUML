@@ -84,6 +84,12 @@ public class ControleurClavier implements KeyListener {
                     controleurMenu.sauvegarde();
                 }
                 break;
+            case KeyEvent.VK_E://ctrl E
+                if (e.isControlDown()){
+                    //lance le menu de sauvegarde
+                    controleurMenu.exporterEnImage();
+                }
+                break;
             default:
                 //on fait rien
                 System.out.println(e.getKeyCode());

@@ -3,6 +3,7 @@ package controleur;
 import modele.ImageSaveFilter;
 import modele.ImageSaveFilterBuilder;
 import modele.Modele;
+import modele.classe.ObjectClasse;
 import vue.AffichageErreur;
 
 import javax.swing.*;
@@ -133,48 +134,7 @@ public class ControleurMenu implements ActionListener {
                 Permet d'exporter en image le diagramme
              */
             case "Exporter" :
-                //menu de choix
-                JFileChooser fc3 = new JFileChooser(dernierRepOuvert);
-                fc3.setApproveButtonText("Sauvegarder");
-
-
-
-                //on recupere les filters
-                for (ImageSaveFilter imgFilter: ImageSaveFilterBuilder.getFilters()) {
-                    fc3.addChoosableFileFilter(imgFilter);
-                }
-                fc3.setDialogTitle("Choisissez ou exporter votre image");
-                int returnValue3 = fc3.showOpenDialog(null);
-
-                if(returnValue3==JFileChooser.APPROVE_OPTION){
-                    String cheminFichier = fc3.getSelectedFile().getAbsolutePath();
-                    String extension;
-
-                    //Si le fileFilter est un des notre et qu'il manque l'extension on la rajoute
-                    try {
-                        ImageSaveFilter fileFilterChoisi = (ImageSaveFilter) fc3.getFileFilter();
-
-                        extension = cheminFichier.substring(cheminFichier.lastIndexOf('.') + 1);
-                        if (!fileFilterChoisi.getExtentions().contains(extension)) {
-                            cheminFichier = cheminFichier + "." + fileFilterChoisi.getExtentions().get(0);
-                        }
-                    } catch (ClassCastException ignored){}
-
-                    //on recupere l'extension
-                    int indexExtention = cheminFichier.lastIndexOf('.')+1;
-                    if (indexExtention > 0)
-                        extension= cheminFichier.substring(indexExtention);
-                    else
-                        extension= "png"; // si il n'y pas d'extension
-
-                    //pour une raison inconnue les exportations en jpg et bmp ne marche pas
-                    modele.exporterEnImage(extension,cheminFichier );
-                    dernierRepOuvert=fc3.getSelectedFile().getParentFile();
-
-
-                    AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n"+cheminFichier);
-
-                }
+                exporterEnImage();
 
                 break;
                 /*
@@ -232,6 +192,65 @@ public class ControleurMenu implements ActionListener {
 
     }
 
+    /**
+     * Methode qui lance le menu pour l'exportation et la sauvegarde en elle meme
+     */
+    public void exporterEnImage() {
+        //on regarde est ce qu'il y a des classes dans le diagramme
+        int nbClasseAfficher = (int) modele.getObjectClasses().stream().filter(ObjectClasse::isVisible).count();
+        if (nbClasseAfficher == 0) {
+            AffichageErreur.getInstance().afficherMessage("Ajoutez des classes dans le diagramme avant de l'exporter");
+            return;
+        }
+
+        //menu de choix
+        JFileChooser fc3 = new JFileChooser(dernierRepOuvert);
+        fc3.setApproveButtonText("Sauvegarder");
+
+
+        //on recupere les filters
+        for (ImageSaveFilter imgFilter: ImageSaveFilterBuilder.getFilters()) {
+            fc3.addChoosableFileFilter(imgFilter);
+        }
+        fc3.setDialogTitle("Choisissez ou exporter votre image");
+        int returnValue3 = fc3.showOpenDialog(null);
+
+        if(returnValue3==JFileChooser.APPROVE_OPTION){
+            String cheminFichier = fc3.getSelectedFile().getAbsolutePath();
+            String extension;
+
+            //Si le fileFilter est un des notre et qu'il manque l'extension on la rajoute
+            try {
+                ImageSaveFilter fileFilterChoisi = (ImageSaveFilter) fc3.getFileFilter();
+
+                extension = cheminFichier.substring(cheminFichier.lastIndexOf('.') + 1);
+                if (!fileFilterChoisi.getExtentions().contains(extension)) {
+                    cheminFichier = cheminFichier + "." + fileFilterChoisi.getExtentions().get(0);
+                }
+            } catch (ClassCastException ignored){}
+
+            //on recupere l'extension
+            int indexExtention = cheminFichier.lastIndexOf('.')+1;
+            if (indexExtention > 0)
+                extension= cheminFichier.substring(indexExtention);
+            else{
+                extension= "png"; // si il n'y pas d'extension
+                cheminFichier+=".png";//on la rajoute aussi au fichier
+            }
+
+            //pour une raison inconnue les exportations en jpg et bmp ne marche pas
+            modele.exporterEnImage(extension,cheminFichier );
+            dernierRepOuvert=fc3.getSelectedFile().getParentFile();
+
+
+            AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n"+cheminFichier);
+
+        }
+    }
+
+    /**
+     * Methode qui lance le menu pour la sauvegarde et la sauvegarde en elle meme
+     */
     public void sauvegarde() {
         if(modele.getObjectClasses().isEmpty()){
             AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
