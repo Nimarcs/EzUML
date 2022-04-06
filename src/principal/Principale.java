@@ -5,6 +5,7 @@ import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
+import sun.awt.image.ToolkitImage;
 import vue.AffichageErreur;
 import vue.VueArborescence;
 import vue.VueDiagramme;
@@ -12,6 +13,8 @@ import vue.VueDiagramme;
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Principale {
 
@@ -27,9 +30,9 @@ public class Principale {
         //Modele
         Modele modele = new Modele();
 
-
         //JFrame
         JFrame frame = new JFrame("EzUML");
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Principale.class.getResource("icon.png")));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //defini la taille minimum de la fenetre
 
