@@ -148,9 +148,15 @@ public class VueDiagramme extends JPanel implements Observateur,Serializable { /
                 g.setColor(Color.BLACK);
                 g.drawRect(posX, posY, largeur, hauteur);
 
+                // on calcule le nombres d'attributs visible
+                int nbAttr = 0;
+                for (Attribut a:oc.getAttributs()) {
+                    if (a.isVisible()) nbAttr++;
+                }
+
                 // On dessine les bordures interne du rectangle pour definir le titre, les attributs et les constructeurs/methodes
                 g.drawRect(posX, posY, largeur, 2 * SIZE + 3 * ECART);
-                g.drawRect(posX, posY, largeur, 2 * SIZE + 3 * ECART + oc.getAttributs().size() * (SIZE + ECART));
+                g.drawRect(posX, posY, largeur, 2 * SIZE + 3 * ECART + nbAttr * (SIZE + ECART));
 
                 // On définit la hauteur courante (faut prevoir que pour ecrire, il faut prendre le point en bas a gauche et non en haut)
                 int hauteurCourante = posY + SIZE + ECART;
