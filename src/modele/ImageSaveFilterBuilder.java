@@ -16,16 +16,17 @@ public class ImageSaveFilterBuilder {
     private static Collection<ImageSaveFilter> filters = null;
 
     /**
-     * on parcours les services Providers de IO pour recuperer quels type de fichier sont accepete dans notre version de java
+     * On parcours les services Providers de IO pour recuperer quels type de fichier sont accepete dans notre version de java
      * On les recupere du IIORegistry et pas de ImageIO pour qu'ils soit regroupe
      */
-    private static void chargerExtentionAcceptee(){
+    private static void chargerExtentionAcceptee() {
         List<ImageSaveFilter> imageSaveFilterBuilder = new ArrayList<>();
+        //on recupere une liste de providers qui sont acceptes dans noter version de java
         Iterator<ImageWriterSpi> serviceProviders = IIORegistry.getDefaultInstance().getServiceProviders(ImageWriterSpi.class, false);
         while (serviceProviders.hasNext()) {
             //on recupere les extentions du servuceProviders courant
             ImageWriterSpi next = serviceProviders.next();
-            String[] formatNames=next.getFormatNames();
+            String[] formatNames = next.getFormatNames();
 
             //on interdit ces deux formats car il ne marche pas
             //pour une raison inconnue
@@ -40,6 +41,7 @@ public class ImageSaveFilterBuilder {
 
     /**
      * permet de recuperer les filters applicable
+     *
      * @return ImageSaveFilter, FileFilter utiliser pour exporter des image
      */
     public static Collection<ImageSaveFilter> getFilters() {
