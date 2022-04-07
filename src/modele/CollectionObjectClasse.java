@@ -6,6 +6,11 @@ import vue.AffichageErreur;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Classe CollectionObjectClasse
+ * <p>
+ * Représente une collection des objets classes qui sont chargées
+ */
 public class CollectionObjectClasse implements Serializable {
 
     /**
@@ -18,15 +23,17 @@ public class CollectionObjectClasse implements Serializable {
      * Map qui stocke les classes chargee
      * la clee correspond au chemin des packages et le nom de la classe separe par des points
      * Les classes elles meme contiennent l'information sachant si elles sont visibles
-     *
+     * <p>
      * Exemple : java.lang.Integer => ObjectClasse correspondant
      */
     private Map<String, ObjectClasse> classesChargees;
 
     /**
      * Constructeur de CollectionObjectClasse
+     * <p>
+     * création du package src qui contiendra tout les autres packages
      */
-    public CollectionObjectClasse(){
+    public CollectionObjectClasse() {
         this.src = new Package("src");
         this.classesChargees = new HashMap<>();
     }
@@ -34,16 +41,18 @@ public class CollectionObjectClasse implements Serializable {
     /**
      * methode qui permet de reinitialiser les donnees
      */
-    public void reintialiserDonnee(){
-        src = new Package("src"); //on vide toute les classes chargee en remplaçant toute celle deja charge
+    public void reintialiserDonnee() {
+        src = new Package("src");
+        //on vide toute les classes chargee en remplaçant toute celle deja charge
         this.classesChargees = new HashMap<>();
     }
 
     /**
      * Methode qui permet d'ajouter un objectClasse dans la collection
+     *
      * @param o objectClasse a ajouter
      */
-    public void ajouterObjectClasse(ObjectClasse o){
+    public void ajouterObjectClasse(ObjectClasse o) {
         assert o != null;
 
         //Classe chargee
@@ -93,10 +102,11 @@ public class CollectionObjectClasse implements Serializable {
      * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
      * Fournit le package reel donc permet de le modifier
      * Utilise les packages pour chercher une classe au bon endroit
+     *
      * @param objectClasse objectClasse dont on veut obtenir le package
      * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
-    private Package trouvePackageDeClasseLocal(ObjectClasse objectClasse){
+    private Package trouvePackageDeClasseLocal(ObjectClasse objectClasse) {
         //on verifie le package auquel l'objectClasse appartient
         String[] nomPackages = objectClasse.getPackageObjectClasse().split("\\.");
 
@@ -128,7 +138,7 @@ public class CollectionObjectClasse implements Serializable {
             }
         }
         //on verifie que le package contient bien la classe charge
-        if(pCourant.getClassesContenues().contains(objectClasse.getNomObjectClasse())){
+        if (pCourant.getClassesContenues().contains(objectClasse.getNomObjectClasse())) {
             //si c'est le cas on renvoie le package qui la contient
             return pCourant;
         }
@@ -140,10 +150,11 @@ public class CollectionObjectClasse implements Serializable {
      * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
      * Fournit le package reel donc permet de le modifier
      * Utilise les packages pour chercher une classe au bon endroit
+     *
      * @param objectClasse objectClasse dont on veut obtenir le package
      * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
-    private Package trouvePackageDeClasseLocalAvecPackage(ObjectClasse objectClasse, Package p){
+    private Package trouvePackageDeClasseLocalAvecPackage(ObjectClasse objectClasse, Package p) {
         //on verifie le package auquel l'objectClasse appartient
         String[] nomPackages = objectClasse.getNomObjectClasse().split("\\.");
 
@@ -151,7 +162,7 @@ public class CollectionObjectClasse implements Serializable {
         Package pCourant = src;
         //pour chaque package cite dans l'objectClasse
         for (String nomPackage : nomPackages) {
-            for (Package sousPackage: pCourant.getSousPackages()) {
+            for (Package sousPackage : pCourant.getSousPackages()) {
                 if (sousPackage.getNom().equals(p.getNom())) return sousPackage;
                 if (sousPackage.getNom().equals(nomPackage)) {
                     pCourant = sousPackage;
@@ -164,10 +175,11 @@ public class CollectionObjectClasse implements Serializable {
     /**
      * Methode qui permet d'obtenir le package dans lequel la clee du package est contenue
      * Utilise les packages pour chercher une classe au bon endroit
+     *
      * @param objectClasse objectClasse dont on veut obtenir le package
      * @return package qui contient l'objectClasse s'il existe un objectClasse charge positionne correctement, null sinon
      */
-    private Package trouvePackageDeClasse(ObjectClasse objectClasse){
+    private Package trouvePackageDeClasse(ObjectClasse objectClasse) {
         Package p = trouvePackageDeClasseLocal(objectClasse);
         if (p == null) return null;
         else return new Package(p);
@@ -175,26 +187,48 @@ public class CollectionObjectClasse implements Serializable {
 
 
     /**
-     * methode qui permet de verifier si une classe est chargee
+     * Methode qui permet de verifier si une classe est chargee
+     *
      * @param objectClasse object classe dont on veut verifier si elle est chargee
      * @return booleen vrai si il existe un objectClasse charge positionne correctement, faux sinon
      */
-    public boolean verifierClasseCharge(ObjectClasse objectClasse){
+    public boolean verifierClasseCharge(ObjectClasse objectClasse) {
         return classesChargees.containsValue(objectClasse);
     }
 
-    public void changerOuverture(Package p){
+    /**
+     * Methode qui permet de changer l'ouverture du Package en paramètre
+     *
+     * @param p
+     */
+    public void changerOuverture(Package p) {
+        //on veut avoir le package originel associé à p
         Package pOriginel = trouverPackageOriginel(src, p);
-        if (pOriginel == null) AffichageErreur.getInstance().afficherErreur("le package originel n'a pas été retrouvé ");
-        else pOriginel.changerOuverture();
+        if (pOriginel == null)
+            AffichageErreur.getInstance().afficherErreur("le package originel n'a pas été retrouvé ");
+
+        else
+            // methode de package qui ouvert graphiquement le package
+            pOriginel.changerOuverture();
     }
 
+    /**
+     * Methode qui permet de trouver le package Originel
+     *
+     * @param src
+     * @param p
+     * @return
+     */
     private Package trouverPackageOriginel(Package src, Package p) {
+        //Iterateur de toutes les classes contenues dans src
         Iterator<String> ite = src.getClassesContenues().iterator();
-        if (ite.hasNext()) return trouvePackageDeClasseLocalAvecPackage(classesChargees.get(ite.next()), p);
+        if (ite.hasNext())
+            // methode qui permet d'obtenir le package dans lequel la clee du package est contenue
+            return trouvePackageDeClasseLocalAvecPackage(classesChargees.get(ite.next()), p);
         else {
-            for (Package fils: src.getSousPackages()) {
-                Package aPackage =  trouverPackageOriginel(fils, p);
+            //boucle qui regarde les sous-packages et qui relance la methode pour trouver le package parent
+            for (Package fils : src.getSousPackages()) {
+                Package aPackage = trouverPackageOriginel(fils, p);
                 if (aPackage != null) return aPackage;
             }
         }
@@ -204,10 +238,12 @@ public class CollectionObjectClasse implements Serializable {
 
     /**
      * Methode qui permet de decharger les classes fournies
+     *
+     * @param lo
      */
-    public void dechargerListeClasse(List<ObjectClasse> lo){
+    public void dechargerListeClasse(List<ObjectClasse> lo) {
 
-        for (ObjectClasse objectClasse:lo) {
+        for (ObjectClasse objectClasse : lo) {
             //on decharge la classe
 
             //on la retire des packages
@@ -225,32 +261,46 @@ public class CollectionObjectClasse implements Serializable {
 
     /**
      * permet de retirer tous les packages vide
+     *
      * @param p package a partir duquel commencer la recherche
      */
-    private void nettoyerPackage(Package p){
+    private void nettoyerPackage(Package p) {
         assert p != null;
-        for (Package sousPackage:p.getSousPackages()) {
+        //boucle qui regarde les sous packages de p
+        for (Package sousPackage : p.getSousPackages()) {
             nettoyerPackage(sousPackage);
-            if (sousPackage.getClassesContenues().isEmpty() && sousPackage.getSousPackages().isEmpty()){
+            // retire un sous package lorsque le sous package ne contient plus de Classe et lorsqu'il ne contient plus de package
+            if (sousPackage.getClassesContenues().isEmpty() && sousPackage.getSousPackages().isEmpty()) {
                 p.getSousPackages().remove(sousPackage);
             }
         }
     }
 
     /**
-     * getter d'un objectClasse
+     * getteur d'un objectClasse
+     *
      * @param cheminComplet chemin des packages et le nom de la classe separe par des points, clee de le map
      * @return ObjectClasse correspondant ou null
      */
-    public ObjectClasse getObjectClasse(String cheminComplet){
+    public ObjectClasse getObjectClasse(String cheminComplet) {
         return classesChargees.getOrDefault(cheminComplet, null);
     }
 
+    /**
+     * getteur d'un package
+     *
+     * @return nouveau Package src
+     */
     public Package getPackages() {
         return new Package(src);
     }
 
-    public Collection<ObjectClasse> getClassesChargees(){
+    /**
+     * getteur des ObjectClasses qui sont charges
+     *
+     * @return ObjectClasse contenue dans l'attribut classesChargees
+     */
+    public Collection<ObjectClasse> getClassesChargees() {
         return classesChargees.values();
     }
 
