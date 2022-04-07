@@ -23,6 +23,7 @@ Pour savoir si java est installé, mettez la commande "java -version" dans la bo
 
 Pour compiler notre projet :
   -En ligne de commande à la racine du projet on fait :
+    
     javac -cp src -d out/  src/principal/Principale.java
 
     mkdir out\ressources
