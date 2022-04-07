@@ -1,4 +1,5 @@
-# S3C_S10_ARNOUT_RENARD_RICHIER_WEISS
+S3C_S10_ARNOUT_RENARD_RICHIER_WEISS
+==========================================
 
 # Projet EZuml
 Le projet a pour objectif initial de réaliser un diagramme de classe à partir d'un ou plusieurs fichiers .class que l'utilisateur nous donne.
