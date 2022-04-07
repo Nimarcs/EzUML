@@ -21,14 +21,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Controleur qui regarde les actions faites sur la barre du menu en haut de notre interface graphique
+ */
 public class ControleurMenu implements ActionListener {
 
+    /**
+     * modele dont on veut controler les valeurs
+     */
     private Modele modele;
 
+    /**
+     * permet de reprendre le focus sur le JFrame principal et pas sur celui des pop-up
+     */
     private JFrame oldFrame;
 
+    /**
+     * chemin absolue du dernier repertoire ouvert, il se situe au "C://" au debut
+     */
     private File dernierRepOuvert;
 
+    /**
+     * nom des boutons qui se situe dans la barre de menu
+     */
     public static final String CHARGER_FICHIERS_CLASS_TXT = "Charger fichiers .class - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1DA0";
     public static final String CHARGER_DOSSIER_TXT = "Charger dossier - \u1D9C\u1D57\u02B3\u02E1 \u02E2\u02B0\u1DA6\u1DA0\u1D57 \u1D48";
     public static final String RETIRER_SELECTION_DU_DIAGRAMME_TXT = "Retirer selection du diagramme - \u02E2\u1D58\u1D56\u1D56\u02B3";
@@ -39,19 +54,21 @@ public class ControleurMenu implements ActionListener {
 
     /**
      * Contructeur de ControleurDiagramme
+     *
      * @param m modele a modifier, ne doit pas etre null
      */
-    public ControleurMenu(Modele m, JFrame frame){
+    public ControleurMenu(Modele m, JFrame frame) {
         assert m != null;
         assert frame != null;
-        modele=m;
+        modele = m;
         oldFrame = frame;
-        dernierRepOuvert=FileSystemView.getFileSystemView().getHomeDirectory();
+        dernierRepOuvert = FileSystemView.getFileSystemView().getHomeDirectory();
     }
 
 
     /**
      * methode qui est appelé à chaque fois que l'utilisateur appuie sur un bouton de la barre de menu
+     *
      * @param e contient le nom du bouton qui a ete appuyer
      */
     @Override
@@ -80,7 +97,7 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet de retirer les classe selectionne du diagramme
              */
-            case RETIRER_SELECTION_DU_DIAGRAMME_TXT :
+            case RETIRER_SELECTION_DU_DIAGRAMME_TXT:
                 modele.retirerClasseSelectionne();
                 break;
             /*
@@ -100,7 +117,7 @@ public class ControleurMenu implements ActionListener {
             /*
                 Permet d'exporter en image le diagramme
              */
-            case EXPORTER_TXT :
+            case EXPORTER_TXT:
                 exporterEnImage();
 
                 break;
@@ -132,23 +149,22 @@ public class ControleurMenu implements ActionListener {
 
         int returnValue4 = fc4.showOpenDialog(null);
 
-        if(returnValue4==JFileChooser.APPROVE_OPTION) {
-            String f = fc4.getSelectedFile().getAbsolutePath()+File.separator;
+        if (returnValue4 == JFileChooser.APPROVE_OPTION) {
+            String f = fc4.getSelectedFile().getAbsolutePath() + File.separator;
             File rep = new File(f);
 
 
             //partie qui donne tout les fichiers que contient un repertoire meme dans des sous-repertoire
             List<String> result = new ArrayList<>();
             try (Stream<Path> walk = Files.walk(Paths.get(rep.getAbsolutePath()))) {
-                result = walk.filter(Files::isRegularFile)
-                        .map(x -> x.toString()).collect(Collectors.toList());
+                result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
 
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
 
-            File fich =null;
+            File fich = null;
             //On regarde dans la liste result pour voir si il contient des .class
             for (int i = 0; i < result.size(); i++) {
                 if (result.get(i).endsWith(".class") == true) {
@@ -157,10 +173,10 @@ public class ControleurMenu implements ActionListener {
                 }
             }
 
-            if(fich==null){
+            if (fich == null) {
                 AffichageErreur.getInstance().afficherMessage("Le repertoire que vous avez choisi ne contient pas de .class");
             } else {
-                dernierRepOuvert=fich.getParentFile();
+                dernierRepOuvert = fich.getParentFile();
 
             }
         }
@@ -186,7 +202,7 @@ public class ControleurMenu implements ActionListener {
 
         int returnValue = fc.showOpenDialog(null);
 
-        if(returnValue==JFileChooser.APPROVE_OPTION){
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
 
             File files[] = fc.getSelectedFiles();
             for (File fichier : files) {
@@ -194,7 +210,7 @@ public class ControleurMenu implements ActionListener {
                 modele.chargerArborescenceProjet(fich);
 
             }
-            dernierRepOuvert=files[0].getParentFile();
+            dernierRepOuvert = files[0].getParentFile();
         }
     }
 
@@ -214,9 +230,9 @@ public class ControleurMenu implements ActionListener {
 
         int returnValue2 = fc2.showOpenDialog(null);
 
-        if(returnValue2==JFileChooser.APPROVE_OPTION) {
+        if (returnValue2 == JFileChooser.APPROVE_OPTION) {
             modele.deserilization(fc2.getSelectedFile().getAbsolutePath());
-            dernierRepOuvert=fc2.getSelectedFile().getParentFile();
+            dernierRepOuvert = fc2.getSelectedFile().getParentFile();
 
         }
     }
@@ -238,13 +254,13 @@ public class ControleurMenu implements ActionListener {
 
 
         //on recupere les filters
-        for (ImageSaveFilter imgFilter: ImageSaveFilterBuilder.getFilters()) {
+        for (ImageSaveFilter imgFilter : ImageSaveFilterBuilder.getFilters()) {
             fc3.addChoosableFileFilter(imgFilter);
         }
         fc3.setDialogTitle("Choisissez ou exporter votre image");
         int returnValue3 = fc3.showOpenDialog(null);
 
-        if(returnValue3==JFileChooser.APPROVE_OPTION){
+        if (returnValue3 == JFileChooser.APPROVE_OPTION) {
             String cheminFichier = fc3.getSelectedFile().getAbsolutePath();
             String extension;
 
@@ -256,23 +272,23 @@ public class ControleurMenu implements ActionListener {
                 if (!fileFilterChoisi.getExtentions().contains(extension)) {
                     cheminFichier = cheminFichier + "." + fileFilterChoisi.getExtentions().get(0);
                 }
-            } catch (ClassCastException ignored){}
+            } catch (ClassCastException ignored) {
+            }
 
             //on recupere l'extension
-            int indexExtention = cheminFichier.lastIndexOf('.')+1;
-            if (indexExtention > 0)
-                extension= cheminFichier.substring(indexExtention);
-            else{
-                extension= "png"; // si il n'y pas d'extension
-                cheminFichier+=".png";//on la rajoute aussi au fichier
+            int indexExtention = cheminFichier.lastIndexOf('.') + 1;
+            if (indexExtention > 0) extension = cheminFichier.substring(indexExtention);
+            else {
+                extension = "png"; // si il n'y pas d'extension
+                cheminFichier += ".png";//on la rajoute aussi au fichier
             }
 
             //pour une raison inconnue les exportations en jpg et bmp ne marche pas
-            modele.exporterEnImage(extension,cheminFichier );
-            dernierRepOuvert=fc3.getSelectedFile().getParentFile();
+            modele.exporterEnImage(extension, cheminFichier);
+            dernierRepOuvert = fc3.getSelectedFile().getParentFile();
 
 
-            AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n"+cheminFichier);
+            AffichageErreur.getInstance().afficherMessage("Fichier bien enregistrer a l'emplacement :\n" + cheminFichier);
 
         }
     }
@@ -281,7 +297,7 @@ public class ControleurMenu implements ActionListener {
      * Methode qui lance le menu pour la sauvegarde et la sauvegarde en elle meme
      */
     public void sauvegarde() {
-        if(modele.getObjectClasses().isEmpty()){
+        if (modele.getObjectClasses().isEmpty()) {
             AffichageErreur.getInstance().afficherMessage("Charger un diagramme avant de l'enregistrer");
 
         } else {
@@ -297,10 +313,10 @@ public class ControleurMenu implements ActionListener {
 
             int returnValue1 = fc1.showOpenDialog(null);
 
-            if(returnValue1==JFileChooser.APPROVE_OPTION){
+            if (returnValue1 == JFileChooser.APPROVE_OPTION) {
                 modele.enregistrement(fc1.getSelectedFile().getAbsolutePath());
 
-                dernierRepOuvert=fc1.getSelectedFile().getParentFile();
+                dernierRepOuvert = fc1.getSelectedFile().getParentFile();
 
             }
         }

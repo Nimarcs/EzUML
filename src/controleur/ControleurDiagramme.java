@@ -8,22 +8,22 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Controleur de l'affichage du diagramme de classe
+ * Controleur qui regarde les actions faites sur le diagramme
  */
 public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     /**
-     * constante qui represante le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
+     * constante qui represente le minimum de deplacement a faire avant de considerer que ce n'est plus un clic de selection mais un clic pour deplacer une classe
      */
     private static final int DEPLACEMENT_MIN = 5;
 
     /**
-     * modele dont on veut controler les valeurs
+     * modele dont on veut controller les valeurs
      */
     private final Modele modele;
 
     /**
-     * position a laquelle on a commencer a cliquer gauche, permet d'eviter de selectionner si on ne deplace pas la souris
+     * position a laquelle on a commencer a faire un clique gauche, permet d'eviter de selectionner si on ne deplace pas la souris
      */
     private int positionDebutMaintientX, positionDebutMaintientY;
     private int positionMaintientX, positionMaintientY;
@@ -35,28 +35,18 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
 
     /**
      * Contructeur de ControleurDiagramme
+     *
      * @param m modele a modifier, ne doit pas etre null
      */
-    public ControleurDiagramme(Modele m){
+    public ControleurDiagramme(Modele m) {
         assert m != null;
-        modele=m;
-    }
-
-    /**
-     * Invoked when the mouse button has been clicked (pressed
-     * and released) on a component.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
+        modele = m;
     }
 
     /**
      * methode qui est appele lorsque l'on appuie sur la souris sur le diagramme
      *
-     * @param e the event to be processed
+     * @param e l'événement à traiter
      */
     @Override
     public void mousePressed(MouseEvent e) {
@@ -81,19 +71,19 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     /**
      * methode appele lorsque l'on arrete d'appuyer sur la souris dans le diagramme
      *
-     * @param e the event to be processed
+     * @param e l'evenement à traiter
      */
     @Override
     public void mouseReleased(MouseEvent e) {
 
         // on cacule les vecteurs de deplacement a partir de la position initial
-        int vecteurDeplacementX = e.getX()-positionDebutMaintientX;
-        int vecteurDeplacementY = e.getY()-positionDebutMaintientY;
+        int vecteurDeplacementX = e.getX() - positionDebutMaintientX;
+        int vecteurDeplacementY = e.getY() - positionDebutMaintientY;
 
         //si on se deplace assez
         if (Math.abs(vecteurDeplacementX) > DEPLACEMENT_MIN || Math.abs(vecteurDeplacementY) > DEPLACEMENT_MIN) {
             //si on a trouve la classe
-            if (objectClasse!=null) {
+            if (objectClasse != null) {
                 //si la classe est selectionne
                 if (!modele.getSelection().contains(objectClasse) && !e.isControlDown()) {
                     //le click va deselectionner
@@ -104,12 +94,40 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
             }
 
         } else {
-            if (objectClasse!=null) {
+            if (objectClasse != null) {
                 if (!e.isControlDown()) modele.deselectionner();
                 modele.selectionnerUneClasse(objectClasse);
-            }
-            else modele.deselectionner();
+            } else modele.deselectionner();
         }
+
+    }
+
+    /**
+     * methode appele lorsque l'on bouge la souris dans le diagramme
+     *
+     * @param e l'événement à traiter
+     */
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // on caclcule le vecteur de deplacement
+        int vecteurDeplacementX = e.getX() - positionMaintientX;
+        int vecteurDeplacementY = e.getY() - positionMaintientY;
+        // On change la position de la selection
+        if (!modele.getSelection().isEmpty() && objectClasse != null && modele.getSelection().contains(objectClasse)) {
+            modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
+        } else {
+            //On change le decalage
+            modele.deplacerDecalageX(vecteurDeplacementX);
+            modele.deplacerDecalageY(vecteurDeplacementY);
+            //sinon on deplace la selection de classe
+        }
+        // On reactualise la position du maitien avec celle de la souris à cet instant
+        positionMaintientX = e.getX();
+        positionMaintientY = e.getY();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 
@@ -134,32 +152,13 @@ public class ControleurDiagramme implements MouseListener, MouseMotionListener {
     }
 
     /**
-     * methode appele lorsque l'on bouge la souris dans le diagramme
+     * Invoked when the mouse button has been clicked (pressed
+     * and released) on a component.
      *
      * @param e the event to be processed
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
-        // on caclcule le vecteur de deplacement
-        int vecteurDeplacementX = e.getX()-positionMaintientX;
-        int vecteurDeplacementY = e.getY()-positionMaintientY;
-        // On change la position de la selection
-        if (!modele.getSelection().isEmpty() && objectClasse!=null && modele.getSelection().contains(objectClasse)){
-            modele.deplacerClasseSelectionne(vecteurDeplacementX, vecteurDeplacementY);
-        }
-        else {
-            //On change le decalage
-            modele.deplacerDecalageX(vecteurDeplacementX);
-            modele.deplacerDecalageY(vecteurDeplacementY);
-            //sinon on deplace la selection de classe
-        }
-        // On reactualise la position du maitien avec celle de la souris à cet instant
-        positionMaintientX = e.getX();
-        positionMaintientY = e.getY();
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
 
     }
 }

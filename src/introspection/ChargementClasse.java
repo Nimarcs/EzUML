@@ -8,6 +8,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.regex.Pattern;
 
+
+/**
+ * ChargementClasse permet de charger un objet classe a partir du chemin absolue d'un File
+ */
 public class ChargementClasse {
 
 
@@ -19,11 +23,11 @@ public class ChargementClasse {
      * C:\\Users\\guill\\eclipse-workspace\\ReadFichier\\bin\\lireFichier\\lectureTXT.class
      * le chemin pour construire le classLoader doit etre :
      * C:\\Users\\guill\\eclipse-workspace\\ReadFichier\\bin\\
-     *
+     * <p>
      * avec lireFichier comme package le reste est utilisé pour instancier la classe
      * exemple : lireFichier.lectureTXT
-     *
-     *
+     * <p>
+     * <p>
      * probleme, il peut avoir un packages dans en packages dans un packages...
      * et on connait pas le nombre de packages qu'il y a dans le File, la
      * methode teste donc tout d'abord pour aucun package
@@ -41,10 +45,10 @@ public class ChargementClasse {
         Class cls = null;
 
         // on regarde que elle le directory separator du systeme
-        String a= File.separator;
+        String a = File.separator;
 
         // condition qui regarde que le nombre de repertoire n'est pas superieur a p
-        if (p <= compterBackQuote(f.getAbsolutePath(), a )) {
+        if (p <= compterBackQuote(f.getAbsolutePath(), a)) {
             //tableau qui contient le chemin d'acces juste avant les packages et le nom du fichier avec ses packages
             String[] s = new String[2];
             String cheminAbsolue = f.getAbsolutePath();
@@ -70,7 +74,7 @@ public class ChargementClasse {
                 // le reste du string est donne pour rechercher
                 s[1] = cheminAbsolue.substring(i + 2);
                 // on enleve le .class
-                s[1] = s[1].split(Pattern.quote(".")+"class")[0];
+                s[1] = s[1].split(Pattern.quote(".") + "class")[0];
                 // on remplace les \ ou / par des point
                 s[1] = s[1].replace(a, ".");
 
@@ -81,13 +85,13 @@ public class ChargementClasse {
 
                 //On le creer a partir de s[0] qui est le chemin absolue du fichier sans celui-ci et sans les packages associes au fichier
                 File fl = new File(s[0]);
-                URLClassLoader loader = new URLClassLoader(new URL[] { fl.toURL() }, getClass().getClassLoader());
+                URLClassLoader loader = new URLClassLoader(new URL[]{fl.toURL()}, getClass().getClassLoader());
 
                 // la methode forname renvoie la classe associe a s[1] et grace au loader fait ci-dessus
                 try {
                     cls = Class.forName(s[1], false, loader);
-                } catch( ClassFormatError e ){
-                    AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n"+f.getAbsolutePath());
+                } catch (ClassFormatError e) {
+                    AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n" + f.getAbsolutePath());
 
                     return null;
                 }
@@ -100,7 +104,7 @@ public class ChargementClasse {
             }
         } else {
             // erreur lorsque l'on a fait toute les possibilités de package
-            AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n"+f.getAbsolutePath());
+            AffichageErreur.getInstance().afficherErreur("On ne peut pas agir sur votre fichier a l'emplacement :\n" + f.getAbsolutePath());
         }
 
         return cls;

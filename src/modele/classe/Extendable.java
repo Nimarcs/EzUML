@@ -19,7 +19,7 @@ public abstract class Extendable extends ObjectClasse implements Serializable {
     // CONSTRUCTEURS
 
     /**
-     * Constructeur d'un ObjectClasse, representant une classe java
+     * Constructeur d'un ObjectClasse, representant une classe java dans le diagramme
      *
      * @param nomObjectClasse     String: nom de la classe
      * @param packageObjectClasse String: nom du package de la classe

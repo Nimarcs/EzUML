@@ -2,6 +2,7 @@
 package modele.classe;
 
 // IMPORTS
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * Classe ObjectClasse
- *
+ * <p>
  * Represente une classe java
  * Contient une liste d'attributs et de methode mais aussi sa position dans la zone d'affichage des diagrammes des classes
  */
@@ -57,10 +58,11 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Constructeur d'un ObjectClasse, representant une classe java
-     * @param nomObjectClasse String: nom de la classe
+     *
+     * @param nomObjectClasse     String: nom de la classe
      * @param packageObjectClasse String: nom du package de la classe
-     * @param x int: position x de la classe (coin en haut a gauche du rectangle a afficher)
-     * @param y int: position y de la classe (coin en haut a gauche du rectangle a afficher)
+     * @param x                   int: position x de la classe (coin en haut a gauche du rectangle a afficher)
+     * @param y                   int: position y de la classe (coin en haut a gauche du rectangle a afficher)
      */
     public ObjectClasse(String nomObjectClasse, String packageObjectClasse, int x, int y) {
         this.nomObjectClasse = nomObjectClasse;
@@ -77,6 +79,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour ajouter une interface qui implemente cette classe
+     *
      * @param inter Interface: interface qu'on doit ajouter dans la liste d'implementation
      */
     public void ajouterImplements(Interface inter) {
@@ -85,6 +88,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour supprimer une interface de la liste d'interface qui implemente cette classe
+     *
      * @param inter Interface: interface qu'on doit supprimer
      */
     public void supprimerImplements(Interface inter) {
@@ -93,6 +97,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Mehode pour ajouter un attribut dans une classe
+     *
      * @param att Attribut: attribut qu'on doit ajouter a la liste d'attributs
      */
     public void ajouterAttribut(Attribut att) {
@@ -101,6 +106,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour supprimer un attribut dans une classe
+     *
      * @param att Attribut: attribut qu'on doit enlever dans la liste d'attributs
      */
     public void supprimerAttribut(Attribut att) {
@@ -109,6 +115,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour ajouter une methode dans la liste des methodes de cette classe
+     *
      * @param meth Methode: methode qu'on doit ajouter
      */
     public void ajouterMethode(Methode meth) {
@@ -117,6 +124,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour supprimer une methode de la liste des methodes de la classe
+     *
      * @param meth Methode: methode qu'on doit supprimer
      */
     public void supprimerMethode(Methode meth) {
@@ -125,6 +133,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour deplacer la classe selon deux vecteurs
+     *
      * @param vecteurX int: vecteur sur l'axe X
      * @param vecteurY int: vecteur sur l'axe Y
      */
@@ -135,6 +144,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode pour changer la visibilite de l'object classe
+     *
      * @param visibilite boolean: indique la nouvelle visibilite ou non de l'objet
      */
     public void changerVisibilite(boolean visibilite) {
@@ -143,6 +153,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Methode equals pour comparer deux ObjectClasse entre eux
+     *
      * @param o Object: object qu'on compare avec celle qui appelle cette methode
      * @return booleen: true si les deux objets sont egaux, sinon false
      */
@@ -154,6 +165,10 @@ public abstract class ObjectClasse implements Serializable {
         return nomObjectClasse.equals(that.nomObjectClasse) && packageObjectClasse.equals(that.packageObjectClasse);
     }
 
+    /**
+     * Methode hashCode
+     * @return int: retourne la valeur de l'objet hasher
+     */
     @Override
     public int hashCode() {
         return Objects.hash(nomObjectClasse, packageObjectClasse);
@@ -163,6 +178,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur le nom de la classe
+     *
      * @return String
      */
     public String getNomObjectClasse() {
@@ -171,6 +187,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur le nom du package de la classe
+     *
      * @return String
      */
     public String getPackageObjectClasse() {
@@ -179,6 +196,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la position X (point en haut a gauche) de la classe dans la zone d'affichage
+     *
      * @return int
      */
     public int getX() {
@@ -187,6 +205,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la position Y (point en haut a gauche) de la classe dans la zone d'affichage
+     *
      * @return int
      */
     public int getY() {
@@ -195,6 +214,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la liste des attributs de la classe
+     *
      * @return List<Attribut>
      */
     public List<Attribut> getAttributs() {
@@ -203,6 +223,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la liste des methodes de la classe
+     *
      * @return List<Methode>
      */
     public List<Methode> getMethodes() {
@@ -211,6 +232,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la liste des interfaces qui implementent la classe
+     *
      * @return List<Interface>
      */
     public List<Interface> getListeObjectClasseImplements() {
@@ -219,6 +241,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter sur la visibilite de la classe
+     *
      * @return boolean
      */
     public boolean isVisible() {
@@ -227,6 +250,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter abstrait sur le type de classe que ce sera
+     *
      * @return TypeClasse
      */
     public abstract TypeClasse getType();
@@ -234,6 +258,7 @@ public abstract class ObjectClasse implements Serializable {
     /**
      * setter de la position
      * Deplace l'ObjectClasse aux coordonne fournie
+     *
      * @param x position sur x
      * @param y position sur y
      */
@@ -244,15 +269,17 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter qui renvoie le nom simplifier de l'objectClasse
+     *
      * @return nom sans les packages de l'objectClasse
      */
-    public String getNomSimple(){
+    public String getNomSimple() {
         String tab[] = nomObjectClasse.split(Pattern.quote("."));
-        return tab[tab.length-1];
+        return tab[tab.length - 1];
     }
 
     /**
      * Getter qui renvoie le nombre d'attributs visible
+     *
      * @return int
      */
     public int getNbAttributsVisible() {
@@ -265,6 +292,7 @@ public abstract class ObjectClasse implements Serializable {
 
     /**
      * Getter qui renvoie le nombre de methodes visibles
+     *
      * @return int
      */
     public int getNbMethodesVisible() {

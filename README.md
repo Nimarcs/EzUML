@@ -20,9 +20,19 @@ Pour savoir si java est installé, mettez la commande "java -version" dans la bo
   -Si la commande renvoie l'erreur :"Command 'java' not found", cela veut dire que java n'est pas installé
   il faut aller sur le lien : https://www.java.com/fr/download/ pour téléchargez java et l'installer correctement
 
-Pour lancer notre application il faut être dans le répertoire où vous avez ouvert le Readme.
-Il faut aller après dans le répertoire bin, puis après le répertoire principale (./bin/principale/).
-Il faut donc ouvrir l'invite de commande de l'explorateur dans ce répertoire et faire la commande : "javac ./Principale.java"
 
-Puis, pour lancer l'application, veuillez faire la commande : "java Principale"
-Suite à cette commande, la fenêtre de l'application devrait être ouverte et vous pouvez l'utiliser.
+Pour compiler notre projet :
+  -En ligne de commande à la racine du projet on fait :
+    
+    javac -cp src -d out/  src/principal/Principale.java
+
+    mkdir out\ressources
+
+    Attention pour window, on a la commande :
+      copy src\ressources\* out\ressources\
+    et pour linux, on a la commande :
+      cp src\ressources\ out\ressources\
+
+    cd out\
+
+    java principal.Principale
