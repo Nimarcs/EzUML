@@ -16,6 +16,7 @@ Les fonctionnalités que l'on a effectuées :
 
 
 #Lancer l'application
+
 ##Pour pouvoir faire tourner notre application, il faut que java soit installé sur votre machine
 
 Pour savoir si java est installé, mettez la commande "java -version" dans la boite de commande de votre explorateur.
@@ -43,11 +44,11 @@ Pour savoir si java est installé, mettez la commande "java -version" dans la bo
 ##Pour en faire une archive jar :
     Depuis le repertoire out/ :
   
-    jar cfe ../jar/NomDeLarchive.jar principal.Principale *
+    jar cfe ../jar/ezUml.jar principal.Principale *
   
     le jar sera creer dans le repertoire jar/ a la racine du projet
     Pour lancer l'application :
-    java -jar ..\jar\ezUmlcm.jar
+    java -jar ..\jar\ezUml.jar
    
     
 
