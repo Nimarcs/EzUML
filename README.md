@@ -60,9 +60,6 @@ Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/j
    Pour lancer l'application : 
    Sous linux faire `chmod u+x ../jar/ezUml.jar` car linux bloque les executables par default
     
-    Windows:
-    java -jar ..\jar\ezUml.jar
-    Linux: 
     java -jar ../jar/ezUml.jar
 
     
