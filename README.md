@@ -30,6 +30,9 @@ Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/j
 
   En ligne de commande à la racine du projet on fait :
     
+    Necessaire sur linux uniquement
+    mkdir out/ 
+    
     javac -cp src -d out/  src/principal/Principale.java
 
     mkdir out\ressources
