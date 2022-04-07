@@ -58,7 +58,7 @@ Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/j
    Le jar sera creer dans le repertoire jar/ a la racine du projet
    
    Pour lancer l'application : 
-   Sous linux faire `chmod u+x` car linux bloque les executables par default
+   Sous linux faire `chmod u+x ../jar/ezUml.jar` car linux bloque les executables par default
     
     java -jar ..\jar\ezUml.jar
    
