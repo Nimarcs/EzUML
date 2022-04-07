@@ -1,20 +1,16 @@
 package modele;
 
-import modele.classe.ObjectClasse;
-
 import java.io.Serializable;
 import java.util.*;
 
 /**
  * Classe representant un package
- * genere par le modele avec les objects classe que l'on lui fourni
- * @author Marcus RICHIER
+ * Géneré par le modele avec les objects classe que l'on lui fournit
  */
 public class Package implements Serializable {
 
 
-    //attributs
-
+    //ATTRIBUT
 
     /**
      * Classe contenue dans le package
@@ -36,17 +32,16 @@ public class Package implements Serializable {
      */
     private boolean ouvert;
 
-
-    //Constructeur
-
+    //CONSTRUCTEUR
 
     /**
      * Constructeur du Package
      * Construit un package vide
+     *
      * @param pNom nom du package
      */
-    public Package(String pNom){
-        nom =pNom;
+    public Package(String pNom) {
+        nom = pNom;
         classesContenues = new HashSet<>();
         sousPackages = new HashSet<>();
     }
@@ -55,64 +50,68 @@ public class Package implements Serializable {
      * Cree une copie du package
      * Tous les sous package sont egalement copier
      * Les ObjectClasse reste les memes objects
+     *
      * @param packageACopier package dont on veut construire une copie
      * @throws NullPointerException erreur renvoye si packageACopie vaut null
      */
-    public Package(Package packageACopier){
-        if (packageACopier != null) {
+    public Package(Package packageACopier) {
+        if (packageACopier != null) { // si le package a copier n'est pas null
             nom = packageACopier.nom;
             classesContenues = new HashSet<>(packageACopier.classesContenues);
             sousPackages = new HashSet<>();
-            for (Package p: packageACopier.sousPackages) {
+            for (Package p : packageACopier.sousPackages) {
                 sousPackages.add(new Package(p));
             }
             ouvert = packageACopier.ouvert;
-        } else {
+        } else { // si null, on retourne une exception
             throw new NullPointerException();
         }
     }
 
-
-    //methode
-
+    //METHODES
 
     /**
      * methode qui permet d'ajouter un sous package au package
+     *
      * @param p package fournit
      */
-    public void ajouterSousPackage(Package p){
-        if (p != null){
+    public void ajouterSousPackage(Package p) {
+        if (p != null) {
             sousPackages.add(p);
         }
     }
 
     /**
      * methode qui permet d'ajouter une classe au package
+     *
      * @param s nom complet de l'objectClasse a ajouter
      */
-    public void ajouterClasse(String s){
+    public void ajouterClasse(String s) {
         classesContenues.add(s);
     }
 
     /**
      * methode qui permet de retirer un sous package du package
+     *
      * @param p package a supprimer
      */
-    public void retirerSousPackage(Package p){
+    public void retirerSousPackage(Package p) {
         sousPackages.remove(p);
     }
 
     /**
      * methode qui permet de retirer une classe du package
+     *
      * @param s nom complet de l'objectClasse a supprimer
      */
-    public void retirerClasse(String s){
+    public void retirerClasse(String s) {
         classesContenues.remove(s);
     }
 
     /**
      * methode qui permet de verifier l'egalite entre this et un objet fourni
      * Ils sont considerer egaux si ils ont le meme nom et contiennent les memes choses
+     *
      * @param o objet founit
      * @return True si et seulement si les deux objets sont egaux
      */
@@ -126,6 +125,7 @@ public class Package implements Serializable {
 
     /**
      * methode qui retourne le hashcode de l'objet
+     *
      * @return entier gal a un autre hashCode si et seulement si les deux sont egaux
      */
     @Override
@@ -134,10 +134,11 @@ public class Package implements Serializable {
     }
 
 
-    //getter et setter
+    //GETTERS ET SETTERS
 
     /**
      * getter du nom du package
+     *
      * @return nom du package
      */
     public String getNom() {
@@ -146,6 +147,7 @@ public class Package implements Serializable {
 
     /**
      * getter des sous packages
+     *
      * @return sous packages
      */
     public Set<Package> getSousPackages() {
@@ -154,6 +156,7 @@ public class Package implements Serializable {
 
     /**
      * getter des classes contenues dans le package
+     *
      * @return classes contenues dans le package
      */
     public Set<String> getClassesContenues() {
@@ -169,12 +172,18 @@ public class Package implements Serializable {
 
     /**
      * getter de l'ouverture
+     *
      * @return booleen ouvert, vrai si il si il est cense etre ouvert
      */
     public boolean isOuvert() {
         return ouvert;
     }
 
+    /**
+     * Affichage string d'un package
+     *
+     * @return String
+     */
     @Override
     public String toString() {
         return "Package{" +
@@ -184,4 +193,5 @@ public class Package implements Serializable {
                 ", ouvert=" + ouvert +
                 '}';
     }
+
 }
