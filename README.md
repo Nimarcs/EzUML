@@ -26,7 +26,7 @@ Pour savoir si java est installé, mettez la commande "java -version" dans la bo
   il faut aller sur le lien : https://www.java.com/fr/download/ pour téléchargez java et l'installer correctement
 
 ## Pour compiler notre projet :
-Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/java/technologies/javase/javase8-archive-downloads.html "Java developpement kit") supérieur a 1.8
+Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/java/technologies/javase/javase8-archive-downloads.html "Java developpement kit") supérieur a 1.8. Vous pouvez regarder votre version avec la commande `javac -version`. 
 
   En ligne de commande à la racine du projet on fait :
     
