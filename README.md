@@ -15,17 +15,17 @@ Les fonctionnalités que l'on a effectuées :
   - raccourci clavier pour accéder à certaine fonctionnalités
 
 
-#Lancer l'application
+# Lancer l'application
 
-##Pour pouvoir faire tourner notre application, il faut que java soit installé sur votre machine
+## Pour pouvoir faire tourner notre application, il faut que java soit installé sur votre machine
 
 Pour savoir si java est installé, mettez la commande "java -version" dans la boite de commande de votre explorateur.
   -Si cette commande vous envoie la version de java, vous pouvez lancer l'application
   -Si la commande renvoie l'erreur :"Command 'java' not found", cela veut dire que java n'est pas installé
   il faut aller sur le lien : https://www.java.com/fr/download/ pour téléchargez java et l'installer correctement
 
-##Pour compiler notre projet :
-  -En ligne de commande à la racine du projet on fait :
+## Pour compiler notre projet :
+  En ligne de commande à la racine du projet on fait :
     
     javac -cp src -d out/  src/principal/Principale.java
 
@@ -41,8 +41,8 @@ Pour savoir si java est installé, mettez la commande "java -version" dans la bo
     Pour lancer l'application :
     java principal.Principale
     
-##Pour en faire une archive jar :
-    Depuis le repertoire out/ :
+## Pour en faire une archive jar :
+   Depuis le repertoire out/ :
   
     jar cfe ../jar/ezUml.jar principal.Principale *
   
