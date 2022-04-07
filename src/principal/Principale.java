@@ -1,16 +1,16 @@
+// PACKAGE
 package principal;
 
+// IMPORTS
 import controleur.ControleurArborescence;
 import controleur.ControleurClavier;
 import controleur.ControleurDiagramme;
 import controleur.ControleurMenu;
 import modele.Modele;
 import vue.*;
-
 import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.io.File;
 
 public class Principale {
 
@@ -53,12 +53,13 @@ public class Principale {
 
         //Menu
         Font fontMenu = new Font("Arial", Font.BOLD, 16);
-
+        //On définit les principaux menus
         JMenuBar menuBar = new JMenuBar();
         JMenu fichier = new JMenu("Fichier");
         fichier.setFont(fontMenu);
         JMenu edit = new JMenu("Edition");
         edit.setFont(fontMenu);
+        //On définit les items des menus, a qui on ajoute le controleur adéquat et la font
         JMenuItem rechargerUniquementDernierChargement = new JMenuItem(ControleurMenu.RECHARGER_DERNIER_CHARGEMENT_TXT);
         rechargerUniquementDernierChargement.addActionListener(controleurMenu);
         rechargerUniquementDernierChargement.setFont(fontMenu);
@@ -81,6 +82,7 @@ public class Principale {
         exporter.addActionListener(controleurMenu);
         exporter.setFont(fontMenu);
 
+        // On ajoute les items menus aux bons menus
         menuBar.add(fichier);
         menuBar.add(edit);
         fichier.add(chargerFileClasse);
@@ -90,13 +92,11 @@ public class Principale {
         fichier.add(exporter);
         edit.add(retirerSelectionDiagramme);
         edit.add(rechargerUniquementDernierChargement);
-
         contentPane.add(menuBar, BorderLayout.NORTH);
 
         //PanelPrincipal
         JSplitPane panelPrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         panelPrincipal.setOneTouchExpandable(true);
-
         contentPane.add(panelPrincipal, BorderLayout.CENTER);
 
         //VueArborescence
@@ -106,13 +106,11 @@ public class Principale {
         vueArborescence.getBase().getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         vueArborescence.getBase().addMouseListener(controleurArborescence);
         vueArborescence.addMouseListener(controleurArborescence);
-
         modele.ajouterObservateur(vueArborescence);
         panelPrincipal.setLeftComponent(vueArborescence);
 
         //VueDiagramme
         VueDiagramme vueDiagramme = new VueDiagramme(modele);
-
         modele.ajouterObservateur(vueDiagramme);
         panelPrincipal.setRightComponent(vueDiagramme);
         modele.setVueDiagramme(vueDiagramme);
