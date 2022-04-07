@@ -42,10 +42,10 @@ Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/j
     et pour linux, on a la commande :
       cp -r src/ressources/ out/
 
-    cd out
-
-    Pour lancer l'application :
-    java principal.Principale
+   Pour lancer l'application :
+      
+      cd out
+      java principal.Principale
     
 ## Pour en faire une archive jar :
    Depuis la racine du projet :
