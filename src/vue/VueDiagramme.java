@@ -162,7 +162,7 @@ public class VueDiagramme extends JPanel implements Observateur, Serializable {
 
         // Affichage de toutes les fleches d'associations
         for (FlecheAssociation f : modele.getAssociations()) {
-            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f.getNom());
+            drawArrow(g, f.getSrc(), f.getDest(), FLECHE_ASSOSCIATION, f);
         }
 
         // On execute pour tous les objectClasse
@@ -279,9 +279,9 @@ public class VueDiagramme extends JPanel implements Observateur, Serializable {
      * @param src         ObjectClasse, classe de départ de la flèche
      * @param destination ObjectClasse, classe d'arrivée de la flèche
      * @param choixFleche int: indique quel type de flèches on doit afficher, voir les variables statiques définit plus haut
-     * @param nameAssos   String: nom de association si c'est une fleche association
+     * @param f   FlecheAssociation
      */
-    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, String nameAssos) {
+    void drawArrow(Graphics g, ObjectClasse src, ObjectClasse destination, int choixFleche, FlecheAssociation f) {
 
         // On recupere l'objectClasse de destination dans ceux chargée, au cas où celui qu'on aurait ne soit pas a jour
         ObjectClasse dest = modele.getObjectClasse(destination.getNomObjectClasse());
@@ -351,7 +351,7 @@ public class VueDiagramme extends JPanel implements Observateur, Serializable {
             // on calcule le nombre de fleches entre la classe src et la classe dest afin de pouvoir créer un décalage dans l'affichage
             int nbOcc = 0;
             if (choixFleche == FLECHE_ASSOSCIATION) {
-                nbOcc = modele.nbOccurencesFleches(src, dest, nameAssos);
+                nbOcc = modele.nbOccurencesFleches(src, dest, f.getNom());
                 if (cote.equals("Droite") || cote.equals("Gauche")) {
                     srcY += DECALAGE_FLECHE * nbOcc;
                     destY += DECALAGE_FLECHE * nbOcc;
@@ -417,14 +417,14 @@ public class VueDiagramme extends JPanel implements Observateur, Serializable {
                     // selon le coté où se trouve la classe src par rapport à la classe dest, on dispose différement la string du nom de l'assosciation
                     if (cote.equals("Haut") || cote.equals("Bas")) {
                         // si c'est en haut ou en bas, on insere le nbOccurence de fleche afin que plusieurs nom d'assosciation ne se superpose pas
-                        g.drawString(nameAssos, srcX + decX + (destX - srcX) / 2, srcY + decY + (destY - srcY) / 2 + nbOcc * DECALAGE_FLECHE);
+                        g.drawString(f.getNom(), srcX + decX + (destX - srcX) / 2, srcY + decY + (destY - srcY) / 2 + nbOcc * DECALAGE_FLECHE);
                     } else {
                         // si c'est a droite ou a gauche, on l'insere normalement
-                        g.drawString(nameAssos, srcX + decX + (destX - srcX) / 2, srcY + decY + (destY - srcY) / 2);
+                        g.drawString(f.getNom(), srcX + decX + (destX - srcX) / 2, srcY + decY + (destY - srcY) / 2);
                     }
                     // on dessine les cardinalités
-                    g.drawString(nameAssos, srcX + decX + (destX - srcX) / 8, srcY + decY + (destY - srcY) / 8);
-                    g.drawString(nameAssos, (int) (srcX + decX + (destX - srcX) * 0.875), (int) (srcY + decY + (destY - srcY) * 0.875));
+                    g.drawString(f.getCardSrc(), srcX + decX + (destX - srcX) / 8, srcY + decY + (destY - srcY) / 8);
+                    g.drawString(f.getCardDest(), (int) (srcX + decX + (destX - srcX) * 0.875), (int) (srcY + decY + (destY - srcY) * 0.875));
                     break;
 
                 default: // cas d'eeurs si aucune flèches ne correspond
