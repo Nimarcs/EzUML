@@ -5,7 +5,6 @@ import modele.classe.ObjectClasse;
 import modele.classe.Statut;
 
 import java.io.Serializable;
-import java.util.regex.Pattern;
 
 /**
  * FlecheAssociation qui permet de representer une association
@@ -36,25 +35,30 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * Constructeur de fleche
-     * @param src object source de la fleche
-     * @param dest object avec lequel la fleche associe la source
+     *
+     * @param src      object source de la fleche
+     * @param dest     object avec lequel la fleche associe la source
      * @param attribut attribut que represente la fleche
      * @throws NullPointerException renvoye si src ou dest est null
      */
-    public FlecheAssociation(ObjectClasse src, ObjectClasse dest, Attribut attribut){
-        assert src != null && dest != null && attribut != null:"FlecheAssociation doit avoir une source et une destination";
-        assert src.getAttributs().contains(attribut): "L'attribut doit etre un attribut de la source";
+    public FlecheAssociation(ObjectClasse src, ObjectClasse dest, Attribut attribut) {
+        assert src != null && dest != null && attribut != null : "FlecheAssociation doit avoir une source et une destination";
+        assert src.getAttributs().contains(attribut) : "L'attribut doit etre un attribut de la source";
         this.src = src;
         this.dest = dest;
         String res;
+        //on regarde le statut de attribut
         if (attribut.getStatutAttribut() == Statut.PUBLIC) res = "+ ";
         else if (attribut.getStatutAttribut() == Statut.PRIVATE) res = "- ";
         else res = "# ";
+        // on met le statut avec le nom de l'attribut qui vas devenir une fleche
         this.nom = res + attribut.getNomAttribut();
-        if (attribut.getNomAttribut().contains("<")&&attribut.getNomAttribut().contains(">")||attribut.getNomAttribut().contains("[]")) {
+
+        //ajout cardinalite en fonction de son nom
+        if (attribut.getNomAttribut().contains("<") && attribut.getNomAttribut().contains(">") || attribut.getNomAttribut().contains("[]")) {
             cardSrc = "*";
             cardDest = "*";
-        } else{
+        } else {
             cardSrc = "*";
             cardDest = "0..1";
         }
@@ -65,24 +69,27 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * setter de la destination
+     *
      * @param dest objectClasse associe, ne peut pas etre null
      */
     public void setDest(ObjectClasse dest) {
-        assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
+        assert (dest != null) : "FlecheAssociation doit avoir une source et une destination";
         this.dest = dest;
     }
 
     /**
      * setter de la source
+     *
      * @param src objectClasse qui associe, ne peut pas etre null
      */
     public void setSrc(ObjectClasse src) {
-        assert  (dest != null):"FlecheAssociation doit avoir une source et une destination";
+        assert (dest != null) : "FlecheAssociation doit avoir une source et une destination";
         this.src = src;
     }
 
     /**
      * getter de la destination
+     *
      * @return objectClasse associe
      */
     public ObjectClasse getDest() {
@@ -91,6 +98,7 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * getter de la source
+     *
      * @return objectClasse qui associe
      */
     public ObjectClasse getSrc() {
@@ -99,6 +107,7 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * getter du nom
+     *
      * @return nom de l'association
      */
     public String getNom() {
@@ -107,6 +116,7 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * Getter de la cardinalité de la classe source
+     *
      * @return String
      */
     public String getCardSrc() {
@@ -115,6 +125,7 @@ public class FlecheAssociation implements Serializable {
 
     /**
      * Getter de la cardinalité de la classe destination
+     *
      * @return String
      */
     public String getCardDest() {
