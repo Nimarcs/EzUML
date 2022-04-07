@@ -30,30 +30,36 @@ Il vous sera necessaire d'avoir une version du [JDK](https://www.oracle.com/fr/j
 
   En ligne de commande à la racine du projet on fait :
     
-    Necessaire sur linux uniquement
+    Necessaire sur linux uniquement:
     mkdir out/ 
     
     javac -cp src -d out/  src/principal/Principale.java
 
-    mkdir out\ressources
-
+   
     Attention pour window, on a la commande :
+      mkdir out\ressources
       copy src\ressources\* out\ressources\
     et pour linux, on a la commande :
-      cp src\ressources\ out\ressources\
+      cp -r src/ressources/ out/
 
-    cd out\
+    cd out
 
     Pour lancer l'application :
     java principal.Principale
     
 ## Pour en faire une archive jar :
-   Depuis le repertoire out/ :
+   Depuis la racine du projet :
+   
+    mkdir jar 
+    cd out/
   
     jar cfe ../jar/ezUml.jar principal.Principale *
   
-    le jar sera creer dans le repertoire jar/ a la racine du projet
-    Pour lancer l'application :
+   Le jar sera creer dans le repertoire jar/ a la racine du projet
+   
+   Pour lancer l'application : 
+   Sous linux faire `chmod u+x` car linux bloque les executables par default
+    
     java -jar ..\jar\ezUml.jar
    
     
